@@ -1,0 +1,206 @@
+<robot name="$(param robot_name)" fixed="false" self_collisions="false">
+
+    <base_link name="Vehicle" type="compound" physics="submerged">
+        <external_part name="Hull" type="model" physics="submerged" buoyant="false">
+            <physical>
+                <mesh filename="$(find stonefish_ros)/data/girona500/hull_phy.obj" scale="1.0"/>
+                <thickness value="0.003"/>
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            </physical>
+            <visual>
+                <mesh filename="$(find stonefish_ros)/data/girona500/lower_hull.obj" scale="1.0"/>
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            </visual>
+            <material name="Fiberglass"/>
+            <look name="lower_hull"/>
+            <compound_transform rpy="0.0 0.0 0.0" xyz="-0.049 0.0 0.0"/>
+        </external_part>
+
+        <internal_part name="InternalCylinder" type="cylinder" physics="submerged" buoyant="true">
+            <dimensions radius="0.13" height="1.0"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <material name="Neutral"/>
+            <mass value="39.0"/>
+            <look name="manipulator"/>
+            <compound_transform rpy="0.0 1.571 0.0" xyz="-0.049 0.0 0.0"/>
+        </internal_part>
+
+        <internal_part name="WeightCylinder" type="cylinder" physics="submerged" buoyant="true">
+            <dimensions radius="0.02" height="1.0"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <material name="Neutral"/>
+            <mass value="8.0"/>
+            <look name="manipulator"/>
+            <compound_transform rpy="0.0 1.571 0.0" xyz="-0.049 0.0 0.13"/>
+        </internal_part>
+
+        <external_part name="Antenna" type="model" physics="submerged">
+            <physical>
+                <mesh filename="$(find stonefish_ros)/data/girona500/antenna_phy.obj" scale="1.0"/>
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            </physical>
+            <visual>
+                <mesh filename="$(find stonefish_ros)/data/girona500/antenna.obj" scale="1.0"/>
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            </visual>
+            <material name="Fiberglass"/>
+            <look name="black"/>
+            <compound_transform rpy="0.0 0.0 0.0" xyz="-0.539 0.0 0.30"/>
+        </external_part>
+
+    </base_link>
+
+    <link name="ThrusterFixture" type="model" physics="submerged">
+        <physical>
+            <mesh filename="$(find stonefish_ros)/data/eca5emicro/link1_phy.obj" scale="1.0"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </physical>
+        <visual>
+            <mesh filename="$(find stonefish_ros)/data/eca5emicro/link1.obj" scale="1.0"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <material name="Neutral"/>
+        <look name="manipulator"/>	
+    </link>
+
+    <link name="ThrusterYawFixture" type="model" physics="submerged">
+        <physical>
+            <mesh filename="$(find stonefish_ros)/data/eca5emicro/link1_phy.obj" scale="1.0"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </physical>
+        <visual>
+            <mesh filename="$(find stonefish_ros)/data/eca5emicro/link1.obj" scale="1.0"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <material name="Neutral"/>
+        <look name="manipulator"/>	
+    </link>
+
+    <link name="ThrusterLink" type="model" physics="submerged">
+        <physical>
+            <mesh filename="$(find stonefish_ros)/data/eca5emicro/link1_phy.obj" scale="1.0"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </physical>
+        <visual>
+            <mesh filename="$(find stonefish_ros)/data/eca5emicro/link1.obj" scale="1.0"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <material name="Neutral"/>
+        <look name="manipulator"/>	
+    </link>
+
+    <joint name="VehicleToThruster" type="fixed">
+        <parent name="Vehicle"/>
+        <child name="ThrusterFixture"/>
+        <origin rpy="0.0 0.0 0.0" xyz="-0.79 0.0 0.0"/>
+    </joint>
+
+    <joint name="joint1" type="revolute">
+        <parent name="ThrusterFixture"/>
+        <child name="ThrusterYawFixture"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        <axis xyz="0.0 0.0 1.0"/>
+        <limits min="-0.3" max="0.3"/>
+    </joint>
+
+    <joint name="joint2" type="revolute">
+        <parent name="ThrusterYawFixture"/>
+        <child name="ThrusterLink"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <limits min="-0.3" max="0.3"/>
+    </joint>
+
+    <sensor name="dynamics" type="odometry" rate="30.0">
+        <link name="Vehicle"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        <ros_publisher topic="/$(param robot_name)/dynamics/odometry"/>
+    </sensor>
+
+    <sensor name="pressure" type="pressure" rate="5.0">
+        <link name="Vehicle"/>
+        <origin rpy="0.0 0.0 0.0" xyz="-0.48 0.35 -0.4"/>
+        <noise pressure="5.0"/>
+        <ros_publisher topic="/$(param robot_name)/navigator/pressure"/>
+    </sensor>
+
+    <sensor name="dvl" type="dvl" rate="5.0">
+        <link name="Vehicle"/>
+        <origin rpy="3.1416 0.0 -0.785" xyz="-0.75 0.0 0.4"/>
+        <specs beam_angle="30.0"/>
+        <range velocity="9.0 9.0 9.0" altitude_min="0.5" altitude_max="81.0"/>
+        <noise velocity="0.0015" altitude="0.001"/>
+        <ros_publisher topic="/$(param robot_name)/navigator/dvl" altitude_topic="/$(param robot_name)/navigator/altitude"/>
+    </sensor>
+
+    <sensor name="imu_filter" type="imu" rate="20.0">
+        <link name="Vehicle"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        <noise angle="0.000001745" angular_velocity="0.00001745"/>
+        <ros_publisher topic="/$(param robot_name)/navigator/imu"/>
+    </sensor>
+
+    <sensor name="gps" type="gps" rate="1.0">
+        <link name="Vehicle"/>
+        <origin rpy="0.0 0.0 0.0" xyz="-0.54 -0.35 -0.74"/>
+        <noise ned_position="0.5"/>
+        <ros_publisher topic="/$(param robot_name)/navigator/gps"/>
+    </sensor>
+    
+    <sensor name="proscilica" type="camera" rate="10.0">
+        <link name="Vehicle"/>
+        <origin rpy="0.0 0.0 1.571" xyz="0.5 -0.12 0.5"/>
+        <specs resolution_x="1360" resolution_y="1024" horizontal_fov="55.0"/>
+        <ros_publisher topic="/$(param robot_name)/proscilica"/>
+    </sensor>
+
+    <!--
+    <sensor name="multibeam" type="multibeam1d" rate="5.0">
+        <link name="Vehicle"/>
+        <origin rpy="0.0 1.5707 0.0" xyz="0.0 0.0 -0.4"/>
+        <specs fov="30.0" steps="50"/>
+        <history samples="-1"/>
+        <range distance_min="0.5" distance_max="150.0"/>
+        <noise distance="0.001"/>
+        <ros_publisher topic="/$(param robot_name)/multibeam"/>
+    </sensor>
+    -->
+
+    <actuator name="ThrusterSurge1" type="thruster">
+        <link name="ThrusterLink"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        <specs thrust_coeff="0.48" torque_coeff="0.05" max_rpm="1000.0"/>
+        <propeller diameter="0.18" right="true">
+            <mesh filename="$(find stonefish_ros)/data/girona500/propeller.obj" scale="1.0"/>
+            <material name="Neutral"/>
+            <look name="propeller"/>
+        </propeller>
+    </actuator>
+
+    <actuator name="ThrusterSurge2" type="thruster">
+        <link name="ThrusterLink"/>
+        <origin rpy="0.0 0.0 0.0" xyz="-0.1 0.0 0.0"/>
+        <specs thrust_coeff="0.48" torque_coeff="0.05" max_rpm="1000.0"/>
+        <propeller diameter="0.18" right="false">
+            <mesh filename="$(find stonefish_ros)/data/girona500/propeller.obj" scale="1.0"/>
+            <material name="Neutral"/>
+            <look name="propeller"/>
+        </propeller>
+    </actuator>
+
+    <actuator name="Servo1" type="servo">
+        <joint name="joint1"/>
+        <controller position_gain="1.0" velocity_gain="0.0" max_torque="1.0"/>
+    </actuator> 
+
+    <actuator name="Servo2" type="servo">
+        <joint name="joint2"/>
+        <controller position_gain="1.0" velocity_gain="0.0" max_torque="1.0"/>
+    </actuator> 
+
+    <world_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 1.0"/>
+
+    <ros_publisher servos="/$(param robot_name)/joint_states"/>
+    <ros_subscriber thrusters="/$(param robot_name)/thruster_setpoints" servos="/$(param robot_name)/desired_joint_states"/> 
+    <ros_base_link_transforms publish="true"/>
+</robot>

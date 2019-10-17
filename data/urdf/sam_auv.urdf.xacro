@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<robot name="sam_auv" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ECA 5E Micro mnipulator -->
+  <!-- links -->
+  <link name="$(arg robot_namespace)/base_link">
+  </link>
+  
+  <link name="$(arg robot_namespace)/thruster_fixture">
+  </link>
+  
+  <link name="$(arg robot_namespace)/thruster_yaw_fixture">
+  </link>
+
+  <link name="$(arg robot_namespace)/thruster_link">
+  </link>
+
+  <joint name="$(arg robot_namespace)/thruster_offset" type="fixed">
+    <parent link="$(arg robot_namespace)/base_link"/>
+    <child link="$(arg robot_namespace)/thruster_fixture"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.79 0 0"/>
+  </joint>
+
+  <joint name="$(arg robot_namespace)/joint1" type="revolute">
+    <parent link="$(arg robot_namespace)/thruster_fixture"/>
+    <child link="$(arg robot_namespace)/thruster_yaw_fixture"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.3" upper="0.3" velocity="0.2" effort="1.0"/>
+  </joint>
+  
+  <joint name="$(arg robot_namespace)/joint2" type="revolute">
+    <parent link="$(arg robot_namespace)/thruster_yaw_fixture"/>
+    <child link="$(arg robot_namespace)/thruster_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.1065 0.0 0.0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.3" upper="0.3" velocity="0.2" effort="1.0"/>
+  </joint>
+  
+</robot>
