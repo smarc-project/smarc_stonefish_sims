@@ -1,6 +1,7 @@
 <scenario>
 
     <include file="$(find sam_stonefish_sim)/data/biograd_world/biograd_env.scn"/>
-    <include file="$(find sam_stonefish_sim)/data/sam_auv/sam_auv.scn"/>
+    <!-- <include file="$(find sam_stonefish_sim)/data/sam_auv/sam_auv.scn"/> -->
+    <include file="$(find sam_stonefish_sim)/data/sam_auv/sam_auv.xml"/>
 
 </scenario>

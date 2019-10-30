@@ -1,0 +1,113 @@
+<robot name="$(param robot_name)" fixed="false" self_collisions="false">
+
+    <base_link name="Vehicle" type="compound" physics="submerged">
+        <external_part name="Hull" type="model" physics="submerged"> <!--  buoyant="true">-->
+            <physical>
+                <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/sam_body_convex_simple2.obj" scale="1.0"/>
+                <!-- <thickness value="0.003"/> -->
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            </physical>
+            <visual>
+                <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/sam_body_convex_simple2.obj" scale="1.0"/>
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            </visual>
+            <material name="Fiberglass"/>
+            <look name="yellow"/>
+            <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <mass value="13.0"/>
+            <!-- <cg xyz="-0.41 0.0 0.05" rpy="0.0 0.0 0.0"/> -->
+        </external_part>
+
+        <internal_part name="WeightCylinder" type="cylinder" physics="submerged" buoyant="false">
+            <dimensions radius="0.02" height="0.6"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <material name="Neutral"/>
+            <mass value="1.0"/>
+            <cg xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
+            <look name="manipulator"/>
+            <compound_transform rpy="0.0 1.571 0.0" xyz="-0.37 0.0 0.05"/>
+        </internal_part>
+    </base_link>
+
+    <link name="ThrusterYawFixture" type="sphere" physics="submerged" buoyant="false">
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        <dimensions radius="0.001"/>
+        <material name="Neutral"/>
+        <look name="manipulator"/>	
+        <mass value="0.0"/>
+    </link>
+
+    <link name="ThrusterLink" type="model" physics="submerged" buoyant="false">
+        <physical>
+            <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/sam_shaft_cover.obj" scale="1.0"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </physical>
+        <visual>
+            <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/sam_shaft_cover.obj" scale="1.0"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <material name="Neutral"/>
+        <look name="manipulator"/>	
+        <mass value="0.0"/>
+    </link>
+
+    <joint name="joint1" type="revolute">
+        <parent name="Vehicle"/>
+        <child name="ThrusterYawFixture"/>
+        <origin rpy="0.0 0.0 0.0" xyz="-1.045 0.0 0.0"/>
+        <axis xyz="0.0 0.0 1.0"/>
+        <limits min="-0.2" max="0.2"/>
+    </joint>
+
+    <joint name="joint2" type="revolute">
+        <parent name="ThrusterYawFixture"/>
+        <child name="ThrusterLink"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <limits min="-0.2" max="0.2"/>
+    </joint>
+
+    <sensor name="dynamics" type="odometry" rate="30.0">
+        <link name="Vehicle"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        <ros_publisher topic="/$(param robot_name)/dynamics/odometry"/>
+    </sensor>
+
+    <actuator name="ThrusterSurge1" type="thruster">
+        <link name="ThrusterLink"/>
+        <origin rpy="0.0 0.0 0.0" xyz="-0.04 0.0 0.0"/>
+        <specs thrust_coeff="0.2" torque_coeff="0.05" max_rpm="1000.0"/>
+        <propeller diameter="0.12" right="true">
+            <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/sam_propeller_simple.obj" scale="1.0"/>
+            <material name="Neutral"/>
+            <look name="propeller"/>
+        </propeller>
+    </actuator>
+
+    <actuator name="ThrusterSurge2" type="thruster">
+        <link name="ThrusterLink"/>
+        <origin rpy="0.0 0.0 0.0" xyz="-0.055 0.0 0.0"/>
+        <specs thrust_coeff="0.2" torque_coeff="0.05" max_rpm="1000.0"/>
+        <propeller diameter="0.12" right="false">
+            <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/sam_propeller_simple.obj" scale="1.0"/>
+            <material name="Neutral"/>
+            <look name="propeller"/>
+        </propeller>
+    </actuator>
+
+    <actuator name="Servo1" type="servo">
+        <joint name="joint1"/>
+        <controller position_gain="0.01" velocity_gain="0.0" max_torque="1.0"/>
+    </actuator> 
+
+    <actuator name="Servo2" type="servo">
+        <joint name="joint2"/>
+        <controller position_gain="0.01" velocity_gain="0.0" max_torque="1.0"/>
+    </actuator> 
+
+    <world_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 1.0"/>
+
+    <ros_publisher servos="/$(param robot_name)/joint_states"/>
+    <ros_subscriber thrusters="/$(param robot_name)/thruster_setpoints" servos="/$(param robot_name)/desired_joint_states"/> 
+    <ros_base_link_transforms publish="true"/>
+</robot>
