@@ -13,7 +13,7 @@
             <material name="Fiberglass"/>
             <look name="yellow"/>
             <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
-            <mass value="5.0"/>
+            <mass value="5.01"/>
             <!-- <cg xyz="-0.419064 0.002501 0.000001" rpy="0.0 0.0 0.0"/> -->
         </external_part>
         <internal_part name="WeightCylinder" type="cylinder" physics="submerged" buoyant="false">
@@ -90,7 +90,7 @@
     </joint>
     -->
 
-    <joint name="tcg_joint1" type="revolute">
+    <joint name="tcg_joint1" type="fixed">
         <parent name="Vehicle"/>
         <child name="TCGWeight1"/>
         <origin rpy="0.0 0.0 0.0" xyz="-0.52 0.0 0.0"/>
@@ -98,7 +98,7 @@
         <limits min="-1.6" max="1.6"/>
     </joint>
 
-    <joint name="tcg_joint2" type="revolute">
+    <joint name="tcg_joint2" type="fixed">
         <parent name="Vehicle"/>
         <child name="TCGWeight2"/>
         <origin rpy="0.0 0.0 0.0" xyz="-0.54 0.0 0.0"/>
@@ -158,6 +158,7 @@
         </propeller>
     </actuator>
 
+    <!--
     <actuator name="ServoTCG1" type="servo">
         <joint name="tcg_joint1"/>
         <controller position_gain="1.0" velocity_gain="0.0" max_torque="1.0"/>
@@ -167,6 +168,7 @@
         <joint name="tcg_joint2"/>
         <controller position_gain="1.0" velocity_gain="0.0" max_torque="1.0"/>
     </actuator> 
+    -->
 
     <actuator name="ServoLCG" type="servo">
         <joint name="lcg_joint"/>
