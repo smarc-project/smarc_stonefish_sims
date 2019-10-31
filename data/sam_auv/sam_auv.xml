@@ -26,16 +26,6 @@
         </internal_part>
     </base_link>
 
-    <!--
-    <link name="VBS" type="box" physics="submerged" buoyant="false">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
-        <dimensions xyz="0.1 0.08 0.08"/>
-        <material name="Neutral"/>
-        <look name="manipulator"/>	
-        <mass value="0.01"/>
-    </link>
-    -->
-
     <link name="Batteries" type="box" physics="submerged" buoyant="false">
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         <dimensions xyz="0.2 0.08 0.08"/>
@@ -81,14 +71,6 @@
         <look name="manipulator"/>	
         <mass value="0.0"/>
     </link>
-
-    <!--
-    <joint name="vbs_joint" type="fixed">
-        <parent name="Vehicle"/>
-        <child name="VBS"/>
-        <origin rpy="0.0 0.0 0.0" xyz="-0.3 0.0 0.0"/>
-    </joint>
-    -->
 
     <joint name="tcg_joint1" type="fixed">
         <parent name="Vehicle"/>

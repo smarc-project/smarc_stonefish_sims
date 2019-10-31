@@ -24,11 +24,6 @@
   <link name="$(arg robot_namespace)/tcg2_link">
   </link>
 
-  <!--
-  <link name="$(arg robot_namespace)/vbs_link">
-  </link>
-  -->
-
   <joint name="$(arg robot_namespace)/thruster_offset" type="fixed">
     <parent link="$(arg robot_namespace)/base_link"/>
     <child link="$(arg robot_namespace)/thruster_fixture"/>
@@ -58,16 +53,6 @@
     <axis xyz="1 0 0"/>
     <limit lower="-0.01" upper="0.01" velocity="0.2" effort="1.0"/>
   </joint>
-
-  <!--
-  <joint name="$(arg robot_namespace)/vbs_joint_virt" type="prismatic">
-    <parent link="$(arg robot_namespace)/base_link"/>
-    <child link="$(arg robot_namespace)/vbs_link"/>
-    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
-    <axis xyz="1 0 0"/>
-    <limit lower="0.0" upper="2.0" velocity="0.2" effort="1.0"/>
-  </joint>
-  -->
 
   <joint name="$(arg robot_namespace)/tcg_joint1" type="revolute">
     <parent link="$(arg robot_namespace)/base_link"/>
