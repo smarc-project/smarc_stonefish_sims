@@ -55,8 +55,8 @@ class TeleopServer(object):
         #thruster_angles.header = header
         #thruster_angles.name = ["sam_auv/joint1", "sam_auv/joint2"]
 
-	joint_angle = 0.1
-        thrust_level = 2.
+	joint_angle = 0.2
+        thrust_level = 1000.
 
 	clock = pygame.time.Clock()
 	while not rospy.is_shutdown():

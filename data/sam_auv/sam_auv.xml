@@ -1,3 +1,4 @@
+<scenario>
 <robot name="$(param robot_name)" fixed="false" self_collisions="false">
 
     <base_link name="Vehicle" type="compound" physics="submerged">
@@ -173,3 +174,4 @@
     <ros_subscriber thrusters="/$(param robot_name)/thruster_setpoints" servos="/$(param robot_name)/desired_joint_states"/> 
     <ros_base_link_transforms publish="true"/>
 </robot>
+</scenario>

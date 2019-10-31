@@ -1,3 +1,4 @@
+<scenario>
 <environment>
     <ned latitude="41.7777" longitude="3.0333"/>
     <sun azimuth="20.0" elevation="50.0"/>
@@ -69,3 +70,4 @@
 </static>
 -->
 
+</scenario>

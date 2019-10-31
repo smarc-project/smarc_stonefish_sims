@@ -31,7 +31,7 @@
     <include file="$(find sam_stonefish_sim)/launch/simulator.launch">
     	<arg name="simulation_data" value="$(find sam_stonefish_sim)/data"/>
     	<arg name="scenario_description" value="$(arg scenario_description)"/>
-   		<arg name="simulation_rate" value="500.0"/>
+   		<arg name="simulation_rate" value="100.0"/>
     	<arg name="graphics_resolution" value="1200 800"/>
     	<arg name="graphics_quality" value="medium"/>
         <arg name="robot_name" value="$(arg robot_name)"/>
@@ -54,8 +54,8 @@
       <param name="use_gui" value="true"/>
       <param name="publish_default_positions" value="true"/>
     </node>
+    <node name="sam_teleop" type="sam_teleop.py" pkg="sam_stonefish_sim" output="screen"/> 
     -->
-    <!-- <node name="sam_teleop" type="sam_teleop.py" pkg="sam_stonefish_sim" output="screen"/> -->
     <node name="sam_sim_msg_bridge" type="sam_sim_msg_bridge.py" pkg="sam_stonefish_sim" output="screen"/>
 
     <node name="bezier_planner" type="bezier_planner.py" pkg="sam_stonefish_sim" output="screen">
@@ -63,6 +63,7 @@
     </node>
     <include file="$(find sam_stonefish_sim)/launch/controller.launch"/>
 
+    <!--
     <include file="$(find imc_ros_bridge)/launch/bridge.launch">
         <arg name="server_addr" value="$(arg server_addr)"/>
         <arg name="server_port" value="$(arg server_port)" type="str"/>
@@ -73,5 +74,6 @@
     <node name="neptus_bt" pkg="waypoints" type="neptus_bt.py" output="screen">
         <param name="system_name" value="$(arg system_name)" />
     </node>   
+    -->
     
 </launch>
