@@ -1,33 +1,66 @@
 <robot name="$(param robot_name)" fixed="false" self_collisions="false">
 
     <base_link name="Vehicle" type="compound" physics="submerged">
-        <external_part name="Hull" type="model" physics="submerged"> <!--  buoyant="true">-->
+        <external_part name="Hull" type="model" physics="submerged">
             <physical>
                 <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/sam_body_convex_simple2.obj" scale="1.0"/>
-                <!-- <thickness value="0.003"/> -->
-                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.0025 0.0"/>
             </physical>
             <visual>
                 <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/sam_body_convex_simple2.obj" scale="1.0"/>
-                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.0025 0.0"/>
             </visual>
             <material name="Fiberglass"/>
             <look name="yellow"/>
             <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
-            <mass value="13.0"/>
-            <!-- <cg xyz="-0.41 0.0 0.05" rpy="0.0 0.0 0.0"/> -->
+            <mass value="8.0"/>
+            <!-- <cg xyz="-0.419064 0.002501 0.000001" rpy="0.0 0.0 0.0"/> -->
         </external_part>
-
         <internal_part name="WeightCylinder" type="cylinder" physics="submerged" buoyant="false">
             <dimensions radius="0.02" height="0.6"/>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             <material name="Neutral"/>
             <mass value="1.0"/>
-            <cg xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
             <look name="manipulator"/>
-            <compound_transform rpy="0.0 1.571 0.0" xyz="-0.37 0.0 0.05"/>
+            <compound_transform rpy="0.0 1.571 0.0" xyz="-0.35 0.0 0.04"/>
         </internal_part>
     </base_link>
+
+    <!--
+    <link name="VBS" type="box" physics="submerged" buoyant="false">
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        <dimensions xyz="0.1 0.08 0.08"/>
+        <material name="Neutral"/>
+        <look name="manipulator"/>	
+        <mass value="0.01"/>
+    </link>
+    -->
+
+    <link name="Batteries" type="box" physics="submerged" buoyant="false">
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        <dimensions xyz="0.2 0.08 0.08"/>
+        <material name="Neutral"/>
+        <look name="manipulator"/>	
+        <mass value="5.0"/>
+    </link>
+
+    <!--
+    <link name="TCGWeight1" type="box" physics="surface" buoyant="false">
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.04"/>
+        <dimensions xyz="0.02 0.02 0.02"/>
+        <material name="Neutral"/>
+        <look name="manipulator"/>	
+        <mass value="1.0"/>
+    </link>
+
+    <link name="TCGWeight2" type="box" physics="surface" buoyant="false">
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.04"/>
+        <dimensions xyz="0.02 0.02 0.02"/>
+        <material name="Neutral"/>
+        <look name="manipulator"/>	
+        <mass value="1.0"/>
+    </link>
+    -->
 
     <link name="ThrusterYawFixture" type="sphere" physics="submerged" buoyant="false">
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
@@ -50,6 +83,40 @@
         <look name="manipulator"/>	
         <mass value="0.0"/>
     </link>
+
+    <!--
+    <joint name="vbs_joint" type="fixed">
+        <parent name="Vehicle"/>
+        <child name="VBS"/>
+        <origin rpy="0.0 0.0 0.0" xyz="-0.3 0.0 0.0"/>
+    </joint>
+    -->
+
+    <!--
+    <joint name="tcg_joint1" type="revolute">
+        <parent name="Vehicle"/>
+        <child name="TCGWeight1"/>
+        <origin rpy="0.0 0.0 0.0" xyz="-0.52 0.0 0.0"/>
+        <axis xyz="1.0 0.0 0.0"/>
+        <limits min="-1.6" max="1.6"/>
+    </joint>
+
+    <joint name="tcg_joint2" type="revolute">
+        <parent name="Vehicle"/>
+        <child name="TCGWeight2"/>
+        <origin rpy="0.0 0.0 0.0" xyz="-0.54 0.0 0.0"/>
+        <axis xyz="1.0 0.0 0.0"/>
+        <limits min="-1.6" max="1.6"/>
+    </joint>
+    -->
+
+    <joint name="lcg_joint" type="prismatic">
+        <parent name="Vehicle"/>
+        <child name="Batteries"/>
+        <origin rpy="0.0 0.0 0.0" xyz="-0.412 0.0 0.0"/>
+        <axis xyz="1.0 0.0 0.0"/>
+        <limits min="-0.01" max="0.01"/>
+    </joint>
 
     <joint name="joint1" type="revolute">
         <parent name="Vehicle"/>
@@ -95,14 +162,31 @@
         </propeller>
     </actuator>
 
+    <!--
+    <actuator name="ServoTCG1" type="servo">
+        <joint name="tcg_joint1"/>
+        <controller position_gain="0.001" velocity_gain="0.0" max_torque="10.0"/>
+    </actuator> 
+
+    <actuator name="ServoTCG2" type="servo">
+        <joint name="tcg_joint2"/>
+        <controller position_gain="0.001" velocity_gain="0.0" max_torque="10.0"/>
+    </actuator> 
+    -->
+
+    <actuator name="ServoLCG" type="servo">
+        <joint name="lcg_joint"/>
+        <controller position_gain="1.0" velocity_gain="0.0" max_torque="100.0"/>
+    </actuator> 
+
     <actuator name="Servo1" type="servo">
         <joint name="joint1"/>
-        <controller position_gain="0.01" velocity_gain="0.0" max_torque="1.0"/>
+        <controller position_gain="0.1" velocity_gain="0.0" max_torque="10.0"/>
     </actuator> 
 
     <actuator name="Servo2" type="servo">
         <joint name="joint2"/>
-        <controller position_gain="0.01" velocity_gain="0.0" max_torque="1.0"/>
+        <controller position_gain="0.1" velocity_gain="0.0" max_torque="10.0"/>
     </actuator> 
 
     <world_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 1.0"/>
