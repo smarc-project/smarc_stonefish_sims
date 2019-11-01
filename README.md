@@ -1,5 +1,11 @@
 # sam_stonefish_sim
-Prototype for simulating the SAM auv in stonefish
+
+Prototype for simulating the SAM auv in stonefish. This is a work in progress
+and support for the full SAM vehicle is not there yet. Right now we support
+the following commands:
+* `/sam/core/lcg_cmd` - `sam_msgs/PercentStamped` sets position of LCG weight 0-100%
+* `/sam/core/rpm_cmd` - `sam_msgs/ThrusterRPMs` sets rpm of the two thrusters, forward is positive
+* `/sam/core/thrust_vector_cmd` - `sam_msgs/ThrusterAngles` sets vertical and horizontal angle of thrusters
 
 ## Building
 
