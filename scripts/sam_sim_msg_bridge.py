@@ -16,9 +16,18 @@ import rospy
 from std_msgs.msg import Header
 from sensor_msgs.msg import JointState
 from cola2_msgs.msg import Setpoints
-from sam_msgs.msg import ThrusterAngles, ThrusterRPMs
+from sam_msgs.msg import ThrusterAngles, ThrusterRPMs, PercentStamped
 
 class SAMSimMsgBridge(object):
+
+    def lcg_callback(self, lcg_msg):
+
+	header = Header()
+        lcg_pos = JointState()
+        lcg_pos.header = header
+        lcg_pos.name = [self.robot_name + "/lcg_joint"]
+        lcg_pos.position = [self.lcg_joint_min + 0.01*lcg_msg.value*(self.lcg_joint_max-self.lcg_joint_min)]
+        self.joint_states.publish(lcg_pos)
 
     def thruster_callback(self, thruster_msg):
 
@@ -30,8 +39,7 @@ class SAMSimMsgBridge(object):
 	header = Header()
         thruster_angles = JointState()
         thruster_angles.header = header
-        robot_name = rospy.get_param("~robot_name")
-        thruster_angles.name = [robot_name + "/joint1", robot_name + "/joint2"]
+        thruster_angles.name = [self.robot_name + "/joint1", self.robot_name + "/joint2"]
         thruster_angles.position = [-angles_msg.thruster_horizontal_radians, -angles_msg.thruster_vertical_radians]
         self.joint_states.publish(thruster_angles)
 
@@ -39,9 +47,13 @@ class SAMSimMsgBridge(object):
 	
         self.joint_states = rospy.Publisher('desired_joint_states', JointState, queue_size=10)
         self.thrusters = rospy.Publisher('thruster_setpoints', Setpoints, queue_size=10)
+        self.robot_name = rospy.get_param("~robot_name")
+        self.lcg_joint_min = rospy.get_param("~lcg_joint_min", -0.01)
+        self.lcg_joint_max = rospy.get_param("~lcg_joint_max", 0.01)
 
 	rospy.Subscriber("core/rpm_cmd", ThrusterRPMs, self.thruster_callback)
 	rospy.Subscriber("core/thrust_vector_cmd", ThrusterAngles, self.angles_callback)
+	rospy.Subscriber("core/lcg_cmd", PercentStamped, self.lcg_callback)
 
 if __name__ == "__main__":
     
