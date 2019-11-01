@@ -43,8 +43,8 @@ class TeleopServer(object):
 
         #self.joint_states = rospy.Publisher('/sam_auv/desired_joint_states', JointState, queue_size=10)
         #self.thrusters = rospy.Publisher('/sam_auv/thruster_setpoints', Setpoints, queue_size=10)
-        self.thruster_angles = rospy.Publisher('/uavcan_vector_command', ThrusterAngles, queue_size=10)
-        self.thruster_rpms = rospy.Publisher('/uavcan_rpm_command', ThrusterRPMs, queue_size=10)
+        self.thruster_angles = rospy.Publisher('core/thrust_vector_cmd', ThrusterAngles, queue_size=10)
+        self.thruster_rpms = rospy.Publisher('core/rpm_cmd', ThrusterRPMs, queue_size=10)
 
 	rospy.Subscriber("/sam_auv/camera_thruster/camera_image", Image, self.callback)
 

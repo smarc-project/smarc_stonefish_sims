@@ -4,6 +4,7 @@
     <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/sam_biograd.scn"/>
     <arg name="robot_name" default="sam"/>
     <arg name="xacro_file" default="$(find sam_stonefish_sim)/data/urdf/sam_auv.urdf.xacro"/>
+    <arg name="with_teleop" default="true"/>
 
     <!-- Run Simulator -->
     <include file="$(find sam_stonefish_sim)/launch/simulator.launch">
@@ -34,8 +35,9 @@
           <param name="use_gui" value="true"/>
           <param name="publish_default_positions" value="true"/>
         </node>
-        <node name="sam_teleop" type="sam_teleop.py" pkg="sam_stonefish_sim" output="screen"/> 
         -->
+
+        <node name="teleop" type="sam_teleop.py" pkg="sam_stonefish_sim" output="screen" if="$(arg with_teleop)"/> 
 
         <node name="msg_bridge" type="sam_sim_msg_bridge.py" pkg="sam_stonefish_sim" output="screen">
             <param name="robot_name" value="$(arg robot_name)"/>

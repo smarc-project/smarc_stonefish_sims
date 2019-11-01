@@ -32,6 +32,7 @@
     	<arg name="scenario_description" value="$(arg scenario_description)"/>
           <arg name="robot_name" value="$(arg robot_name)"/>
           <arg name="xacro_file" value="$(arg xacro_file)"/>
+          <arg name="with_teleop" value="false"/>
     </include>
 
     <group ns="$(arg robot_name)">
@@ -46,7 +47,6 @@
             </include>
         </group>
 
-        <!--
         <include file="$(find imc_ros_bridge)/launch/bridge.launch">
             <arg name="server_addr" value="$(arg server_addr)"/>
             <arg name="server_port" value="$(arg server_port)" type="str"/>
@@ -56,8 +56,8 @@
 
         <node name="neptus_bt" pkg="waypoints" type="neptus_bt.py" output="screen">
             <param name="system_name" value="$(arg system_name)" />
+            <remap from="/bezier_planner" to="ctrl/bezier_planner"/>
         </node>   
-        -->
     </group>
     
 </launch>
