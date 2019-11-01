@@ -11,7 +11,7 @@ the following actuator commands:
 
 Let us start by installing the dependencies.
 ```
-sudo apt install libsdl2-dev
+sudo apt install libsdl2-dev ros-kinetic-py-trees-ros
 ```
 If you are on Ubuntu 16.04, you need to use vim (or other editor) to open the file
 ```
