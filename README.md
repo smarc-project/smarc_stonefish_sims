@@ -16,6 +16,7 @@ and then remove space after "-lSDL2 ". On 18.04 this is not needed.
 Now go into the catkin workspace where you want to build the simulation,
 or create a new workspace. In the `src` folder, execute the commands,
 ```
+git clone https://github.com/smarc-project/imc_ros_bridge.git
 git clone https://gitr.sys.kth.se/smarc-project/sam_common.git
 git clone https://bitbucket.org/iquarobotics/cola2_msgs.git
 git clone https://github.com/nilsbore/sam_stonefish_sim.git
@@ -23,6 +24,6 @@ git clone https://github.com/nilsbore/stonefish_ros.git
 cd stonefish_ros
 git submodule update --init
 ```
-**NOTE**: you need access to KTH gitr for the first package.
-It is needed if you want to run the full stack but not if you just
+**NOTE**: you need access to KTH gitr for the second package.
+This and `imc_ros_bridge` are needed if you want to run the full stack but not if you just
 want to start up the simulation with the robot.
