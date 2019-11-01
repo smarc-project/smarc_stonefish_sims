@@ -40,8 +40,8 @@ class SAMSimMsgBridge(object):
         self.joint_states = rospy.Publisher('desired_joint_states', JointState, queue_size=10)
         self.thrusters = rospy.Publisher('thruster_setpoints', Setpoints, queue_size=10)
 
-	rospy.Subscriber("/uavcan_rpm_command", ThrusterRPMs, self.thruster_callback)
-	rospy.Subscriber("/uavcan_vector_command", ThrusterAngles, self.angles_callback)
+	rospy.Subscriber("core/rpm_cmd", ThrusterRPMs, self.thruster_callback)
+	rospy.Subscriber("core/thrust_vector_cmd", ThrusterAngles, self.angles_callback)
 
 if __name__ == "__main__":
     

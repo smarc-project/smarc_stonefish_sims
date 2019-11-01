@@ -128,21 +128,21 @@ class BezierController(object):
 
         self.listener = tf.TransformListener()
 
-        setpoint_pub = rospy.Publisher('/setpoint', Float64, queue_size=10, latch=True)
-        lateral_offset_pub = rospy.Publisher('horizontal_fins/state', Float64, queue_size=10)
-        z_offset_pub = rospy.Publisher('vertical_fins/state', Float64, queue_size=10)
+        setpoint_pub = rospy.Publisher('setpoint', Float64, queue_size=10, latch=True)
+        lateral_offset_pub = rospy.Publisher('lateral/state', Float64, queue_size=10)
+        z_offset_pub = rospy.Publisher('vertical/state', Float64, queue_size=10)
         self.target_pub = rospy.Publisher('target_pose', PoseStamped, queue_size=10)
         self.course_pub = rospy.Publisher('course_pose', PoseStamped, queue_size=10)
 
-	thruster0 = rospy.Publisher('/uavcan_rpm_command', ThrusterRPMs, queue_size=10)
+	thruster0 = rospy.Publisher('rpm_cmd', ThrusterRPMs, queue_size=10)
 
-        self.fin0 = rospy.Publisher('/uavcan_vector_command', ThrusterAngles, queue_size=10)
+        self.fin0 = rospy.Publisher('thrust_vector_cmd', ThrusterAngles, queue_size=10)
 
-        vertical_pid_enable = rospy.Publisher('vertical_fins/pid_enable', Bool, queue_size=10)
-        horizontal_pid_enable = rospy.Publisher('horizontal_fins/pid_enable', Bool, queue_size=10)
+        vertical_pid_enable = rospy.Publisher('vertical/pid_enable', Bool, queue_size=10)
+        horizontal_pid_enable = rospy.Publisher('lateral/pid_enable', Bool, queue_size=10)
 
-        rospy.Subscriber('vertical_fins/control_effort', Float64, self.vert_control_cb)
-        rospy.Subscriber('horizontal_fins/control_effort', Float64, self.hor_control_cb)
+        rospy.Subscriber('vertical/control_effort', Float64, self.vert_control_cb)
+        rospy.Subscriber('lateral/control_effort', Float64, self.hor_control_cb)
         rospy.Subscriber('global_plan', Path, self.callback)
 
         vertical_pid_enable.publish(False)

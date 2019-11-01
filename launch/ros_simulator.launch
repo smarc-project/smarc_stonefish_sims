@@ -37,7 +37,7 @@
         <node name="sam_teleop" type="sam_teleop.py" pkg="sam_stonefish_sim" output="screen"/> 
         -->
 
-        <node name="sam_sim_msg_bridge" type="sam_sim_msg_bridge.py" pkg="sam_stonefish_sim" output="screen">
+        <node name="msg_bridge" type="sam_sim_msg_bridge.py" pkg="sam_stonefish_sim" output="screen">
             <param name="robot_name" value="$(arg robot_name)"/>
         </node>
 
