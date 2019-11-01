@@ -306,7 +306,7 @@ class BezierPlanner(object):
         self.nav_goal = None
 
         self.listener = tf.TransformListener()
-        self.pub = rospy.Publisher('/global_plan', Path, queue_size=10)
+        self.pub = rospy.Publisher('global_plan', Path, queue_size=10)
         rospy.Subscriber("/move_base_simple/goal", PoseStamped, self.callback)
 
         rospy.Timer(rospy.Duration(0.1), self.timer_callback)

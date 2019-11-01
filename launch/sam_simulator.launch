@@ -1,9 +1,9 @@
 <launch>
     <!-- Configurable arguments -->
-    <arg name="robot_name" default="sam_auv"/>
+    <arg name="robot_name" default="sam"/>
     <arg name="enable_gui" default="true"/>
     <arg name="xacro_file" default="$(find sam_stonefish_sim)/data/urdf/sam_auv.urdf.xacro"/>
-    <arg name="scenario_description" value="$(find sam_stonefish_sim)/data/scenarios/sam_biograd.scn"/>
+    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/sam_biograd.scn"/>
     <arg name="latitude" default="43.93183"/>
     <arg name="longitude" default="15.44264"/>
 
@@ -28,52 +28,35 @@
             position_covariance_type: 2}'" output="screen"/>
 
     <!-- Run Simulator -->
-    <include file="$(find sam_stonefish_sim)/launch/simulator.launch">
-    	<arg name="simulation_data" value="$(find sam_stonefish_sim)/data"/>
+    <include file="$(find sam_stonefish_sim)/launch/ros_simulator.launch">
     	<arg name="scenario_description" value="$(arg scenario_description)"/>
-   		<arg name="simulation_rate" value="100.0"/>
-    	<arg name="graphics_resolution" value="1200 800"/>
-    	<arg name="graphics_quality" value="medium"/>
-        <arg name="robot_name" value="$(arg robot_name)"/>
+          <arg name="robot_name" value="$(arg robot_name)"/>
+          <arg name="xacro_file" value="$(arg xacro_file)"/>
     </include>
 
-    <!-- Robot description -->
-    <param name="$(arg robot_name)/robot_description" command="$(find xacro)/xacro --inorder '$(arg xacro_file)' debug:=true robot_namespace:=$(arg robot_name)"/>
+    <group ns="$(arg robot_name)">
 
-    <!-- Robot state publisher -->
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
-      <remap from="joint_states" to="$(arg robot_name)/joint_states"/>
-      <remap from="robot_description" to="$(arg robot_name)/robot_description"/>
-    </node>
+        <group ns="ctrl">
+            <node name="bezier_planner" type="bezier_planner.py" pkg="sam_stonefish_sim" output="screen">
+                <param name="base_frame" value="$(arg robot_name)/base_link"/>
+            </node>
+            <include file="$(find sam_stonefish_sim)/launch/controller.launch">
+                <arg name="base_frame" value="$(arg robot_name)/base_link"/>
+            </include>
+        </group>
 
-    <!--
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen">
-      <remap from="joint_states" to="$(arg robot_name)/desired_joint_states"/>
-      <remap from="$(arg robot_name)/joint_states" to="$(arg robot_name)/dummy_joint_states"/>
-      <remap from="robot_description" to="$(arg robot_name)/robot_description"/>
-      <param name="use_gui" value="true"/>
-      <param name="publish_default_positions" value="true"/>
-    </node>
-    <node name="sam_teleop" type="sam_teleop.py" pkg="sam_stonefish_sim" output="screen"/> 
-    -->
-    <node name="sam_sim_msg_bridge" type="sam_sim_msg_bridge.py" pkg="sam_stonefish_sim" output="screen"/>
+        <!--
+        <include file="$(find imc_ros_bridge)/launch/bridge.launch">
+            <arg name="server_addr" value="$(arg server_addr)"/>
+            <arg name="server_port" value="$(arg server_port)" type="str"/>
+            <arg name="imc_system_name" value="$(arg system_name)"/>
+            <arg name="imc_id" value="$(arg imc_id)"/>
+        </include>
 
-    <node name="bezier_planner" type="bezier_planner.py" pkg="sam_stonefish_sim" output="screen">
-        <param name="base_frame" value="sam_auv/base_link"/>
-    </node>
-    <include file="$(find sam_stonefish_sim)/launch/controller.launch"/>
-
-    <!--
-    <include file="$(find imc_ros_bridge)/launch/bridge.launch">
-        <arg name="server_addr" value="$(arg server_addr)"/>
-        <arg name="server_port" value="$(arg server_port)" type="str"/>
-        <arg name="imc_system_name" value="$(arg system_name)"/>
-        <arg name="imc_id" value="$(arg imc_id)"/>
-    </include>
-
-    <node name="neptus_bt" pkg="waypoints" type="neptus_bt.py" output="screen">
-        <param name="system_name" value="$(arg system_name)" />
-    </node>   
-    -->
+        <node name="neptus_bt" pkg="waypoints" type="neptus_bt.py" output="screen">
+            <param name="system_name" value="$(arg system_name)" />
+        </node>   
+        -->
+    </group>
     
 </launch>

@@ -118,6 +118,8 @@ class BezierController(object):
         self.carrot_dist = rospy.get_param('~carrot_dist', 10.)
         self.base_frame = rospy.get_param('~base_frame', "sam_auv/base_link")
         self.thrust_level = rospy.get_param('~thrust_level', 2.)
+
+        print("Base FRAMMME: " + self.base_frame)
         
         self.current_path = None
         self.path_idx = 0.
@@ -127,21 +129,21 @@ class BezierController(object):
         self.listener = tf.TransformListener()
 
         setpoint_pub = rospy.Publisher('/setpoint', Float64, queue_size=10, latch=True)
-        lateral_offset_pub = rospy.Publisher('/horizontal_fins/state', Float64, queue_size=10)
-        z_offset_pub = rospy.Publisher('/vertical_fins/state', Float64, queue_size=10)
-        self.target_pub = rospy.Publisher('/target_pose', PoseStamped, queue_size=10)
-        self.course_pub = rospy.Publisher('/course_pose', PoseStamped, queue_size=10)
+        lateral_offset_pub = rospy.Publisher('horizontal_fins/state', Float64, queue_size=10)
+        z_offset_pub = rospy.Publisher('vertical_fins/state', Float64, queue_size=10)
+        self.target_pub = rospy.Publisher('target_pose', PoseStamped, queue_size=10)
+        self.course_pub = rospy.Publisher('course_pose', PoseStamped, queue_size=10)
 
 	thruster0 = rospy.Publisher('/uavcan_rpm_command', ThrusterRPMs, queue_size=10)
 
         self.fin0 = rospy.Publisher('/uavcan_vector_command', ThrusterAngles, queue_size=10)
 
-        vertical_pid_enable = rospy.Publisher('/vertical_fins/pid_enable', Bool, queue_size=10)
-        horizontal_pid_enable = rospy.Publisher('/horizontal_fins/pid_enable', Bool, queue_size=10)
+        vertical_pid_enable = rospy.Publisher('vertical_fins/pid_enable', Bool, queue_size=10)
+        horizontal_pid_enable = rospy.Publisher('horizontal_fins/pid_enable', Bool, queue_size=10)
 
-        rospy.Subscriber('/vertical_fins/control_effort', Float64, self.vert_control_cb)
-        rospy.Subscriber('/horizontal_fins/control_effort', Float64, self.hor_control_cb)
-        rospy.Subscriber('/global_plan', Path, self.callback)
+        rospy.Subscriber('vertical_fins/control_effort', Float64, self.vert_control_cb)
+        rospy.Subscriber('horizontal_fins/control_effort', Float64, self.hor_control_cb)
+        rospy.Subscriber('global_plan', Path, self.callback)
 
         vertical_pid_enable.publish(False)
         horizontal_pid_enable.publish(False)
