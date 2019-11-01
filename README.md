@@ -24,6 +24,6 @@ git clone https://github.com/nilsbore/stonefish_ros.git
 cd stonefish_ros
 git submodule update --init
 ```
-**NOTE**: you need access to KTH gitr for the first package.
-It is needed if you want to run the full stack but not if you just
+**NOTE**: you need access to KTH gitr for the second package.
+This and `imc_ros_bridge` are needed if you want to run the full stack but not if you just
 want to start up the simulation with the robot.
