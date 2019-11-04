@@ -42,7 +42,7 @@ mission planning with Neptus and controlling the vehicle to follow the plan.
 ```
 git clone https://gitr.sys.kth.se/smarc-project/sam_common.git
 git clone https://github.com/smarc-project/imc_ros_bridge.git
-https://github.com/smarc-project/smarc_missions.git
+git clone https://github.com/smarc-project/smarc_missions.git
 ```
 
 ### Compiling
