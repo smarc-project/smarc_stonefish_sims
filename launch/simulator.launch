@@ -10,7 +10,7 @@
 
     <node name="stonefish_simulator" pkg="stonefish_ros" type="parsed_simulator" output="screen" args="$(arg simulation_data) $(arg scenario_description) $(arg simulation_rate) $(arg graphics_resolution) $(arg graphics_quality)">
         <param name="robot_name" value="$(arg robot_name)"/>
-        <param name="lati_tude" value="$(arg latitude)"/>
-        <param name="longi_tude" value="$(arg longitude)"/>
+        <param name="latitude" value="$(arg latitude)"/>
+        <param name="longitude" value="$(arg longitude)"/>
     </node>
 </launch>
