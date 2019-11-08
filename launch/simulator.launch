@@ -5,8 +5,12 @@
     <arg name="graphics_resolution" default="1200 800"/> <!-- resolution of the simulation window -->
     <arg name="graphics_quality" default="medium"/> <!-- low, medium or high -->
     <arg name="robot_name" default="sam_auv"/>
+    <arg name="latitude" default="43.93183"/>
+    <arg name="longitude" default="15.44264"/>
 
     <node name="stonefish_simulator" pkg="stonefish_ros" type="parsed_simulator" output="screen" args="$(arg simulation_data) $(arg scenario_description) $(arg simulation_rate) $(arg graphics_resolution) $(arg graphics_quality)">
         <param name="robot_name" value="$(arg robot_name)"/>
+        <param name="lati_tude" value="$(arg latitude)"/>
+        <param name="longi_tude" value="$(arg longitude)"/>
     </node>
 </launch>

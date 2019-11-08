@@ -5,6 +5,12 @@
     <arg name="robot_name" default="sam"/>
     <arg name="xacro_file" default="$(find sam_stonefish_sim)/data/urdf/sam_auv.urdf.xacro"/>
     <arg name="with_teleop" default="true"/>
+    <arg name="latitude" default="43.93183"/>
+    <arg name="longitude" default="15.44264"/>
+
+     <!-- Static transform -->
+    <node pkg="tf" type="static_transform_publisher" name="world_local_broadcaster" args="0 0 0 0 0 0 1 world_local world 100" />
+    <node pkg="tf" type="static_transform_publisher" name="world2ned" args="0 0 0 0 0 3.1415 world world_ned 100"/>
 
     <!-- Run Simulator -->
     <include file="$(find sam_stonefish_sim)/launch/simulator.launch">
@@ -14,6 +20,8 @@
     	<arg name="graphics_resolution" value="1200 800"/>
     	<arg name="graphics_quality" value="medium"/>
           <arg name="robot_name" value="$(arg robot_name)"/>
+          <arg name="latitude" value="$(arg latitude)"/>
+          <arg name="longitude" value="$(arg longitude)"/>
     </include>
 
     <group ns="$(arg robot_name)">
