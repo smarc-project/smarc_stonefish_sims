@@ -14,8 +14,6 @@
 
      <!-- Static transform -->
     <node pkg="tf" type="static_transform_publisher" name="world_utm_broadcaster" args="535529 4864397 0 0 0 0 1 world_utm world_local 100" />
-    <node pkg="tf" type="static_transform_publisher" name="world_local_broadcaster" args="0 0 0 0 0 0 1 world_local world 100" />
-    <node pkg="tf" type="static_transform_publisher" name="world2ned" args="0 0 0 0 0 3.1415 world world_ned 100"/>
 
     <node pkg="rostopic" type="rostopic" name="fake_gps_fix"
           args="pub /gps/fix sensor_msgs/NavSatFix --latch
@@ -33,6 +31,8 @@
           <arg name="robot_name" value="$(arg robot_name)"/>
           <arg name="xacro_file" value="$(arg xacro_file)"/>
           <arg name="with_teleop" value="false"/>
+          <arg name="latitude" value="$(arg latitude)"/>
+          <arg name="longitude" value="$(arg longitude)"/>
     </include>
 
     <group ns="$(arg robot_name)">
