@@ -1,7 +1,9 @@
 <launch>
 
+    <arg name="hd_model" default="false"/>
+    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/sam_biograd_hd.scn" if="$(arg hd_model)"/>
+    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/sam_biograd.scn" unless="$(arg hd_model)"/>
     <arg name="simulation_data" default="$(find sam_stonefish_sim)/data"/> <!-- path to the data directory -->
-    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/sam_biograd.scn"/>
     <arg name="robot_name" default="sam"/>
     <arg name="xacro_file" default="$(find sam_stonefish_sim)/data/urdf/sam_auv.urdf.xacro"/>
     <arg name="with_teleop" default="true"/>
