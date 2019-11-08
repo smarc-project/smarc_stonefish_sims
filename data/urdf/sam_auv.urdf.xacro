@@ -24,6 +24,15 @@
   <link name="$(arg robot_namespace)/tcg2_link">
   </link>
 
+  <link name="$(arg robot_namespace)/multibeam_down_link">
+  </link>
+
+  <joint name="$(arg robot_namespace)/mutlibeam_down_joint" type="fixed">
+    <parent link="$(arg robot_namespace)/base_link"/>
+    <child link="$(arg robot_namespace)/multibeam_down_link"/>
+    <origin rpy="1.5707 0.0 -1.5707" xyz="1.20 0.0 -0.07"/>
+  </joint>
+
   <joint name="$(arg robot_namespace)/thruster_offset" type="fixed">
     <parent link="$(arg robot_namespace)/base_link"/>
     <child link="$(arg robot_namespace)/thruster_fixture"/>
