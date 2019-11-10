@@ -1,14 +1,17 @@
 <launch>
 
     <arg name="hd_model" default="false"/>
-    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/sam_biograd_hd.scn" if="$(arg hd_model)"/>
-    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/sam_biograd.scn" unless="$(arg hd_model)"/>
+    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn"/>
+    <arg name="environment_file" default="$(find sam_stonefish_sim)/data/biograd_world/biograd_env.scn"/>
+    <arg name="robot_file" default="$(find sam_stonefish_sim)/data/sam_auv/sam_auv.xml" unless="$(arg hd_model)"/>
+    <arg name="robot_file" default="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml" if="$(arg hd_model)"/>
     <arg name="simulation_data" default="$(find sam_stonefish_sim)/data"/> <!-- path to the data directory -->
     <arg name="robot_name" default="sam"/>
     <arg name="xacro_file" default="$(find sam_stonefish_sim)/data/urdf/sam_auv.urdf.xacro"/>
     <arg name="with_teleop" default="true"/>
     <arg name="latitude" default="43.93183"/>
     <arg name="longitude" default="15.44264"/>
+     <arg name="robot_pos" default="0.0 0.0 1.0"/>
 
      <!-- Static transform -->
     <node pkg="tf" type="static_transform_publisher" name="world_local_broadcaster" args="0 0 0 0 0 0 1 world_local world 100" />
@@ -18,12 +21,15 @@
     <include file="$(find sam_stonefish_sim)/launch/simulator.launch">
     	<arg name="simulation_data" value="$(arg simulation_data)"/>
     	<arg name="scenario_description" value="$(arg scenario_description)"/>
+          <arg name="environment_file" value="$(arg environment_file)"/>
+          <arg name="robot_file" value="$(arg robot_file)"/>
    		<arg name="simulation_rate" value="100.0"/>
     	<arg name="graphics_resolution" value="1200 800"/>
     	<arg name="graphics_quality" value="medium"/>
           <arg name="robot_name" value="$(arg robot_name)"/>
           <arg name="latitude" value="$(arg latitude)"/>
           <arg name="longitude" value="$(arg longitude)"/>
+          <arg name="robot_pos" value="$(arg robot_pos)"/>
     </include>
 
     <group ns="$(arg robot_name)">
