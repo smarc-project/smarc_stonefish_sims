@@ -56,7 +56,7 @@ source your workspace `devel/setup.bash` wherever you want to run this.
 
 Just run
 ```
-roslaunch sam_stonefish_sim ros_simulator.launch
+roslaunch sam_stonefish_sim base_simulator.launch
 ```
 and control the vehicle like normal, with `w` for forwards, `s` for stop
 and the arrow keys for controlling the direction.
@@ -65,7 +65,7 @@ and the arrow keys for controlling the direction.
 
 Run
 ```
-roslaunch sam_stonefish_sim sam_simulator.launch
+roslaunch sam_stonefish_sim mission_simulator.launch
 ```
 to start everything that's needed for the simulator and
 interfacing with neptus. Some guidance for how to add SAM
