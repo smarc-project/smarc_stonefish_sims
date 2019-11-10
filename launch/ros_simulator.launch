@@ -1,8 +1,10 @@
 <launch>
 
     <arg name="hd_model" default="false"/>
-    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/sam_biograd_hd.scn" if="$(arg hd_model)"/>
-    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/sam_biograd.scn" unless="$(arg hd_model)"/>
+    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/sam_biograd.scn"/>
+    <arg name="environment_file" default="$(find sam_stonefish_sim)/data/biograd_world/biograd_env.scn"/>
+    <arg name="robot_file" default="$(find sam_stonefish_sim)/data/sam_auv/sam_auv.xml" unless="$(arg hd_model)"/>
+    <arg name="robot_file" default="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml" if="$(arg hd_model)"/>
     <arg name="simulation_data" default="$(find sam_stonefish_sim)/data"/> <!-- path to the data directory -->
     <arg name="robot_name" default="sam"/>
     <arg name="xacro_file" default="$(find sam_stonefish_sim)/data/urdf/sam_auv.urdf.xacro"/>
@@ -18,6 +20,8 @@
     <include file="$(find sam_stonefish_sim)/launch/simulator.launch">
     	<arg name="simulation_data" value="$(arg simulation_data)"/>
     	<arg name="scenario_description" value="$(arg scenario_description)"/>
+          <arg name="environment_file" value="$(arg environment_file)"/>
+          <arg name="robot_file" value="$(arg robot_file)"/>
    		<arg name="simulation_rate" value="100.0"/>
     	<arg name="graphics_resolution" value="1200 800"/>
     	<arg name="graphics_quality" value="medium"/>
