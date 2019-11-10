@@ -3,7 +3,7 @@
     <arg name="environment_file"/>
     <arg name="robot_file"/>
     <arg name="simulation_data" default="$(find stonefish_ros)/data"/> <!-- path to the data directory -->
-    <arg name="scenario_description" default="$(find stonefish_ros)/data/scenarios/girona500_eca.scn"/> <!-- path to the scenario description -->
+    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn"/>
     <arg name="simulation_rate" default="500"/> <!-- number of simulation steps per second -->
     <arg name="graphics_resolution" default="1200 800"/> <!-- resolution of the simulation window -->
     <arg name="graphics_quality" default="medium"/> <!-- low, medium or high -->

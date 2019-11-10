@@ -1,7 +1,7 @@
 <launch>
 
     <arg name="hd_model" default="false"/>
-    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/sam_biograd.scn"/>
+    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn"/>
     <arg name="environment_file" default="$(find sam_stonefish_sim)/data/biograd_world/biograd_env.scn"/>
     <arg name="robot_file" default="$(find sam_stonefish_sim)/data/sam_auv/sam_auv.xml" unless="$(arg hd_model)"/>
     <arg name="robot_file" default="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml" if="$(arg hd_model)"/>
