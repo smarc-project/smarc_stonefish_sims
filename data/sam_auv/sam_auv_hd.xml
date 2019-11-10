@@ -316,7 +316,7 @@
         <ros_publisher topic="/$(param robot_name)/perception/mbes_down"/>
     </sensor>
 
-    <world_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 4.0"/>
+    <world_transform rpy="0.0 0.0 0.0" xyz="$(param robot_pos)"/>
 
     <ros_publisher servos="/$(param robot_name)/joint_states"/>
     <ros_subscriber thrusters="/$(param robot_name)/thruster_setpoints" servos="/$(param robot_name)/desired_joint_states" lights="/lights"/> 
