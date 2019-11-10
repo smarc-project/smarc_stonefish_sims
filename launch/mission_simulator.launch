@@ -10,6 +10,7 @@
     <arg name="robot_file" default="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml" if="$(arg hd_model)"/>
     <arg name="latitude" default="43.93183"/>
     <arg name="longitude" default="15.44264"/>
+     <arg name="robot_pos" default="0.0 0.0 1.0"/>
 
     <arg name="server_addr" default="127.0.0.1"/>
     <arg name="server_port" default="6002"/>
@@ -32,11 +33,14 @@
     <!-- Run Simulator -->
     <include file="$(find sam_stonefish_sim)/launch/base_simulator.launch">
     	<arg name="scenario_description" value="$(arg scenario_description)"/>
+          <arg name="environment_file" value="$(arg environment_file)"/>
+          <arg name="robot_file" value="$(arg robot_file)"/>
           <arg name="robot_name" value="$(arg robot_name)"/>
           <arg name="xacro_file" value="$(arg xacro_file)"/>
           <arg name="with_teleop" value="false"/>
           <arg name="latitude" value="$(arg latitude)"/>
           <arg name="longitude" value="$(arg longitude)"/>
+          <arg name="robot_pos" value="$(arg robot_pos)"/>
     </include>
 
     <group ns="$(arg robot_name)">

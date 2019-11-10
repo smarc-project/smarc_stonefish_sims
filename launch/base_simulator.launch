@@ -11,6 +11,7 @@
     <arg name="with_teleop" default="true"/>
     <arg name="latitude" default="43.93183"/>
     <arg name="longitude" default="15.44264"/>
+     <arg name="robot_pos" default="0.0 0.0 1.0"/>
 
      <!-- Static transform -->
     <node pkg="tf" type="static_transform_publisher" name="world_local_broadcaster" args="0 0 0 0 0 0 1 world_local world 100" />
@@ -28,6 +29,7 @@
           <arg name="robot_name" value="$(arg robot_name)"/>
           <arg name="latitude" value="$(arg latitude)"/>
           <arg name="longitude" value="$(arg longitude)"/>
+          <arg name="robot_pos" value="$(arg robot_pos)"/>
     </include>
 
     <group ns="$(arg robot_name)">

@@ -10,6 +10,7 @@
     <arg name="robot_name" default="sam_auv"/>
     <arg name="latitude" default="43.93183"/>
     <arg name="longitude" default="15.44264"/>
+     <arg name="robot_pos" default="0.0 0.0 1.0"/>
 
     <node name="stonefish_simulator" pkg="stonefish_ros" type="parsed_simulator" output="screen" args="$(arg simulation_data) $(arg scenario_description) $(arg simulation_rate) $(arg graphics_resolution) $(arg graphics_quality)">
         <param name="robot_name" value="$(arg robot_name)"/>
@@ -17,5 +18,6 @@
         <param name="longitude" value="$(arg longitude)" type="string"/>
         <param name="environment_file" value="$(arg environment_file)"/>
         <param name="robot_file" value="$(arg robot_file)"/>
+        <param name="robot_pos" value="$(arg robot_pos)"/>
     </node>
 </launch>
