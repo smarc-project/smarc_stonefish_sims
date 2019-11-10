@@ -30,7 +30,7 @@
             position_covariance_type: 2}'" output="screen"/>
 
     <!-- Run Simulator -->
-    <include file="$(find sam_stonefish_sim)/launch/ros_simulator.launch">
+    <include file="$(find sam_stonefish_sim)/launch/base_simulator.launch">
     	<arg name="scenario_description" value="$(arg scenario_description)"/>
           <arg name="robot_name" value="$(arg robot_name)"/>
           <arg name="xacro_file" value="$(arg xacro_file)"/>
