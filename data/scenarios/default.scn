@@ -1,0 +1,6 @@
+<scenario>
+
+    <include file="$(param environment_file)"/>
+    <include file="$(param robot_file)"/>
+
+</scenario>

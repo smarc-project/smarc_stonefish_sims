@@ -168,7 +168,7 @@
         <controller position_gain="0.1" velocity_gain="0.0" max_torque="10.0"/>
     </actuator> 
 
-    <world_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 1.0"/>
+    <world_transform rpy="0.0 0.0 0.0" xyz="$(param robot_pos)"/>
 
     <ros_publisher servos="/$(param robot_name)/joint_states"/>
     <ros_subscriber thrusters="/$(param robot_name)/thruster_setpoints" servos="/$(param robot_name)/desired_joint_states"/> 
