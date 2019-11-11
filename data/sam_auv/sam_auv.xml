@@ -5,11 +5,11 @@
         <external_part name="Hull" type="model" physics="submerged">
             <physical>
                 <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/sam_body.obj" scale="1.0"/>
-                <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.0025 0.0"/>
+                <origin rpy="0.0 0.0 0.0" xyz="1.045 -0.0025 0.0"/>
             </physical>
             <visual>
                 <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/sam_body.obj" scale="1.0"/>
-                <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.0025 0.0"/>
+                <origin rpy="0.0 0.0 0.0" xyz="1.045 -0.0025 0.0"/>
             </visual>
             <material name="Fiberglass"/>
             <look name="yellow"/>
@@ -23,7 +23,7 @@
             <material name="Neutral"/>
             <mass value="2.0"/>
             <look name="manipulator"/>
-            <compound_transform rpy="0.0 1.571 0.0" xyz="-0.42 0.0 0.04"/>
+            <compound_transform rpy="0.0 1.571 0.0" xyz="0.625 0.0 0.04"/>
         </internal_part>
     </base_link>
 
@@ -76,7 +76,7 @@
     <joint name="tcg_joint1" type="fixed">
         <parent name="Vehicle"/>
         <child name="TCGWeight1"/>
-        <origin rpy="0.0 0.0 0.0" xyz="-0.52 0.0 0.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.525 0.0 0.0"/>
         <axis xyz="1.0 0.0 0.0"/>
         <limits min="-1.6" max="1.6"/>
     </joint>
@@ -84,7 +84,7 @@
     <joint name="tcg_joint2" type="fixed">
         <parent name="Vehicle"/>
         <child name="TCGWeight2"/>
-        <origin rpy="0.0 0.0 0.0" xyz="-0.54 0.0 0.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.505 0.0 0.0"/>
         <axis xyz="1.0 0.0 0.0"/>
         <limits min="-1.6" max="1.6"/>
     </joint>
@@ -92,7 +92,7 @@
     <joint name="lcg_joint" type="prismatic">
         <parent name="Vehicle"/>
         <child name="Batteries"/>
-        <origin rpy="0.0 0.0 0.0" xyz="-0.352 0.0 0.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.693 0.0 0.0"/>
         <axis xyz="1.0 0.0 0.0"/>
         <limits min="-0.01" max="0.01"/>
     </joint>
@@ -100,7 +100,7 @@
     <joint name="joint1" type="revolute">
         <parent name="Vehicle"/>
         <child name="ThrusterYawFixture"/>
-        <origin rpy="0.0 0.0 0.0" xyz="-1.045 0.0 0.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         <axis xyz="0.0 0.0 1.0"/>
         <limits min="-0.2" max="0.2"/>
     </joint>
@@ -122,7 +122,7 @@
     <!-- Example of a variable buoyancy system actuator -->
     <actuator name="VBS" type="vbs">
         <link name="Vehicle"/>
-        <origin rpy="0.0 0.0 0.0" xyz="-0.502 0.0 0.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.543 0.0 0.0"/>
         <volume initial="0.00002">
             <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/vbs_min.obj"/>
             <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/vbs_max.obj"/>

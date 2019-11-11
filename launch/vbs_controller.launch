@@ -1,0 +1,26 @@
+<launch>
+
+  <arg name="robot_name" default="sam_auv"/>
+
+  <group ns="vbs">
+
+      <node name="transform" pkg="topic_tools" type="transform" args="/$(arg robot_name)/vbs/volume /$(arg robot_name)/vbs/volume_centered std_msgs/Float64 '(m.data - .00002)/(.00031 - .00002) - .5'"/>
+
+      <node name="controller" pkg="pid" type="controller" output="screen" respawn="true">
+        <param name="node_name" value="vbs_pid" />
+        <param name="Kp" value="0.001" />
+        <param name="Ki" value="0.0" />
+        <param name="Kd" value="0.0" />
+        <param name="upper_limit" value="0.5" />
+        <param name="lower_limit" value="-0.5" />
+        <param name="windup_limit" value="1000" />
+        <param name="max_loop_frequency" value="10.0" />
+        <param name="min_loop_frequency" value="1.0" />
+        <!-- <remap from="setpoint" to="/$(arg robot_name)/ctrl/setpoint" /> -->
+        <remap from="state" to="volume_centered"/>
+        <remap from="control_effort" to="flow_rate"/>
+      </node>
+
+  </group>
+
+</launch>
