@@ -49,7 +49,7 @@
             <node name="bezier_planner" type="bezier_planner.py" pkg="sam_stonefish_sim" output="screen">
                 <param name="base_frame" value="$(arg robot_name)/base_link"/>
             </node>
-            <include file="$(find sam_stonefish_sim)/launch/controller.launch">
+            <include file="$(find sam_stonefish_sim)/launch/thruster_controllers.launch">
                 <arg name="base_frame" value="$(arg robot_name)/base_link"/>
                 <arg name="robot_name" value="$(arg robot_name)"/>
             </include>
