@@ -13,7 +13,7 @@
             </visual>
             <material name="Fiberglass"/>
             <look name="yellow"/>
-            <compound_transform rpy="3.1416 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             <mass value="5.3"/>
             <!-- <cg xyz="-0.419064 0.002501 0.000001" rpy="0.0 0.0 0.0"/> -->
         </external_part>
@@ -28,7 +28,7 @@
             </visual>
             <material name="Neutral"/>
             <look name="gray"/>
-            <compound_transform rpy="3.1416 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         </external_part>
         <external_part name="RailBottomRight" type="model" physics="submerged">
             <physical>
@@ -41,7 +41,7 @@
             </visual>
             <material name="Neutral"/>
             <look name="gray"/>
-            <compound_transform rpy="3.1416 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         </external_part>
         <external_part name="RailTop" type="model" physics="submerged">
             <physical>
@@ -54,7 +54,7 @@
             </visual>
             <material name="Neutral"/>
             <look name="gray"/>
-            <compound_transform rpy="3.1416 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         </external_part>
         <external_part name="NoseDummy" type="model" physics="submerged">
             <physical>
@@ -67,7 +67,7 @@
             </visual>
             <material name="Neutral"/>
             <look name="gray"/>
-            <compound_transform rpy="3.1416 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         </external_part>
         <external_part name="Sonars" type="model" physics="surface">
             <physical>
@@ -80,7 +80,7 @@
             </visual>
             <material name="Neutral"/>
             <look name="gray"/>
-            <compound_transform rpy="3.1416 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         </external_part>
         <external_part name="Cameras" type="model" physics="surface">
             <physical>
@@ -93,7 +93,7 @@
             </visual>
             <material name="Neutral"/>
             <look name="link4"/>
-            <compound_transform rpy="3.1416 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         </external_part>
         <internal_part name="WeightCylinder" type="cylinder" physics="submerged" buoyant="false">
             <dimensions radius="0.02" height="0.6"/>
@@ -101,7 +101,7 @@
             <material name="Neutral"/>
             <mass value="2.0"/>
             <look name="manipulator"/>
-            <compound_transform rpy="0.0 1.571 0.0" xyz="0.73 0.0 0.04"/>
+            <compound_transform rpy="0.0 1.571 0.0" xyz="0.73 0.0 -0.04"/>
         </internal_part>
     </base_link>
 
@@ -114,7 +114,7 @@
     </link>
 
     <link name="TCGWeight1" type="box" physics="surface" buoyant="false">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.04"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.04"/>
         <dimensions xyz="0.02 0.02 0.02"/>
         <material name="Neutral"/>
         <look name="manipulator"/>	
@@ -122,7 +122,7 @@
     </link>
 
     <link name="TCGWeight2" type="box" physics="surface" buoyant="false">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.04"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.04"/>
         <dimensions xyz="0.02 0.02 0.02"/>
         <material name="Neutral"/>
         <look name="manipulator"/>	
@@ -175,7 +175,7 @@
         <limits min="-0.01" max="0.01"/>
     </joint>
 
-    <joint name="joint1" type="revolute">
+    <joint name="thruster_yaw_joint" type="revolute">
         <parent name="Vehicle"/>
         <child name="ThrusterYawFixture"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
@@ -183,7 +183,7 @@
         <limits min="-0.2" max="0.2"/>
     </joint>
 
-    <joint name="joint2" type="revolute">
+    <joint name="thruster_pitch_joint" type="revolute">
         <parent name="ThrusterYawFixture"/>
         <child name="ThrusterLink"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
@@ -191,7 +191,7 @@
         <limits min="-0.2" max="0.2"/>
     </joint>
 
-    <!-- Example of a variable buoyancy system actuator -->
+    <!-- Actuators -->
     <actuator name="VBS" type="vbs">
         <link name="Vehicle"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.502 0.0 0.0"/>
@@ -203,7 +203,6 @@
         <ros_subscriber topic="/$(param robot_name)/vbs/flow_rate"/>
     </actuator>
 
-    <!-- Actuators -->
     <actuator name="ThrusterSurge1" type="thruster">
         <link name="ThrusterLink"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
@@ -228,19 +227,19 @@
 
     <actuator name="StatusLED1" type="light">
         <link name="Vehicle"/>
-        <origin rpy="0.0 0.01 0.0" xyz="0.3 0.0 -0.12"/>
+        <origin rpy="3.1416 0.0 0.0" xyz="0.3 0.0 0.12"/>
         <specs illuminance="1000.0" cone_angle="10.0"/>
         <color rgb="0.0 256.0 0.0"/>
     </actuator> 
     <actuator name="StatusLED2" type="light">
         <link name="Vehicle"/>
-        <origin rpy="0.0 0.01 0.0" xyz="0.32 0.0 -0.12"/>
+        <origin rpy="3.1416 0.0 0.0" xyz="0.32 0.0 0.12"/>
         <specs illuminance="1000.0" cone_angle="10.0"/>
         <color rgb="256.0 0.0 0.0"/>
     </actuator> 
     <actuator name="FlashLED" type="light">
         <link name="Vehicle"/>
-        <origin rpy="0.0 0.7 0.0" xyz="0.0 0.0 0.3"/>
+        <origin rpy="0.0 2.5 0.0" xyz="0.2 0.0 -0.12"/>
         <specs illuminance="500.0" cone_angle="60.0"/>
         <color rgb="256.0 256.0 256.0"/>
     </actuator> 
@@ -251,12 +250,12 @@
     </actuator> 
 
     <actuator name="Servo1" type="servo">
-        <joint name="joint1"/>
+        <joint name="thruster_yaw_joint"/>
         <controller position_gain="0.1" velocity_gain="0.0" max_torque="10.0"/>
     </actuator> 
 
     <actuator name="Servo2" type="servo">
-        <joint name="joint2"/>
+        <joint name="thruster_pitch_joint"/>
         <controller position_gain="0.1" velocity_gain="0.0" max_torque="10.0"/>
     </actuator> 
 
@@ -276,7 +275,7 @@
 
     <sensor name="dvl_link" type="dvl" rate="5.0">
         <link name="Vehicle"/>
-        <origin rpy="3.1416 0.0 -0.785" xyz="1.25 0.0 0.07"/>
+        <origin rpy="0.0 0.0 0.0" xyz="1.25 0.0 -0.07"/>
         <specs beam_angle="30.0"/>
         <range velocity="9.0 9.0 9.0" altitude_min="0.5" altitude_max="81.0"/>
         <noise velocity="0.0015" altitude="0.001"/>
@@ -292,35 +291,35 @@
 
     <sensor name="gps_link" type="gps" rate="1.0">
         <link name="Vehicle"/>
-        <origin rpy="0.0 0.0 0.0" xyz="1.2 0.0 -0.08"/>
+        <origin rpy="0.0 0.0 0.0" xyz="1.2 0.0 0.08"/>
         <noise ned_position="0.5"/>
         <ros_publisher topic="/$(param robot_name)/core/gps"/>
     </sensor>
 
     <sensor name="camera_down_link" type="camera" rate="5.0">
         <link name="Vehicle"/>
-        <origin rpy="0.0 0.0 1.5708" xyz="1.15 0.0 0.07"/>
+        <origin rpy="3.1416 0.0 -1.5707" xyz="1.15 0.0 -0.07"/>
         <specs resolution_x="1360" resolution_y="1024" horizontal_fov="55.0"/>
         <ros_publisher topic="/$(param robot_name)/perception/camera_down"/>
     </sensor>
 
     <sensor name="camera_front_left_link" type="camera" rate="5.0">
         <link name="Vehicle"/>
-        <origin rpy="1.3 0.0 1.0708" xyz="1.32 -0.05 0.005"/>
+        <origin rpy="1.3 3.1416 2.3416" xyz="1.32 0.05 0.005"/>
         <specs resolution_x="1360" resolution_y="1024" horizontal_fov="55.0"/>
         <ros_publisher topic="/$(param robot_name)/perception/camera_front_left"/>
     </sensor>
 
     <sensor name="camera_front_right_link" type="camera" rate="5.0">
         <link name="Vehicle"/>
-        <origin rpy="1.3 0.0 2.0708" xyz="1.32 0.05 0.005"/>
+        <origin rpy="1.3 3.1416 0.8" xyz="1.32 -0.05 0.005"/>
         <specs resolution_x="1360" resolution_y="1024" horizontal_fov="55.0"/>
         <ros_publisher topic="/$(param robot_name)/perception/camera_front_right"/>
     </sensor>
 
     <sensor name="multibeam_down_link" type="multibeam1d" rate="5.0">
         <link name="Vehicle"/>
-        <origin rpy="0.0 -1.5707 0.0" xyz="1.20 0.0 0.07"/>
+        <origin rpy="0.0 1.5707 0.0" xyz="1.20 0.0 -0.07"/>
         <specs fov="90.0" steps="50"/>
         <history samples="-1"/>
         <range distance_min="0.5" distance_max="150.0"/>
@@ -328,7 +327,7 @@
         <ros_publisher topic="/$(param robot_name)/perception/mbes_down"/>
     </sensor>
 
-    <world_transform rpy="0.0 0.0 0.0" xyz="$(param robot_pos)"/>
+    <world_transform rpy="3.1416 0.0 0.0" xyz="$(param robot_pos)"/>
 
     <ros_publisher servos="/$(param robot_name)/joint_states"/>
     <ros_subscriber thrusters="/$(param robot_name)/thruster_setpoints" servos="/$(param robot_name)/desired_joint_states" lights="/lights"/> 
