@@ -78,7 +78,7 @@ would be just as relevant here.
 
 The robot interface also requires `sam_common`, see above.
 Apart from that, you will need [flexxros](https://github.com/nilsbore/flexxros),
-including dependencies, and also `sam_controllers`:
+including dependencies, and also the private `sam_controllers` package:
 ```
 pip3 install flexx rospkg
 pip3 install tornado==5
