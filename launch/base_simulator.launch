@@ -54,6 +54,10 @@
         -->
 
         <node name="teleop" type="sam_teleop.py" pkg="sam_stonefish_sim" output="screen" if="$(arg with_teleop)"/> 
+    
+        <include file="$(find sam_stonefish_sim)/launch/vbs_controller.launch">
+              <arg name="robot_name" value="$(arg robot_name)"/>
+        </include>
 
         <node name="msg_bridge" type="sam_sim_msg_bridge.py" pkg="sam_stonefish_sim" output="screen">
             <param name="robot_name" value="$(arg robot_name)"/>
