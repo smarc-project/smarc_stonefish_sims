@@ -12,7 +12,7 @@ tmux select-window -t $SESSION:0
 tmux send-keys "roscore" C-m
 
 tmux select-window -t $SESSION:1
-tmux send-keys "rosrun flexxros sam_controls.py" C-m
+tmux send-keys "rosrun flexxros sam_controls.py _display_ip:=localhost" C-m
 
 tmux select-window -t $SESSION:2
 tmux send-keys "mon launch sam_stonefish_sim base_simulator.launch hd_model:=true with_teleop:=false --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
