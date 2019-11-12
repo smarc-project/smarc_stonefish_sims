@@ -73,3 +73,25 @@ to neptus can be found [here](https://github.com/smarc-project/imc_ros_bridge).
 It is basically the same as the [BTS tutorial](https://github.com/smarc-project/smarc_scenarios/tree/master/bts_tutorial)
 and I think @KKalem is working on more extensive documentation for that that
 would be just as relevant here.
+
+### Robot-like interface
+
+The robot interface also requires `sam_common`, see above.
+Apart from that, you will need [flexxros](https://github.com/nilsbore/flexxros),
+including dependencies, and also the private `sam_controllers` package:
+```
+pip3 install flexx rospkg
+pip3 install tornado==5
+sudo apt install ros-kinetic-rosmon
+git clone https://github.com/nilsbore/flexxros.git
+git clone https://gitr.sys.kth.se/smarc-project/sam_controllers.git
+```
+You then have to make sure to source your workspace in your `~/.bashrc`, i.e. something like:
+```
+source /path/to/catkin_ws/devel/setup.bash
+```
+You will now be able to run the robot interface, including controllers with
+```
+rosrun sam_stonefish_sim bringup.sh
+```
+Go to `localhost:8097` in your web browser and start the nodes there and steer the actuators!
