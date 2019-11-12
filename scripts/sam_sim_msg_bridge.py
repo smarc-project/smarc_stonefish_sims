@@ -39,8 +39,8 @@ class SAMSimMsgBridge(object):
 	header = Header()
         thruster_angles = JointState()
         thruster_angles.header = header
-        thruster_angles.name = [self.robot_name + "/joint1", self.robot_name + "/joint2"]
-        thruster_angles.position = [-angles_msg.thruster_horizontal_radians, -angles_msg.thruster_vertical_radians]
+        thruster_angles.name = [self.robot_name + "/thruster_yaw_joint", self.robot_name + "/thruster_pitch_joint"]
+        thruster_angles.position = [angles_msg.thruster_horizontal_radians, angles_msg.thruster_vertical_radians]
         self.joint_states.publish(thruster_angles)
 
     def __init__(self):
