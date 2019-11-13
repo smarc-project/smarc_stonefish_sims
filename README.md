@@ -83,7 +83,7 @@ including dependencies, and also the private `sam_controllers` package:
 pip3 install flexx rospkg
 pip3 install tornado==5
 sudo apt install ros-kinetic-rosmon
-git clone https://github.com/nilsbore/flexxros.git
+git clone -b new_topics https://github.com/nilsbore/flexxros.git
 git clone https://gitr.sys.kth.se/smarc-project/sam_controllers.git
 ```
 You then have to make sure to source your workspace in your `~/.bashrc`, i.e. something like:
