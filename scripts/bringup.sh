@@ -7,6 +7,7 @@ tmux new-window -t $SESSION:0 -n 'roscore'
 tmux new-window -t $SESSION:1 -n 'sam_gui'
 tmux new-window -t $SESSION:2 -n 'sam_sim'
 tmux new-window -t $SESSION:3 -n 'sam_att_ctrl'
+tmux new-window -t $SESSION:4 -n 'sam_nav'
 
 tmux select-window -t $SESSION:0
 tmux send-keys "roscore" C-m
@@ -19,6 +20,9 @@ tmux send-keys "mon launch sam_stonefish_sim base_simulator.launch hd_model:=tru
 
 tmux select-window -t $SESSION:3
 tmux send-keys "mon launch sam_stonefish_sim attitude_controllers.launch --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+
+tmux select-window -t $SESSION:4
+tmux send-keys "mon launch sam_stonefish_sim navigator.launch --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 # Set default window
 tmux select-window -t $SESSION:0

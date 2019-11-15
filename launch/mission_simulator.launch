@@ -1,7 +1,6 @@
 <launch>
     <!-- Configurable arguments -->
     <arg name="robot_name" default="sam"/>
-    <arg name="enable_gui" default="true"/>
     <arg name="xacro_file" default="$(find sam_stonefish_sim)/data/urdf/sam_auv.urdf.xacro"/>
     <arg name="hd_model" default="false"/>
     <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn"/>
@@ -11,24 +10,6 @@
     <arg name="latitude" default="43.93183"/>
     <arg name="longitude" default="15.44264"/>
      <arg name="robot_pos" default="0.0 0.0 1.0"/>
-
-    <arg name="server_addr" default="127.0.0.1"/>
-    <arg name="server_port" default="6002"/>
-    <arg name="system_name" default="$(arg robot_name)"/>
-    <arg name="imc_id" default="5"/>
-
-     <!-- Static transform -->
-    <node pkg="tf" type="static_transform_publisher" name="world_utm_broadcaster" args="535529 4864397 0 0 0 0 1 world_utm world_local 100" />
-
-    <node pkg="rostopic" type="rostopic" name="fake_gps_fix"
-          args="pub /gps/fix sensor_msgs/NavSatFix --latch
-          '{header: {seq: 999, stamp: {secs: 0, nsecs: 0}, frame_id: 'world_local'},
-            status: {status: 0, service: 1},
-            latitude: $(arg latitude),
-            longitude: $(arg longitude),
-            altitude: 0,
-            position_covariance: [3.9561210000000004, 0.0, 0.0, 0.0, 3.9561210000000004, 0.0, 0.0, 0.0, 7.650756],
-            position_covariance_type: 2}'" output="screen"/>
 
     <!-- Run Simulator -->
     <include file="$(find sam_stonefish_sim)/launch/base_simulator.launch">
@@ -43,29 +24,10 @@
           <arg name="robot_pos" value="$(arg robot_pos)"/>
     </include>
 
-    <group ns="$(arg robot_name)">
+    <include file="$(find sam_stonefish_sim)/launch/navigator.launch">
+          <arg name="robot_name" value="$(arg robot_name)"/>
+          <arg name="latitude" value="$(arg latitude)"/>
+          <arg name="longitude" value="$(arg longitude)"/>
+    </include>
 
-        <group ns="ctrl">
-            <node name="bezier_planner" type="bezier_planner.py" pkg="sam_stonefish_sim" output="screen">
-                <param name="base_frame" value="$(arg robot_name)/base_link"/>
-            </node>
-            <include file="$(find sam_stonefish_sim)/launch/thruster_controllers.launch">
-                <arg name="base_frame" value="$(arg robot_name)/base_link"/>
-                <arg name="robot_name" value="$(arg robot_name)"/>
-            </include>
-        </group>
-
-        <include file="$(find imc_ros_bridge)/launch/bridge.launch">
-            <arg name="server_addr" value="$(arg server_addr)"/>
-            <arg name="server_port" value="$(arg server_port)" type="str"/>
-            <arg name="imc_system_name" value="$(arg system_name)"/>
-            <arg name="imc_id" value="$(arg imc_id)"/>
-        </include>
-
-        <node name="neptus_bt" pkg="waypoints" type="neptus_bt.py" output="screen">
-            <param name="system_name" value="$(arg system_name)" />
-            <remap from="/bezier_planner" to="ctrl/bezier_planner"/>
-        </node>   
-    </group>
-    
 </launch>
