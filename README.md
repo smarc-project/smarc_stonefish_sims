@@ -24,7 +24,7 @@ and then remove space after "-lSDL2 ". On 18.04 this is not needed.
 Using the `python3-vcstool` dependency, we can install all of
 the packages outlined below with a couple of simple commands in our
 `catkin_ws/src` folder. If you only have access to the public
-repos (i.e. you're not a member of the SMaRC project, use the commands:
+repos (i.e. you're not a member of the SMaRC project), use the commands:
 ```
 wget https://raw.githubusercontent.com/nilsbore/sam_stonefish_sim/master/rosinstall/sam_sim.rosinstall
 vcs import < sam_sim.rosinstall --recursive
