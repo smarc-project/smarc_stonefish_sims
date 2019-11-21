@@ -1,7 +1,7 @@
 <launch>
     <!-- Configurable arguments -->
     <arg name="robot_name" default="sam"/>
-    <arg name="xacro_file" default="$(find sam_stonefish_sim)/data/urdf/sam_auv.urdf.xacro"/>
+    <arg name="xacro_file" default="$(find sam_description)/urdf/sam_auv.urdf.xacro"/>
     <arg name="hd_model" default="false"/>
     <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn"/>
     <arg name="environment_file" default="$(find sam_stonefish_sim)/data/biograd_world/biograd_env.scn"/>
