@@ -32,7 +32,7 @@ vcs import < ../sam_sim.rosinstall --recursive
 Otherwise, if you have access to `https://gitr.sys.kth.se/smarc-project`, issue:
 ```
 wget https://raw.githubusercontent.com/nilsbore/sam_stonefish_sim/master/rosinstall/sam_sim_private.rosinstall
-vcs import < ../sam_sim.rosinstall --recursive --w 1
+vcs import < ../sam_sim_private.rosinstall --recursive --w 1
 ```
 
 You can now go to your `catkin_ws` and use `catkin_make -DCMAKE_BUILD_TYPE=Release`
