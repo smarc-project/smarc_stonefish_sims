@@ -7,7 +7,7 @@
     <arg name="robot_file" default="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml" if="$(arg hd_model)"/>
     <arg name="simulation_data" default="$(find sam_stonefish_sim)/data"/> <!-- path to the data directory -->
     <arg name="robot_name" default="sam"/>
-    <arg name="xacro_file" default="$(find sam_stonefish_sim)/data/urdf/sam_auv.urdf.xacro"/>
+    <arg name="xacro_file" default="$(find sam_description)/urdf/sam_auv.urdf.xacro"/>
     <arg name="with_teleop" default="true"/>
     <arg name="latitude" default="43.93183"/>
     <arg name="longitude" default="15.44264"/>
