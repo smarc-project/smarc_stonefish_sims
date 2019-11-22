@@ -4,7 +4,7 @@
 
   <group ns="vbs">
 
-      <node name="transform" pkg="topic_tools" type="transform" args="/$(arg robot_name)/vbs/volume /$(arg robot_name)/vbs/volume_centered std_msgs/Float64 '(m.data - .00002)/(.00031 - .00002) - .5'" respawn="true"/>
+      <node name="transform" pkg="topic_tools" type="transform" args="/$(arg robot_name)/vbs/volume /$(arg robot_name)/vbs/volume_centered std_msgs/Float64 '(m.data - .00002)/(.00031 - .00002) - .5' --wait-for-start" respawn="true"/>
 
       <node name="controller" pkg="pid" type="controller" output="screen" respawn="true">
         <param name="node_name" value="vbs_pid" />
