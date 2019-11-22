@@ -38,7 +38,7 @@ You can now go to your `catkin_ws` and use `catkin_make -DCMAKE_BUILD_TYPE=Relea
 to build all of the packages needed for the simulation. No need for the build and clone
 steps below.
 
-### Minimum requirements
+### Minimum requirements (manual)
 
 Now go into the catkin workspace where you want to build the simulation,
 or create a new workspace. In the `src` folder, execute the commands,
@@ -52,7 +52,7 @@ git submodule update --init
 ```
 This is everything you need if you just want to run the base sim (see below).
 
-### Requirements for planner
+### Requirements for planner (manual)
 
 These packages are needed if you want to run the full stack including
 mission planning with Neptus and controlling the vehicle to follow the plan.
