@@ -22,18 +22,17 @@ and then remove space after "-lSDL2 ". On 18.04 this is not needed.
 ### Installing with vcstool
 
 Using the `python3-vcstool` dependency, we can install all of
-the packages outlined below with a couple of simple commands in our
+the packages outlined below with one simple command in our
 `catkin_ws/src` folder. If you only have access to the public
-repos (i.e. you're not a member of the SMaRC project), use the commands:
+repos (i.e. you're not a member of the SMaRC project), use the command:
 ```
-wget https://raw.githubusercontent.com/nilsbore/sam_stonefish_sim/master/rosinstall/sam_sim.rosinstall
-vcs import < sam_sim.rosinstall --recursive
+curl https://raw.githubusercontent.com/nilsbore/sam_stonefish_sim/master/rosinstall/sam_sim.rosinstall | vcs import --recursive
 ```
 Otherwise, if you have access to `https://gitr.sys.kth.se/smarc-project`, issue:
 ```
-wget https://raw.githubusercontent.com/nilsbore/sam_stonefish_sim/master/rosinstall/sam_sim_private.rosinstall
-vcs import < sam_sim_private.rosinstall --recursive --w 1
+curl https://raw.githubusercontent.com/nilsbore/sam_stonefish_sim/master/rosinstall/sam_sim_private.rosinstall | vcs import --recursive --w 1
 ```
+in your `catkin_ws/src` folder.
 
 You can now go to your `catkin_ws` and use `catkin_make -DCMAKE_BUILD_TYPE=Release`
 to build all of the packages needed for the simulation. No need for the build and clone
