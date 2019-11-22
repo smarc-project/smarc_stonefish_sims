@@ -11,7 +11,7 @@ the following actuator commands:
 
 Let us start by installing the dependencies.
 ```
-sudo apt install libsdl2-dev ros-kinetic-py-trees-ros
+sudo apt install libsdl2-dev libglew-dev libfreetype6-dev tmux python3-vcstool ros-${ROS_DISTRO}-py-trees-ros ros-${ROS_DISTRO}-pid
 ```
 If you are on Ubuntu 16.04, you need to use vim (or other editor) to open the file
 ```
@@ -19,7 +19,26 @@ sudo vim /usr/lib/x86_64-linux-gnu/cmake/SDL2/sdl2-config.cmake
 ```
 and then remove space after "-lSDL2 ". On 18.04 this is not needed.
 
-### Minimum requirements
+### Installing with vcstool
+
+Using the `python3-vcstool` dependency, we can install all of
+the packages outlined below with one simple command in our
+`catkin_ws/src` folder. If you only have access to the public
+repos (i.e. you're not a member of the SMaRC project), use the command:
+```
+curl https://raw.githubusercontent.com/nilsbore/sam_stonefish_sim/master/rosinstall/sam_sim.rosinstall | vcs import --recursive
+```
+Otherwise, if you have access to `https://gitr.sys.kth.se/smarc-project`, issue:
+```
+curl https://raw.githubusercontent.com/nilsbore/sam_stonefish_sim/master/rosinstall/sam_sim_private.rosinstall | vcs import --recursive --w 1
+```
+in your `catkin_ws/src` folder. This may take a few minutes, so be patient.
+
+You can now go to your `catkin_ws` and use `catkin_make -DCMAKE_BUILD_TYPE=Release`
+to build all of the packages needed for the simulation. No need for the build and clone
+steps below. Instead, skip to the [running section](https://github.com/nilsbore/sam_stonefish_sim#running).
+
+### Minimum requirements (manual)
 
 Now go into the catkin workspace where you want to build the simulation,
 or create a new workspace. In the `src` folder, execute the commands,
@@ -33,7 +52,7 @@ git submodule update --init
 ```
 This is everything you need if you just want to run the base sim (see below).
 
-### Requirements for planner
+### Requirements for planner (manual)
 
 These packages are needed if you want to run the full stack including
 mission planning with Neptus and controlling the vehicle to follow the plan.
