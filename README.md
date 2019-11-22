@@ -36,7 +36,7 @@ in your `catkin_ws/src` folder.
 
 You can now go to your `catkin_ws` and use `catkin_make -DCMAKE_BUILD_TYPE=Release`
 to build all of the packages needed for the simulation. No need for the build and clone
-steps below.
+steps below. Instead, skip to the [running section](https://github.com/nilsbore/sam_stonefish_sim#running).
 
 ### Minimum requirements (manual)
 
