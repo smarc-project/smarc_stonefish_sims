@@ -32,7 +32,7 @@ Otherwise, if you have access to `https://gitr.sys.kth.se/smarc-project`, issue:
 ```
 curl https://raw.githubusercontent.com/nilsbore/sam_stonefish_sim/master/rosinstall/sam_sim_private.rosinstall | vcs import --recursive --w 1
 ```
-in your `catkin_ws/src` folder.
+in your `catkin_ws/src` folder. This may take a few minutes, so be patient.
 
 You can now go to your `catkin_ws` and use `catkin_make -DCMAKE_BUILD_TYPE=Release`
 to build all of the packages needed for the simulation. No need for the build and clone
