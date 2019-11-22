@@ -16,10 +16,10 @@ tmux select-window -t $SESSION:1
 tmux send-keys "rosrun flexxros sam_controls.py _display_ip:=localhost" C-m
 
 tmux select-window -t $SESSION:2
-tmux send-keys "mon launch sam_stonefish_sim base_simulator.launch hd_model:=true with_teleop:=false --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+tmux send-keys "mon launch sam_stonefish_sim base_simulator.launch with_teleop:=false --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 tmux select-window -t $SESSION:3
-tmux send-keys "mon launch sam_stonefish_sim attitude_controllers.launch --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+tmux send-keys "mon launch sam_stonefish_sim attitude_controllers.launch --name=$(tmux display-message -p 'p#I_#W') --no-start"
 
 tmux select-window -t $SESSION:4
 tmux send-keys "mon launch sam_stonefish_sim navigator.launch --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
