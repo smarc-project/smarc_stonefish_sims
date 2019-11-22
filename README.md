@@ -11,7 +11,7 @@ the following actuator commands:
 
 Let us start by installing the dependencies.
 ```
-sudo apt install libsdl2-dev python3-vcstool ros-${ROS_DISTRO}-py-trees-ros
+sudo apt install libsdl2-dev libfreetype6-dev python3-vcstool ros-${ROS_DISTRO}-py-trees-ros
 ```
 If you are on Ubuntu 16.04, you need to use vim (or other editor) to open the file
 ```
