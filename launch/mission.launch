@@ -1,13 +1,18 @@
 <launch>
+
     <!-- Configurable arguments -->
     <arg name="robot_name" default="sam"/>
     <arg name="latitude" default="43.93183"/>
     <arg name="longitude" default="15.44264"/>
+    <arg name="utm_zone" default="33"/>
 
     <arg name="server_addr" default="127.0.0.1"/>
     <arg name="server_port" default="6002"/>
     <arg name="system_name" default="$(arg robot_name)"/>
     <arg name="imc_id" default="5"/>
+
+    <arg name="base_frame" default="$(arg robot_name)/base_link"/>
+    <arg name="goal_tolerance" default="5."/>
 
      <!-- Static transform -->
     <node pkg="tf" type="static_transform_publisher" name="world_utm_broadcaster" args="535529 4864397 0 0 0 0 1 world_utm world_local 100" />
@@ -25,13 +30,12 @@
     <group ns="$(arg robot_name)">
 
         <group ns="ctrl">
-            <node name="bezier_planner" type="bezier_planner.py" pkg="sam_stonefish_sim" output="screen">
-                <param name="base_frame" value="$(arg robot_name)/base_link"/>
+
+            <node name="yaw_planner" pkg="auv_simple_motion_planner" type="yaw_planner.py" output="screen">
+                <param name="goal_tolerance" value="$(arg goal_tolerance)" />
+                <param name="base_frame" value="$(arg base_frame)" />
             </node>
-            <include file="$(find sam_stonefish_sim)/launch/thruster_controllers.launch">
-                <arg name="base_frame" value="$(arg robot_name)/base_link"/>
-                <arg name="robot_name" value="$(arg robot_name)"/>
-            </include>
+    
         </group>
 
         <include file="$(find imc_ros_bridge)/launch/bridge.launch">
@@ -43,8 +47,10 @@
 
         <node name="neptus_bt" pkg="waypoints" type="neptus_bt.py" output="screen">
             <param name="system_name" value="$(arg system_name)" />
-            <remap from="/bezier_planner" to="ctrl/bezier_planner"/>
+            <param name="utm_zone" value="$(arg utm_zone)" />
+            <remap from="/bezier_planner" to="ctrl/yaw_planner"/>
         </node>   
+
     </group>
     
 </launch>
