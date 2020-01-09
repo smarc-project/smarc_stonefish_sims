@@ -14,7 +14,7 @@
 
 import rospy
 from std_msgs.msg import Header, Float64
-from sensor_msgs.msg import JointState
+from sensor_msgs.msg import JointState, BatteryState
 from cola2_msgs.msg import Setpoints
 from sam_msgs.msg import ThrusterAngles, ThrusterRPMs, PercentStamped
 
@@ -47,12 +47,18 @@ class SAMSimMsgBridge(object):
         thruster_angles.position = [angles_msg.thruster_horizontal_radians, angles_msg.thruster_vertical_radians]
         self.joint_states.publish(thruster_angles)
 
+    def battery_callback(self, event):
+
+        self.battery_msg.header.stamp = rospy.Time.now()
+        self.battery_pub.publish(self.battery_msg)
+
     def __init__(self):
 	
         self.robot_name = rospy.get_param("~robot_name")
         self.joint_states = rospy.Publisher('desired_joint_states', JointState, queue_size=10)
         self.thrusters = rospy.Publisher('thruster_setpoints', Setpoints, queue_size=10)
         self.vbs_pub = rospy.Publisher('vbs/setpoint', Float64, queue_size=10)
+        self.battery_pub = rospy.Publisher('core/battery_fb', BatteryState, queue_size=10)
         self.lcg_joint_min = rospy.get_param("~lcg_joint_min", -0.01)
         self.lcg_joint_max = rospy.get_param("~lcg_joint_max", 0.01)
         self.vbs_vol_min = rospy.get_param("~vbs_vol_min", -0.5)
@@ -62,6 +68,14 @@ class SAMSimMsgBridge(object):
 	rospy.Subscriber("core/thrust_vector_cmd", ThrusterAngles, self.angles_callback)
 	rospy.Subscriber("core/lcg_cmd", PercentStamped, self.lcg_callback)
 	rospy.Subscriber("core/vbs_cmd", PercentStamped, self.vbs_callback)
+
+        self.battery_msg = BatteryState()
+        self.battery_msg.voltage = 12.5
+        self.battery_msg.percentage = 81.
+        self.battery_msg.power_supply_health = BatteryState.POWER_SUPPLY_HEALTH_GOOD
+        self.battery_msg.header = Header()
+
+        rospy.Timer(rospy.Duration(1), self.battery_callback)
 
 if __name__ == "__main__":
     
