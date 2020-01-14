@@ -24,6 +24,18 @@ class SAMSimMsgBridge(object):
 
         self.vbs_pub.publish(self.vbs_vol_min + 0.01*vbs_msg.value*(self.vbs_vol_max - self.vbs_vol_min))
 
+    def vbs_vol_callback(self, vol_msg):
+
+	header = Header()
+        self.vbs_fb_pub.publish(100.*(.5+vol_msg.data), header)
+
+    def joint_state_callback(self, msg):
+
+        if msg.name[0] == "sam/lcg_joint":
+            header = Header()
+            pos = 100./(self.lcg_joint_max-self.lcg_joint_min)*(msg.position[0] - self.lcg_joint_min)
+            self.lcg_fb_pub.publish(pos, header)
+
     def lcg_callback(self, lcg_msg):
 
 	header = Header()
@@ -58,6 +70,8 @@ class SAMSimMsgBridge(object):
         self.joint_states = rospy.Publisher('desired_joint_states', JointState, queue_size=10)
         self.thrusters = rospy.Publisher('thruster_setpoints', Setpoints, queue_size=10)
         self.vbs_pub = rospy.Publisher('vbs/setpoint', Float64, queue_size=10)
+        self.vbs_fb_pub = rospy.Publisher('core/vbs_fb', PercentStamped, queue_size=10)
+        self.lcg_fb_pub = rospy.Publisher('core/lcg_fb', PercentStamped, queue_size=10)
         self.battery_pub = rospy.Publisher('core/battery_fb', BatteryState, queue_size=10)
         self.lcg_joint_min = rospy.get_param("~lcg_joint_min", -0.01)
         self.lcg_joint_max = rospy.get_param("~lcg_joint_max", 0.01)
@@ -68,6 +82,8 @@ class SAMSimMsgBridge(object):
 	rospy.Subscriber("core/thrust_vector_cmd", ThrusterAngles, self.angles_callback)
 	rospy.Subscriber("core/lcg_cmd", PercentStamped, self.lcg_callback)
 	rospy.Subscriber("core/vbs_cmd", PercentStamped, self.vbs_callback)
+        rospy.Subscriber("vbs/volume_centered", Float64, self.vbs_vol_callback)
+        rospy.Subscriber("joint_states", JointState, self.joint_state_callback)
 
         self.battery_msg = BatteryState()
         self.battery_msg.voltage = 12.5
