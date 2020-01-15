@@ -204,7 +204,7 @@
         <link name="Vehicle"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.3 0.0 0.07"/>
         <noise pressure="5.0"/>
-        <ros_publisher topic="/$(param robot_name)/core/pressure_fb"/>
+        <ros_publisher topic="/$(param robot_name)/core/depth20_pressure_sim"/>
     </sensor>
 
     <sensor name="dvl_link" type="dvl" rate="5.0">
