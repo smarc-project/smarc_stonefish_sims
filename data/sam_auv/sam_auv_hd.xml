@@ -270,7 +270,7 @@
         <link name="Vehicle"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.3 0.0 0.07"/>
         <noise pressure="5.0"/>
-        <ros_publisher topic="/$(param robot_name)/core/pressure_fb"/>
+        <ros_publisher topic="/$(param robot_name)/core/depth20_pressure_sim"/>
     </sensor>
 
     <sensor name="dvl_link" type="dvl" rate="5.0">
@@ -284,9 +284,9 @@
 
     <sensor name="imu_link" type="imu" rate="20.0">
         <link name="Vehicle"/>
-        <origin rpy="0.0 0.0 0.0" xyz="0.9 0.0 0.0"/>
+        <origin rpy="0.0 -1.5707 0.0" xyz="0.9 0.0 0.0"/>
         <noise angle="0.000001745" angular_velocity="0.00001745"/>
-        <ros_publisher topic="/$(param robot_name)/core/imu"/>
+        <ros_publisher topic="/$(param robot_name)/core/stim_imu"/>
     </sensor>
 
     <sensor name="gps_link" type="gps" rate="1.0">
@@ -331,6 +331,6 @@
 
     <ros_publisher servos="/$(param robot_name)/joint_states"/>
     <ros_subscriber thrusters="/$(param robot_name)/thruster_setpoints" servos="/$(param robot_name)/desired_joint_states" lights="/lights"/> 
-    <ros_base_link_transforms publish="true"/>
+    <ros_base_link_transforms publish="$(param simulate_dr)"/>
 </robot>
 </scenario>

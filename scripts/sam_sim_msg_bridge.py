@@ -14,15 +14,32 @@
 
 import rospy
 from std_msgs.msg import Header, Float64
-from sensor_msgs.msg import JointState
+from sensor_msgs.msg import JointState, BatteryState, FluidPressure
 from cola2_msgs.msg import Setpoints
 from sam_msgs.msg import ThrusterAngles, ThrusterRPMs, PercentStamped
 
 class SAMSimMsgBridge(object):
 
+    def press_callback(self, press_msg):
+
+        press_msg.fluid_pressure += 101325.0
+        self.press_pub.publish(press_msg)
+
     def vbs_callback(self, vbs_msg):
 
         self.vbs_pub.publish(self.vbs_vol_min + 0.01*vbs_msg.value*(self.vbs_vol_max - self.vbs_vol_min))
+
+    def vbs_vol_callback(self, vol_msg):
+
+	header = Header()
+        self.vbs_fb_pub.publish(100.*(.5+vol_msg.data), header)
+
+    def joint_state_callback(self, msg):
+
+        if msg.name[0] == "sam/lcg_joint":
+            header = Header()
+            pos = 100./(self.lcg_joint_max-self.lcg_joint_min)*(msg.position[0] - self.lcg_joint_min)
+            self.lcg_fb_pub.publish(pos, header)
 
     def lcg_callback(self, lcg_msg):
 
@@ -36,7 +53,17 @@ class SAMSimMsgBridge(object):
     def thruster_callback(self, thruster_msg):
 
 	header = Header()
-        self.thrusters.publish(header, [thruster_msg.thruster_1_rpm, thruster_msg.thruster_2_rpm])
+        self.last_thruster_msg = Setpoints(header, [thruster_msg.thruster_1_rpm, thruster_msg.thruster_2_rpm])
+        self.last_thruster_msg_time = rospy.get_time()
+
+    def publish_thruster_callback(self, event):
+
+        current_time = rospy.get_time()
+        # must publish at 10Hz to get the thrusters going
+        if current_time - self.last_thruster_msg_time < 0.1:
+            self.thrusters.publish(self.last_thruster_msg)
+        else:
+            self.thrusters.publish(Header(), [0., 0.])
 
     def angles_callback(self, angles_msg):
 
@@ -47,21 +74,45 @@ class SAMSimMsgBridge(object):
         thruster_angles.position = [angles_msg.thruster_horizontal_radians, angles_msg.thruster_vertical_radians]
         self.joint_states.publish(thruster_angles)
 
+    def battery_callback(self, event):
+
+        self.battery_msg.header.stamp = rospy.Time.now()
+        self.battery_pub.publish(self.battery_msg)
+
     def __init__(self):
 	
         self.robot_name = rospy.get_param("~robot_name")
-        self.joint_states = rospy.Publisher('desired_joint_states', JointState, queue_size=10)
-        self.thrusters = rospy.Publisher('thruster_setpoints', Setpoints, queue_size=10)
-        self.vbs_pub = rospy.Publisher('vbs/setpoint', Float64, queue_size=10)
         self.lcg_joint_min = rospy.get_param("~lcg_joint_min", -0.01)
         self.lcg_joint_max = rospy.get_param("~lcg_joint_max", 0.01)
         self.vbs_vol_min = rospy.get_param("~vbs_vol_min", -0.5)
         self.vbs_vol_max = rospy.get_param("~vbs_vol_max", 0.5)
+        self.last_thruster_msg_time = 0.
+        self.last_thruster_msg = Setpoints(Header(), [0., 0.])
+
+        self.joint_states = rospy.Publisher('desired_joint_states', JointState, queue_size=10)
+        self.thrusters = rospy.Publisher('thruster_setpoints', Setpoints, queue_size=10)
+        self.vbs_pub = rospy.Publisher('vbs/setpoint', Float64, queue_size=10)
+        self.vbs_fb_pub = rospy.Publisher('core/vbs_fb', PercentStamped, queue_size=10)
+        self.lcg_fb_pub = rospy.Publisher('core/lcg_fb', PercentStamped, queue_size=10)
+        self.battery_pub = rospy.Publisher('core/battery_fb', BatteryState, queue_size=10)
+        self.press_pub = rospy.Publisher('core/depth20_pressure', FluidPressure, queue_size=10)
 
 	rospy.Subscriber("core/rpm_cmd", ThrusterRPMs, self.thruster_callback)
 	rospy.Subscriber("core/thrust_vector_cmd", ThrusterAngles, self.angles_callback)
 	rospy.Subscriber("core/lcg_cmd", PercentStamped, self.lcg_callback)
 	rospy.Subscriber("core/vbs_cmd", PercentStamped, self.vbs_callback)
+        rospy.Subscriber("vbs/volume_centered", Float64, self.vbs_vol_callback)
+        rospy.Subscriber("joint_states", JointState, self.joint_state_callback)
+        rospy.Subscriber("core/depth20_pressure_sim", FluidPressure, self.press_callback)
+
+        self.battery_msg = BatteryState()
+        self.battery_msg.voltage = 12.5
+        self.battery_msg.percentage = 81.
+        self.battery_msg.power_supply_health = BatteryState.POWER_SUPPLY_HEALTH_GOOD
+        self.battery_msg.header = Header()
+
+        rospy.Timer(rospy.Duration(1), self.battery_callback)
+        rospy.Timer(rospy.Duration(0.1), self.publish_thruster_callback)
 
 if __name__ == "__main__":
     
