@@ -202,5 +202,5 @@
 
     <ros_publisher servos="/$(param robot_name)/joint_states"/>
     <ros_subscriber thrusters="/$(param robot_name)/thruster_setpoints" servos="/$(param robot_name)/desired_joint_states"/> 
-    <ros_base_link_transforms publish="true"/>
+    <ros_base_link_transforms publish="$(param simulate_dr)"/>
 </robot>
