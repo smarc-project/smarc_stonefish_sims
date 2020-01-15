@@ -20,6 +20,6 @@
         <param name="environment_file" value="$(arg environment_file)"/>
         <param name="robot_file" value="$(arg robot_file)"/>
         <param name="robot_pos" value="$(arg robot_pos)"/>
-        <param name="simulate_dr" value="$(arg simulate_dr)"/>
+        <param name="simulate_dr" value="$(arg simulate_dr)" type="string"/>
     </node>
 </launch>
