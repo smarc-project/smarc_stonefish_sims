@@ -218,9 +218,9 @@
 
     <sensor name="imu_link" type="imu" rate="20.0">
         <link name="Vehicle"/>
-        <origin rpy="0.0 0.0 0.0" xyz="0.9 0.0 0.0"/>
+        <origin rpy="0.0 -1.5707 0.0" xyz="0.9 0.0 0.0"/>
         <noise angle="0.000001745" angular_velocity="0.00001745"/>
-        <ros_publisher topic="/$(param robot_name)/core/imu"/>
+        <ros_publisher topic="/$(param robot_name)/core/stim_imu"/>
     </sensor>
 
     <sensor name="gps_link" type="gps" rate="1.0">
