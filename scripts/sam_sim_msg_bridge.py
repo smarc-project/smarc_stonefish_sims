@@ -53,7 +53,17 @@ class SAMSimMsgBridge(object):
     def thruster_callback(self, thruster_msg):
 
 	header = Header()
-        self.thrusters.publish(header, [thruster_msg.thruster_1_rpm, thruster_msg.thruster_2_rpm])
+        self.last_thruster_msg = Setpoints(header, [thruster_msg.thruster_1_rpm, thruster_msg.thruster_2_rpm])
+        self.last_thruster_msg_time = rospy.get_time()
+
+    def publish_thruster_callback(self, event):
+
+        current_time = rospy.get_time()
+        # must publish at 10Hz to get the thrusters going
+        if current_time - self.last_thruster_msg_time < 0.1:
+            self.thrusters.publish(self.last_thruster_msg)
+        else:
+            self.thrusters.publish(Header(), [0., 0.])
 
     def angles_callback(self, angles_msg):
 
@@ -76,6 +86,8 @@ class SAMSimMsgBridge(object):
         self.lcg_joint_max = rospy.get_param("~lcg_joint_max", 0.01)
         self.vbs_vol_min = rospy.get_param("~vbs_vol_min", -0.5)
         self.vbs_vol_max = rospy.get_param("~vbs_vol_max", 0.5)
+        self.last_thruster_msg_time = 0.
+        self.last_thruster_msg = Setpoints(Header(), [0., 0.])
 
         self.joint_states = rospy.Publisher('desired_joint_states', JointState, queue_size=10)
         self.thrusters = rospy.Publisher('thruster_setpoints', Setpoints, queue_size=10)
@@ -100,6 +112,7 @@ class SAMSimMsgBridge(object):
         self.battery_msg.header = Header()
 
         rospy.Timer(rospy.Duration(1), self.battery_callback)
+        rospy.Timer(rospy.Duration(0.1), self.publish_thruster_callback)
 
 if __name__ == "__main__":
     
