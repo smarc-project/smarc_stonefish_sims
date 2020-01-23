@@ -144,7 +144,7 @@
         <propeller diameter="0.12" right="true">
             <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/sam_propeller.obj" scale="1.0"/>
             <material name="Neutral"/>
-            <look name="propeller"/>
+            <look name="manipulator"/>	
         </propeller>
     </actuator>
 
@@ -155,7 +155,7 @@
         <propeller diameter="0.12" right="false">
             <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/sam_propeller.obj" scale="1.0"/>
             <material name="Neutral"/>
-            <look name="propeller"/>
+            <look name="manipulator"/>	
         </propeller>
     </actuator>
 
