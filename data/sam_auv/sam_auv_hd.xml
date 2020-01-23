@@ -27,7 +27,7 @@
                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             </visual>
             <material name="Neutral"/>
-            <look name="gray"/>
+            <look name="manipulator"/>
             <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         </external_part>
         <external_part name="RailBottomRight" type="model" physics="submerged">
@@ -40,7 +40,7 @@
                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             </visual>
             <material name="Neutral"/>
-            <look name="gray"/>
+            <look name="manipulator"/>
             <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         </external_part>
         <external_part name="RailTop" type="model" physics="submerged">
@@ -53,7 +53,7 @@
                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             </visual>
             <material name="Neutral"/>
-            <look name="gray"/>
+            <look name="manipulator"/>
             <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         </external_part>
         <external_part name="NoseDummy" type="model" physics="submerged">
@@ -66,7 +66,7 @@
                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             </visual>
             <material name="Neutral"/>
-            <look name="gray"/>
+            <look name="manipulator"/>
             <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         </external_part>
         <external_part name="Sonars" type="model" physics="surface">
@@ -79,7 +79,7 @@
                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             </visual>
             <material name="Neutral"/>
-            <look name="gray"/>
+            <look name="black"/>
             <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         </external_part>
         <external_part name="Cameras" type="model" physics="surface">
@@ -92,7 +92,7 @@
                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             </visual>
             <material name="Neutral"/>
-            <look name="link4"/>
+            <look name="gray"/>
             <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         </external_part>
         <internal_part name="WeightCylinder" type="cylinder" physics="submerged" buoyant="false">
@@ -210,7 +210,7 @@
         <propeller diameter="0.12" right="true">
             <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh_hd/Propeller_front.obj" scale="0.001"/>
             <material name="Neutral"/>
-            <look name="propeller"/>
+            <look name="manipulator"/>
         </propeller>
     </actuator>
 
@@ -221,7 +221,7 @@
         <propeller diameter="0.12" right="false">
             <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh_hd/Propeller_back.obj" scale="0.001"/>
             <material name="Neutral"/>
-            <look name="propeller"/>
+            <look name="manipulator"/>
         </propeller>
     </actuator>
 
