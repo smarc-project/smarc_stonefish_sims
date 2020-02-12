@@ -2,13 +2,16 @@
 
     <!-- Configurable arguments -->
     <arg name="robot_name" default="sam"/>
+	<!-- Croatia, biograd coast, lat lon zone band, all four from there -->
     <arg name="latitude" default="43.93183"/>
     <arg name="longitude" default="15.44264"/>
     <arg name="utm_zone" default="33"/>
+    <arg name="utm_band" default="T"/>
 
     <arg name="server_addr" default="127.0.0.1"/>
     <arg name="server_port" default="6002"/>
     <arg name="system_name" default="$(arg robot_name)"/>
+	<!-- 4=imc_ros_bridge, 5=sam, 6=lolo -->
     <arg name="imc_id" default="5"/>
 
     <arg name="base_frame" default="$(arg robot_name)/base_link"/>
@@ -45,9 +48,10 @@
             <arg name="imc_id" value="$(arg imc_id)"/>
         </include>
 
-        <node name="neptus_bt" pkg="waypoints" type="neptus_bt.py" output="screen">
+        <node name="sam_bt" pkg="waypoints" type="sam_bt.py" output="screen">
             <param name="system_name" value="$(arg system_name)" />
             <param name="utm_zone" value="$(arg utm_zone)" />
+            <param name="utm_band" value="$(arg utm_band)" />
             <remap from="/bezier_planner" to="ctrl/yaw_planner"/>
         </node>   
 
