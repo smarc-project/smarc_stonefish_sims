@@ -42,20 +42,25 @@
         </group>
 
 
-        <node name="imc_ros_bridge" pkg="imc_ros_bridge" type="bridge_node" output="screen">
-            <param name="server_addr" value="$(arg server_addr)"/>
-            <param name="server_port" value="$(arg server_port)" type="str"/>
-            <param name="system_name" value="$(arg system_name)"/>
-            <param name="imc_id" value="$(arg imc_id)"/>
-        </node>
+		<group ns="decision_making">
+
+			<node name="imc_ros_bridge" pkg="imc_ros_bridge" type="bridge_node" output="screen">
+				<param name="server_addr" value="$(arg server_addr)"/>
+				<param name="server_port" value="$(arg server_port)" type="str"/>
+				<param name="system_name" value="$(arg system_name)"/>
+				<param name="imc_id" value="$(arg imc_id)"/>
+			</node>
 
 
-        <node name="sam_bt" pkg="waypoints" type="sam_bt.py" output="screen">
-            <param name="system_name" value="$(arg system_name)" />
-            <param name="utm_zone" value="$(arg utm_zone)" />
-            <param name="utm_band" value="$(arg utm_band)" />
-            <remap from="/bezier_planner" to="ctrl/yaw_planner"/>
-        </node>   
+			<node name="sam_bt" pkg="waypoints" type="sam_bt.py" output="screen">
+				<param name="system_name" value="$(arg system_name)" />
+				<param name="utm_zone" value="$(arg utm_zone)" />
+				<param name="utm_band" value="$(arg utm_band)" />
+				<!-- No better way to go 'up' a ns level is there? -->
+				<remap from="/bezier_planner" to="/$(arg robot_name)/ctrl/yaw_planner"/>
+			</node>   
+
+		</group>
 
     </group>
     
