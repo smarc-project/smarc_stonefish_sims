@@ -2,17 +2,25 @@
 
     <!-- Configurable arguments -->
     <arg name="robot_name" default="sam"/>
+
+	<!-- BT Related -->
 	<!-- Croatia, biograd coast, lat lon zone band, all four from there -->
     <arg name="latitude" default="43.93183"/>
     <arg name="longitude" default="15.44264"/>
     <arg name="utm_zone" default="33"/>
     <arg name="utm_band" default="T"/>
 
-    <arg name="server_addr" default="127.0.0.1"/>
-    <arg name="server_port" default="6002"/>
-    <arg name="system_name" default="$(arg robot_name)"/>
+
+	<!-- Bridge related -->
+    <arg name="neptus_addr" default="127.0.0.1"/>
+    <arg name="bridge_addr" default="127.0.0.1"/>
+    <arg name="bridge_port" default="6002"/>
+	<arg name="node_name" default="imc_bridge"/>
+    <arg name="imc_system_name" default="$(arg robot_name)"/>
 	<!-- 4=imc_ros_bridge, 5=sam, 6=lolo -->
     <arg name="imc_id" default="5"/>
+
+
 
     <arg name="base_frame" default="$(arg robot_name)/base_link"/>
     <arg name="goal_tolerance" default="5."/>
@@ -42,25 +50,23 @@
         </group>
 
 
-		<group ns="decision_making">
 
-			<node name="imc_ros_bridge" pkg="imc_ros_bridge" type="bridge_node" output="screen">
-				<param name="server_addr" value="$(arg server_addr)"/>
-				<param name="server_port" value="$(arg server_port)" type="str"/>
-				<param name="system_name" value="$(arg system_name)"/>
-				<param name="imc_id" value="$(arg imc_id)"/>
-			</node>
+		<!-- at least stick the bridge into its own space... -->
+		<node name="imc_ros_bridge" pkg="imc_ros_bridge" type="bridge_node" output="screen" ns="imc">
+			<param name="neptus_addr" value="$(arg neptus_addr)"/>
+			<param name="bridge_addr" value="$(arg bridge_addr)"/>
+			<param name="bridge_port" value="$(arg bridge_port)" type="str"/>
+			<param name="system_name" value="$(arg imc_system_name)"/>
+			<param name="imc_id" value="$(arg imc_id)"/>
+		</node>
 
 
-			<node name="sam_bt" pkg="waypoints" type="sam_bt.py" output="screen">
-				<param name="system_name" value="$(arg system_name)" />
-				<param name="utm_zone" value="$(arg utm_zone)" />
-				<param name="utm_band" value="$(arg utm_band)" />
-				<!-- No better way to go 'up' a ns level is there? -->
-				<remap from="/bezier_planner" to="/$(arg robot_name)/ctrl/yaw_planner"/>
-			</node>   
-
-		</group>
+		<!-- the BT needs access to just about everything under /sam/xyz/... so the BT can not be put under /sam/abc itself. If you do that, a lot of topics inside the BT must be global, which will induce headaches when you want multiple SAMs later. -->
+		<node name="sam_bt" pkg="waypoints" type="sam_bt.py" output="screen">
+			<param name="utm_zone" value="$(arg utm_zone)" />
+			<param name="utm_band" value="$(arg utm_band)" />
+			<remap from="/bezier_planner" to="ctrl/yaw_planner"/>
+		</node>   
 
     </group>
     
