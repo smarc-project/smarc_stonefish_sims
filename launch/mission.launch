@@ -5,8 +5,6 @@
 
 	<!-- BT Related -->
 	<!-- Croatia, biograd coast, lat lon zone band, all four from there -->
-    <!-- arg name="latitude" default="43.93183"/-->
-    <!-- arg name="longitude" default="15.44264"/-->
     <arg name="utm_zone" default="33"/>
     <arg name="utm_band" default="T"/>
 
