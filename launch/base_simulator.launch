@@ -17,6 +17,7 @@
     <!-- Static transform -->
     <node pkg="tf" type="static_transform_publisher" name="world_local_broadcaster" args="0 0 0 0 0 0 1 world_local world 100" />
     <node pkg="tf" type="static_transform_publisher" name="world2ned" args="0 0 0 1.571 0 3.1416 world world_ned 100"/>
+    <node pkg="tf" type="static_transform_publisher" name="world_utm_broadcaster" args="535529 4864397 0 0 0 0 1 world_utm world_local 100" />
 
     <!-- Run Simulator -->
     <include file="$(find sam_stonefish_sim)/launch/simulator.launch">
@@ -24,7 +25,7 @@
         <arg name="scenario_description" value="$(arg scenario_description)"/>
         <arg name="environment_file" value="$(arg environment_file)"/>
         <arg name="robot_file" value="$(arg robot_file)"/>
-        <arg name="simulation_rate" value="100.0"/>
+        <arg name="simulation_rate" value="50.0"/>
         <arg name="graphics_resolution" value="1500 950"/>
         <arg name="graphics_quality" value="high"/>
         <arg name="robot_name" value="$(arg robot_name)"/>
