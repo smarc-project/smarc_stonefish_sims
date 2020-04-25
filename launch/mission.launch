@@ -5,8 +5,6 @@
 
 	<!-- BT Related -->
 	<!-- Croatia, biograd coast, lat lon zone band, all four from there -->
-    <arg name="latitude" default="43.93183"/>
-    <arg name="longitude" default="15.44264"/>
     <arg name="utm_zone" default="33"/>
     <arg name="utm_band" default="T"/>
 
@@ -16,58 +14,20 @@
     <arg name="bridge_addr" default="127.0.0.1"/>
     <arg name="bridge_port" default="6002"/>
 	<arg name="node_name" default="imc_bridge"/>
-    <arg name="imc_system_name" default="$(arg robot_name)"/>
-	<!-- 4=imc_ros_bridge, 5=sam, 6=lolo -->
+	<!-- 4=imc_ros_bridge, 5=sam, 6=lolo as defined in neptus configs -->
     <arg name="imc_id" default="5"/>
 
-
-
-    <arg name="base_frame" default="$(arg robot_name)/base_link"/>
+	<!-- Yaw planner related -->
     <arg name="goal_tolerance" default="5."/>
 
-     <!-- Static transform -->
-    <node pkg="tf" type="static_transform_publisher" name="world_utm_broadcaster" args="535529 4864397 0 0 0 0 1 world_utm world_local 100" />
-
-    <node pkg="rostopic" type="rostopic" name="fake_gps_fix"
-          args="pub /gps/fix sensor_msgs/NavSatFix --latch
-          '{header: {seq: 999, stamp: {secs: 0, nsecs: 0}, frame_id: 'world_local'},
-            status: {status: 0, service: 1},
-            latitude: $(arg latitude),
-            longitude: $(arg longitude),
-            altitude: 0,
-            position_covariance: [3.9561210000000004, 0.0, 0.0, 0.0, 3.9561210000000004, 0.0, 0.0, 0.0, 7.650756],
-            position_covariance_type: 2}'" output="screen"/>
-
-    <group ns="$(arg robot_name)">
-
-        <group ns="ctrl">
-
-            <node name="yaw_planner" pkg="auv_simple_motion_planner" type="yaw_planner.py" output="screen">
-                <param name="goal_tolerance" value="$(arg goal_tolerance)" />
-                <param name="base_frame" value="$(arg base_frame)" />
-            </node>
-    
-        </group>
+	<!-- 
+	Launches bt, imc bridge and yaw_planner, consolidated because these
+	are identical for both sim and real sam and this package is not on the real sam.
+	Left this launch file here for possible sim-only configurations.
+	-->
+	<include file="$(find sam_mission)/launch/mission.launch" pass_all_args="true"/>
 
 
 
-		<!-- at least stick the bridge into its own space... -->
-		<node name="imc_ros_bridge" pkg="imc_ros_bridge" type="bridge_node" output="screen" ns="imc">
-			<param name="neptus_addr" value="$(arg neptus_addr)"/>
-			<param name="bridge_addr" value="$(arg bridge_addr)"/>
-			<param name="bridge_port" value="$(arg bridge_port)" type="str"/>
-			<param name="system_name" value="$(arg imc_system_name)"/>
-			<param name="imc_id" value="$(arg imc_id)"/>
-		</node>
-
-
-		<!-- the BT needs access to just about everything under /sam/xyz/... so the BT can not be put under /sam/abc itself. If you do that, a lot of topics inside the BT must be global, which will induce headaches when you want multiple SAMs later. -->
-		<node name="sam_bt" pkg="waypoints" type="sam_bt.py" output="screen">
-			<param name="utm_zone" value="$(arg utm_zone)" />
-			<param name="utm_band" value="$(arg utm_band)" />
-			<remap from="/bezier_planner" to="ctrl/yaw_planner"/>
-		</node>   
-
-    </group>
     
 </launch>
