@@ -20,9 +20,14 @@
 	<!-- Yaw planner related -->
     <arg name="goal_tolerance" default="5."/>
 
+	<!-- 
+	Launches bt, imc bridge and yaw_planner, consolidated because these
+	are identical for both sim and real sam and this package is not on the real sam.
+	Left this launch file here for possible sim-only configurations.
+	-->
+	<include file="$(find sam_mission)/launch/mission.launch" pass_all_args="true"/>
 
-	<include file="$(find imc_ros_bridge)/launch/bridge_sam.launch" pass_all_args="true"/>
-	<include file="$(find waypoints)/launch/bt_sam.launch" pass_all_args="true"/>
-	<include file="$(find auv_simple_motion_planner)/launch/yaw_planner.launch" pass_all_args="true"/>
+
+
     
 </launch>
