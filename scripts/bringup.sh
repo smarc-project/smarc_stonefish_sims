@@ -1,4 +1,5 @@
 SESSION=sam_bringup
+ROBOT_NAME=sam1
 # This is the workspace containing the ros packages that are needed
 
 tmux -2 new-session -d -s $SESSION
@@ -14,19 +15,20 @@ tmux select-window -t $SESSION:0
 tmux send-keys "roscore" C-m
 
 tmux select-window -t $SESSION:1
-tmux send-keys "rosrun flexxros sam_controls.py _display_ip:=localhost" C-m
+# tmux send-keys "rosrun flexxros sam_controls.py _display_ip:=localhost" C-m
+tmux send-keys "mon launch flexxros sam_controls.launch robot_name:=$ROBOT_NAME display_ip:=localhost --name=$(tmux display-message -p 'p#I_#W')" C-m
 
 tmux select-window -t $SESSION:2
-tmux send-keys "mon launch sam_stonefish_sim base_simulator.launch with_teleop:=false --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+tmux send-keys "mon launch sam_stonefish_sim base_simulator.launch with_teleop:=false robot_name:=$ROBOT_NAME --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 tmux select-window -t $SESSION:3
-tmux send-keys "mon launch sam_basic_controllers static_controllers.launch --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+tmux send-keys "mon launch sam_basic_controllers static_controllers.launch robot_name:=$ROBOT_NAME --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 tmux select-window -t $SESSION:4
-tmux send-keys "mon launch sam_basic_controllers dynamic_controllers.launch --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+tmux send-keys "mon launch sam_basic_controllers dynamic_controllers.launch robot_name:=$ROBOT_NAME --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 tmux select-window -t $SESSION:5
-tmux send-keys "mon launch sam_stonefish_sim mission.launch --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 # Set default window
 tmux select-window -t $SESSION:0
