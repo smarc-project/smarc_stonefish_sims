@@ -66,7 +66,7 @@
             <param name="robot_name" value="$(arg robot_name)"/>
         </node>
 
-        <node name="odom_republish" type="relay" pkg="topic_tools" args="/sam/dynamics/odometry /sam/dr/odom" output="screen" if="$(arg simulate_dr)"/>
+        <node name="odom_republish" type="relay" pkg="topic_tools" args="dynamics/odometry dr/odom" output="screen" if="$(arg simulate_dr)"/>
   
         <!-- This could be added eventually but we'd need to put it in a public package, like sam_common -->
         <!-- <node pkg="sam_drivers" type="sam_startup_check.py" name="startup_check" output="screen"/> -->
