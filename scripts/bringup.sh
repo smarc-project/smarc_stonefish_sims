@@ -1,6 +1,13 @@
 SESSION=sam_bringup
 ROBOT_NAME=sam1
-# This is the workspace containing the ros packages that are needed
+
+# Biograd
+UTM_ZONE=33
+UTM_BAND=N
+LATITUDE=43.93183
+LONGITUDE=15.44264
+# ADD other environments, do not just replace above
+
 
 tmux -2 new-session -d -s $SESSION
 
@@ -19,7 +26,7 @@ tmux select-window -t $SESSION:1
 tmux send-keys "mon launch flexxros sam_controls.launch robot_name:=$ROBOT_NAME display_ip:=localhost --name=$(tmux display-message -p 'p#I_#W')" C-m
 
 tmux select-window -t $SESSION:2
-tmux send-keys "mon launch sam_stonefish_sim base_simulator.launch with_teleop:=false robot_name:=$ROBOT_NAME --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+tmux send-keys "mon launch sam_stonefish_sim base_simulator.launch with_teleop:=false robot_name:=$ROBOT_NAME latitude:=$LATITUDE longitude:=$LONGITUDE --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 tmux select-window -t $SESSION:3
 tmux send-keys "mon launch sam_basic_controllers static_controllers.launch robot_name:=$ROBOT_NAME --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
@@ -28,7 +35,7 @@ tmux select-window -t $SESSION:4
 tmux send-keys "mon launch sam_basic_controllers dynamic_controllers.launch robot_name:=$ROBOT_NAME --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 tmux select-window -t $SESSION:5
-tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 # Set default window
 tmux select-window -t $SESSION:0
