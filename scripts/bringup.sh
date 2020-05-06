@@ -1,13 +1,10 @@
-# robot numbers will be appended to these
-SESSION=sam_bringup
+SIM_SESSION=core_sim
 
 # by default, no numbering on anything
 ROBOT_NAME=sam
-ROBOT_SESSION=$SESSION
 
-NUM_ROBOTS=2
+NUM_ROBOTS=1
 
-MAIN_SESSION=core_sim
 
 # Dont forget to change environment_file in base_simulator too
 # Biograd
@@ -51,19 +48,28 @@ fi
 
 
 # Main simulation, has its own session and does not loop over num robots
-tmux -2 new-session -d -s $MAIN_SESSION
-tmux new-window -t $MAIN_SESSION:0 -n 'roscore'
-tmux new-window -t $MAIN_SESSION:1 -n 'base_simulator'
+tmux -2 new-session -d -s $SIM_SESSION
+tmux new-window -t $SIM_SESSION:0 -n "roscore"
+tmux new-window -t $SIM_SESSION:1 -n "base_simulator"
 
-tmux select-window -t $MAIN_SESSION:0
+tmux select-window -t $SIM_SESSION:0
 tmux send-keys "roscore" C-m
 
-tmux select-window -t $MAIN_SESSION:1
+tmux select-window -t $SIM_SESSION:1
 tmux send-keys "mon launch sam_stonefish_sim base_simulator.launch robot_name:=$ROBOT_NAME latitude:=$LATITUDE longitude:=$LONGITUDE scenario_description:=$SCENARIO_DESC --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+
+
+
+# ADD ANY LAUNCHES THAT NEED TO BE LAUNCHED ONLY ONCE, EVEN WHEN THERE ARE 10 SAMS HERE
+
+
+
 echo "Started sim"
 
-
-
+# we will name tmux sessions the same as robot name
+SESSION=sam_bringup
+# if one robot, launch everything in the same session
+ROBOT_SESSION="$SIM_SESSION"
 
 # seq ranges are inclusive both sides
 for ROBOT_NUM in $(seq 1 $NUM_ROBOTS)
@@ -86,6 +92,7 @@ do
 
 	# a new session for the robot-related stuff
 	tmux -2 new-session -d -s $ROBOT_SESSION
+	echo "Launched new session: $ROBOT_SESSION"
 
 	tmux new-window -t $ROBOT_SESSION:2 -n 'sam_gui'
 	tmux new-window -t $ROBOT_SESSION:3 -n 'sam_sim_extras'
@@ -108,12 +115,18 @@ do
 	tmux select-window -t $ROBOT_SESSION:6
 	tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND bridge_port:=$BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
-	# i will be selfish and select the mission window by default
-	tmux select-window -t $ROBOT_SESSION:6
+
+
+
+	# ADD NEW LAUNCHES THAT ARE SPECIFIC TO ONE SAM HERE
+
+
+
+
 done
 
 
 # Set default window
-tmux select-window -t $MAIN_SESSION:1
+tmux select-window -t $SIM_SESSION:1
 # Attach to session
-tmux -2 attach-session -t $MAIN_SESSION
+tmux -2 attach-session -t $SIM_SESSION
