@@ -3,10 +3,16 @@ ROBOT_NAME=sam1
 
 # Biograd
 UTM_ZONE=33
-UTM_BAND=N
+UTM_BAND=T
 LATITUDE=43.93183
 LONGITUDE=15.44264
 # ADD other environments, do not just replace above
+
+# localhost for simulation, unless case the simulation is done on
+# a different computer, no need to change these
+NEPTUS_IP=127.0.0.1
+SAM_IP=127.0.0.1
+BRIDGE_PORT=6002
 
 
 tmux -2 new-session -d -s $SESSION
@@ -35,7 +41,7 @@ tmux select-window -t $SESSION:4
 tmux send-keys "mon launch sam_basic_controllers dynamic_controllers.launch robot_name:=$ROBOT_NAME --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 tmux select-window -t $SESSION:5
-tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND bridge_port:=$BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 # Set default window
 tmux select-window -t $SESSION:0
