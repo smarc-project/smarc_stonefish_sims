@@ -1,10 +1,9 @@
+NUM_ROBOTS=2
+
+
 SIM_SESSION=core_sim
-
-# by default, no numbering on anything
-ROBOT_NAME=sam
-
-NUM_ROBOTS=1
-
+# by default, no numbering for one robot
+ROBOT_BASE_NAME=sam
 
 # Dont forget to change environment_file in base_simulator too
 # Biograd
@@ -39,8 +38,9 @@ SCENARIO_DESC=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO".scn
 # sam_biograd_hd_2.scn should have 2 sams in it etc.
 if [ $NUM_ROBOTS -gt 1 ] #spaces important
 then 
-	ENVIRONMENT_FILE=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO"_"$NUM_ROBOTS".scn
+	SCENARIO_DESC=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO"_"$NUM_ROBOTS".scn
 fi
+echo "Using scenario: $SCENARIO_DESC"
 # ALSO
 # take care that in the scenario files, robot_name <arg>s follow the same naming scheme
 # as done here in the loop below.
@@ -48,28 +48,27 @@ fi
 
 
 # Main simulation, has its own session and does not loop over num robots
-tmux -2 new-session -d -s $SIM_SESSION
-tmux new-window -t $SIM_SESSION:0 -n "roscore"
+tmux -2 new-session -d -s $SIM_SESSION -n "roscore"
 tmux new-window -t $SIM_SESSION:1 -n "base_simulator"
 
 tmux select-window -t $SIM_SESSION:0
 tmux send-keys "roscore" C-m
 
 tmux select-window -t $SIM_SESSION:1
-tmux send-keys "mon launch sam_stonefish_sim base_simulator.launch robot_name:=$ROBOT_NAME latitude:=$LATITUDE longitude:=$LONGITUDE scenario_description:=$SCENARIO_DESC --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
-
+tmux send-keys "mon launch sam_stonefish_sim base_simulator.launch robot_name:=$ROBOT_BASE_NAME latitude:=$LATITUDE longitude:=$LONGITUDE scenario_description:=$SCENARIO_DESC --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 
 # ADD ANY LAUNCHES THAT NEED TO BE LAUNCHED ONLY ONCE, EVEN WHEN THERE ARE 10 SAMS HERE
 
 
 
-echo "Started sim"
 
-# we will name tmux sessions the same as robot name
 SESSION=sam_bringup
 # if one robot, launch everything in the same session
 ROBOT_SESSION="$SIM_SESSION"
+# and with the same robot_name without numbering
+ROBOT_NAME="$ROBOT_BASE_NAME"
+IMC_ID=5
 
 # seq ranges are inclusive both sides
 for ROBOT_NUM in $(seq 1 $NUM_ROBOTS)
@@ -80,19 +79,22 @@ do
 	if [ $NUM_ROBOTS -gt 1 ] #spaces important
 	then 
 		ROBOT_SESSION="${SESSION}_${ROBOT_NUM}"
-		echo $ROBOT_SESSION
-		ROBOT_NAME="${ROBOT_NAME}_${ROBOT_NUM}"
-		echo $ROBOT_NAME
+		# echo $ROBOT_SESSION
+		ROBOT_NAME="${ROBOT_BASE_NAME}_${ROBOT_NUM}"
+		# echo $ROBOT_NAME
 		# increment from the default port by 1 for every _extra_ robot
 		let WEBGUI_PORT=WEBGUI_PORT+ROBOT_NUM-1
 		let BRIDGE_PORT=BRIDGE_PORT+ROBOT_NUM-1
+		let IMC_ID=IMC_ID+ROBOT_NUM-1
 	fi
 
 	# Single SAM launch
 
 	# a new session for the robot-related stuff
+	# this will throw a 'duplicate session' warning if num_robots=1
+	# but that can be safely ignored
 	tmux -2 new-session -d -s $ROBOT_SESSION
-	echo "Launched new session: $ROBOT_SESSION"
+	# echo "Launched new session: $ROBOT_SESSION"
 
 	tmux new-window -t $ROBOT_SESSION:2 -n 'sam_gui'
 	tmux new-window -t $ROBOT_SESSION:3 -n 'sam_sim_extras'
@@ -101,19 +103,19 @@ do
 	tmux new-window -t $ROBOT_SESSION:6 -n 'sam_mission'
 
 	tmux select-window -t $ROBOT_SESSION:2
-	tmux send-keys "mon launch flexxros sam_controls.launch robot_name:=$ROBOT_NAME display_ip:=localhost display_port:=$WEBGUI_PORT --name=$(tmux display-message -p 'p#I_#W')" C-m
+	tmux send-keys "mon launch flexxros sam_controls.launch robot_name:=$ROBOT_NAME display_ip:=localhost display_port:=$WEBGUI_PORT --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W')" C-m
 
 	tmux select-window -t $ROBOT_SESSION:3
-	tmux send-keys "mon launch sam_stonefish_sim base_simulator_extras.launch with_teleop:=false robot_name:=$ROBOT_NAME --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+	tmux send-keys "mon launch sam_stonefish_sim base_simulator_extras.launch with_teleop:=false robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 	tmux select-window -t $ROBOT_SESSION:4
-	tmux send-keys "mon launch sam_basic_controllers static_controllers.launch robot_name:=$ROBOT_NAME --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+	tmux send-keys "mon launch sam_basic_controllers static_controllers.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 	tmux select-window -t $ROBOT_SESSION:5
-	tmux send-keys "mon launch sam_basic_controllers dynamic_controllers.launch robot_name:=$ROBOT_NAME --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+	tmux send-keys "mon launch sam_basic_controllers dynamic_controllers.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 	tmux select-window -t $ROBOT_SESSION:6
-	tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND bridge_port:=$BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+	tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND bridge_port:=$BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP imc_id:=$IMC_ID --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 
 

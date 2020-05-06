@@ -9,7 +9,7 @@
 
     <include file="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml">
 		<arg name="robot_name" value="sam_2" />
-		<arg name="robot_pos" value="0.0 0.0 0.0" />
+		<arg name="robot_pos" value="0.0 2.0 0.0" />
 	</include>
 
 
