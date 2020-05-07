@@ -83,6 +83,8 @@ and the arrow keys for controlling the direction.
 
 ### Mission planning with neptus
 
+First of all, take a look at `bringup.sh`. It has comments on the required arguments and defaults for just about everything.
+
 Run
 ```
 roslaunch sam_stonefish_sim mission.launch
