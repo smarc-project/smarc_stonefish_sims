@@ -1,4 +1,4 @@
-NUM_ROBOTS=2
+NUM_ROBOTS=1
 
 
 SIM_SESSION=core_sim
@@ -68,7 +68,7 @@ SESSION=sam_bringup
 ROBOT_SESSION="$SIM_SESSION"
 # and with the same robot_name without numbering
 ROBOT_NAME="$ROBOT_BASE_NAME"
-IMC_ID=5
+IMC_SRC=40
 
 # seq ranges are inclusive both sides
 for ROBOT_NUM in $(seq 1 $NUM_ROBOTS)
@@ -85,7 +85,7 @@ do
 		# increment from the default port by 1 for every _extra_ robot
 		let WEBGUI_PORT=WEBGUI_PORT+ROBOT_NUM-1
 		let BRIDGE_PORT=BRIDGE_PORT+ROBOT_NUM-1
-		let IMC_ID=IMC_ID+ROBOT_NUM-1
+		let IMC_SRC=ROBOT_NUM+40
 	fi
 
 	# Single SAM launch
@@ -115,7 +115,7 @@ do
 	tmux send-keys "mon launch sam_basic_controllers dynamic_controllers.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 	tmux select-window -t $ROBOT_SESSION:6
-	tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND bridge_port:=$BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP imc_id:=$IMC_ID --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
+	tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND bridge_port:=$BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP imc_system_name:=$ROBOT_NAME imc_src:=$IMC_SRC --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 
 
