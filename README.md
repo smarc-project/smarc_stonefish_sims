@@ -45,7 +45,7 @@ or create a new workspace. In the `src` folder, execute the commands,
 ```
 git clone https://bitbucket.org/iquarobotics/cola2_msgs.git
 git clone https://github.com/smarc-project/sam_common.git
-git clone https://github.com/nilsbore/sam_stonefish_sim.git
+git clone https://github.com/smarc-project/sam_stonefish_sim.git
 git clone https://github.com/nilsbore/stonefish_ros.git
 cd stonefish_ros
 git submodule update --init
@@ -74,21 +74,25 @@ Just run
 ```
 roslaunch sam_stonefish_sim base_simulator.launch
 ```
+and in another terminal
+```
+roslaunch sam_stonefish_sim base_simulator_extras.launch
+```
 and control the vehicle like normal, with `w` for forwards, `s` for stop
 and the arrow keys for controlling the direction.
 
 ### Mission planning with neptus
 
+First of all, take a look at `bringup.sh`. It has comments on the required arguments and defaults for just about everything.
+
 Run
 ```
-roslaunch sam_stonefish_sim mission_simulator.launch
+roslaunch sam_stonefish_sim mission.launch
 ```
 to start everything that's needed for the simulator and
 interfacing with neptus. Some guidance for how to add SAM
 to neptus can be found [here](https://github.com/smarc-project/imc_ros_bridge).
 It is basically the same as the [BTS tutorial](https://github.com/smarc-project/smarc_scenarios/tree/master/bts_tutorial)
-and I think @KKalem is working on more extensive documentation for that that
-would be just as relevant here.
 
 ### Robot-like interface
 
