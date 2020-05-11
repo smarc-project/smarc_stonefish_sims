@@ -1,4 +1,4 @@
-NUM_ROBOTS=1
+NUM_ROBOTS=2
 
 
 SIM_SESSION=core_sim
@@ -22,6 +22,14 @@ SAM_IP=127.0.0.1
 BRIDGE_PORT=6002
 WEBGUI_PORT=8097
 
+# number of sim steps per frame
+SIMULATION_RATE=50
+echo "Sim rate set to: $SIMULATION_RATE with $NUM_ROBOTS robots"
+
+# visual fidelity of the sim, changes mostly when gpu power is not enough
+# check nvidia-smi, see if it pins to 100%
+GFX_QUALITY="high" # high/medium/low
+
 
 # the scenario and environment that will be loaded in the simulation
 # it includes the world map, auvs, where the auvs are etc.
@@ -36,14 +44,21 @@ SCENARIO_DESC=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO".scn
 # Differentiate between different number of sams with an appended sam count.
 # sam_biograd_hd.scn should have 1 sam
 # sam_biograd_hd_2.scn should have 2 sams in it etc.
+# take care that in the scenario files, robot_name <arg>s follow the same naming scheme
+# as done here in the loop below.
 if [ $NUM_ROBOTS -gt 1 ] #spaces important
 then 
 	SCENARIO_DESC=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO"_"$NUM_ROBOTS".scn
 fi
-echo "Using scenario: $SCENARIO_DESC"
-# ALSO
-# take care that in the scenario files, robot_name <arg>s follow the same naming scheme
-# as done here in the loop below.
+# check if the scenario file exists.
+if [ -f "$SCENARIO_DESC" ]
+then
+	echo "Using scenario: $SCENARIO_DESC"
+else
+	echo "Scenario not found: $SCENARIO_DESC"
+	echo "Did you forget to create one for this number of robots?"
+	exit 1
+fi
 
 
 
@@ -55,7 +70,7 @@ tmux select-window -t $SIM_SESSION:0
 tmux send-keys "roscore" C-m
 
 tmux select-window -t $SIM_SESSION:1
-tmux send-keys "mon launch sam_stonefish_sim base_simulator.launch robot_name:=$ROBOT_BASE_NAME latitude:=$LATITUDE longitude:=$LONGITUDE scenario_description:=$SCENARIO_DESC --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+tmux send-keys "mon launch sam_stonefish_sim base_simulator.launch simulation_rate:=$SIMULATION_RATE graphics_quality:=$GFX_QUALITY robot_name:=$ROBOT_BASE_NAME latitude:=$LATITUDE longitude:=$LONGITUDE scenario_description:=$SCENARIO_DESC --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 
 # ADD ANY LAUNCHES THAT NEED TO BE LAUNCHED ONLY ONCE, EVEN WHEN THERE ARE 10 SAMS HERE
