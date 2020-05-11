@@ -1,4 +1,4 @@
-NUM_ROBOTS=2
+NUM_ROBOTS=1
 
 
 SIM_SESSION=core_sim
