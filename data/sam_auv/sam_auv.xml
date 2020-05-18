@@ -159,24 +159,24 @@
         </propeller>
     </actuator>
 
-    <actuator name="StatusLED1" type="light">
-        <link name="Vehicle"/>
-        <origin rpy="3.1416 0.0 0.0" xyz="0.3 0.0 0.12"/>
-        <specs illuminance="1000.0" cone_angle="10.0"/>
-        <color rgb="0.0 256.0 0.0"/>
-    </actuator> 
-    <actuator name="StatusLED2" type="light">
-        <link name="Vehicle"/>
-        <origin rpy="3.1416 0.0 0.0" xyz="0.32 0.0 0.12"/>
-        <specs illuminance="1000.0" cone_angle="10.0"/>
-        <color rgb="256.0 0.0 0.0"/>
-    </actuator> 
-    <actuator name="FlashLED" type="light">
-        <link name="Vehicle"/>
-        <origin rpy="0.0 2.5 0.0" xyz="0.2 0.0 -0.12"/>
-        <specs illuminance="500.0" cone_angle="60.0"/>
-        <color rgb="256.0 256.0 256.0"/>
-    </actuator> 
+    <!-- <actuator name="StatusLED1" type="light"> -->
+        <!-- <link name="Vehicle"/> -->
+        <!-- <origin rpy="3.1416 0.0 0.0" xyz="0.3 0.0 0.12"/> -->
+        <!-- <specs illuminance="1000.0" cone_angle="10.0"/> -->
+        <!-- <color rgb="0.0 256.0 0.0"/> -->
+    <!-- </actuator>  -->
+    <!-- <actuator name="StatusLED2" type="light"> -->
+        <!-- <link name="Vehicle"/> -->
+        <!-- <origin rpy="3.1416 0.0 0.0" xyz="0.32 0.0 0.12"/> -->
+        <!-- <specs illuminance="1000.0" cone_angle="10.0"/> -->
+        <!-- <color rgb="256.0 0.0 0.0"/> -->
+    <!-- </actuator>  -->
+    <!-- <actuator name="FlashLED" type="light"> -->
+        <!-- <link name="Vehicle"/> -->
+        <!-- <origin rpy="0.0 2.5 0.0" xyz="0.2 0.0 -0.12"/> -->
+        <!-- <specs illuminance="500.0" cone_angle="60.0"/> -->
+        <!-- <color rgb="256.0 256.0 256.0"/> -->
+    <!-- </actuator>  -->
 
     <actuator name="ServoLCG" type="servo">
         <joint name="lcg_joint"/>

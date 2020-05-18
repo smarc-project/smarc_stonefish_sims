@@ -1,14 +1,18 @@
 <launch>
 
+	<arg name="graphics_resolution" default="1500 950"/>
+	<arg name="graphics_quality" default="high"/>
+    <arg name="simulation_rate" default="100.0"/>
     <arg name="hd_model" default="true"/>
-    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn"/>
-    <arg name="environment_file" default="$(find sam_stonefish_sim)/data/biograd_world/biograd_env.scn"/>
     <arg name="robot_file" default="$(find sam_stonefish_sim)/data/sam_auv/sam_auv.xml" unless="$(arg hd_model)"/>
     <arg name="robot_file" default="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml" if="$(arg hd_model)"/>
+
+
+	<arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn" />
+	<arg name="environment_file" default="$(find sam_stonefish_sim)/data/biograd_world/biograd_env.scn"/>
     <arg name="simulation_data" default="$(find sam_stonefish_sim)/data"/> <!-- path to the data directory -->
     <arg name="robot_name" default="sam"/>
     <arg name="xacro_file" default="$(find sam_description)/urdf/sam_auv.urdf.xacro"/>
-    <arg name="with_teleop" default="true"/>
     <arg name="latitude" default="43.93183"/>
     <arg name="longitude" default="15.44264"/>
     <arg name="robot_pos" default="0.0 0.0 1.0"/>
@@ -25,52 +29,14 @@
         <arg name="scenario_description" value="$(arg scenario_description)"/>
         <arg name="environment_file" value="$(arg environment_file)"/>
         <arg name="robot_file" value="$(arg robot_file)"/>
-        <arg name="simulation_rate" value="100.0"/>
-        <arg name="graphics_resolution" value="1500 950"/>
-        <arg name="graphics_quality" value="high"/>
+        <arg name="simulation_rate" value="$(arg simulation_rate)"/>
+        <arg name="graphics_resolution" value="$(arg graphics_resolution)"/>
+        <arg name="graphics_quality" value="$(arg graphics_quality)"/>
         <arg name="robot_name" value="$(arg robot_name)"/>
         <arg name="latitude" value="$(arg latitude)"/>
         <arg name="longitude" value="$(arg longitude)"/>
         <arg name="robot_pos" value="$(arg robot_pos)"/>
         <arg name="simulate_dr" value="$(arg simulate_dr)"/>
     </include>
-
-    <group ns="$(arg robot_name)">
-
-        <!-- Robot description -->
-        <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg xacro_file)' debug:=true robot_namespace:=$(arg robot_name)"/>
-
-        <!-- Robot state publisher -->
-        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
-            <!-- <remap from="robot_description" to="$(arg robot_name)/robot_description"/> -->
-        </node>
-
-        <!-- The joint state publisher is useful if you just want to move the actuators around -->
-        <!--
-        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen">
-          <remap from="joint_states" to="$(arg robot_name)/desired_joint_states"/>
-          <remap from="$(arg robot_name)/joint_states" to="$(arg robot_name)/dummy_joint_states"/>
-          <remap from="robot_description" to="$(arg robot_name)/robot_description"/>
-          <param name="use_gui" value="true"/>
-          <param name="publish_default_positions" value="false"/>
-        </node>
-        -->
-
-        <node name="teleop" type="sam_teleop.py" pkg="sam_stonefish_sim" output="screen" if="$(arg with_teleop)"/> 
-    
-        <include file="$(find sam_stonefish_sim)/launch/vbs_controller.launch">
-              <arg name="robot_name" value="$(arg robot_name)"/>
-        </include>
-
-        <node name="msg_bridge" type="sam_sim_msg_bridge.py" pkg="sam_stonefish_sim" output="screen">
-            <param name="robot_name" value="$(arg robot_name)"/>
-        </node>
-
-        <node name="odom_republish" type="relay" pkg="topic_tools" args="/sam/dynamics/odometry /sam/dr/odom" output="screen" if="$(arg simulate_dr)"/>
-  
-        <!-- This could be added eventually but we'd need to put it in a public package, like sam_common -->
-        <!-- <node pkg="sam_drivers" type="sam_startup_check.py" name="startup_check" output="screen"/> -->
-
-    </group>
 
 </launch>
