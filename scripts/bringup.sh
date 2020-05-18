@@ -61,6 +61,13 @@ else
 fi
 
 
+# ros mon can create gigantic core dumps. I had well over 4Gb of dumps happen.
+# this cmd will limit system-wide core dumps to a tiny amount. uncomment if
+# you need the core dumps for some reason.
+# there is currently no way to configure rosmon only.
+# see: https://github.com/xqms/rosmon/issues/107
+ulimit -c 1
+
 
 # Main simulation, has its own session and does not loop over num robots
 tmux -2 new-session -d -s $SIM_SESSION -n "roscore"
