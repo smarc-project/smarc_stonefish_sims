@@ -1,0 +1,57 @@
+#!/usr/bin/python
+
+import rospy
+import numpy as np
+from sam_msgs.msg import ThrusterRPMs
+from geometry_msgs.msg import TwistStamped
+from uavcan_ros_bridge.msg import ESCStatus
+from sbg_driver.msg import SbgEkfEuler
+from nav_msgs.msg import Odometry
+import message_filters
+from sensor_msgs.msg import Imu
+import tf
+from geometry_msgs.msg import Quaternion
+
+class GTOdom(object):
+
+    def __init__(self):
+        
+        self.rpm_fb_topic = rospy.get_param('~thrust_fb', '/sam/core/rpm_fb')
+        self.imu_topic = rospy.get_param('~sbg_imu', '/sam/core/stim_imu')
+        self.base_frame = rospy.get_param('~base_frame', 'sam/base_link')
+        self.odom_frame = rospy.get_param('~odom_frame', 'world')
+
+        self.sub_stone_odom = rospy.Subscriber('/sam/dynamics/odometry', Odometry, self.gt_odom_cb)
+
+        self.pub_odom = rospy.Publisher('/sam/gt/odom', Odometry, queue_size=10)
+       
+        rospy.spin()
+
+
+    def gt_odom_cb(self, stone_odom_msg):
+
+        odom_msg = Odometry()
+        odom_msg.header.frame_id = 'map'
+        odom_msg.header.stamp = stone_odom_msg.header.stamp 
+        odom_msg.child_frame_id = 'gt/sam/base_link'
+        odom_msg.pose.pose.position.x = stone_odom_msg.pose.pose.position.y
+        odom_msg.pose.pose.position.y =  stone_odom_msg.pose.pose.position.x
+        odom_msg.pose.pose.position.z = -stone_odom_msg.pose.pose.position.z
+        (roll, pitch, yaw) = tf.transformations.euler_from_quaternion([stone_odom_msg.pose.pose.orientation.y,
+                                                                       stone_odom_msg.pose.pose.orientation.x,
+                                                                       -stone_odom_msg.pose.pose.orientation.z,
+                                                                       stone_odom_msg.pose.pose.orientation.w])
+
+        quat = tf.transformations.quaternion_from_euler(roll, pitch, yaw-1.57)            
+        odom_msg.pose.pose.orientation = Quaternion(quat[0], quat[1], quat[2], quat[3])
+
+        self.pub_odom.publish(odom_msg)
+
+
+if __name__ == "__main__":
+
+    rospy.init_node('gt_odom_provider')
+    try:
+        GTOdom()
+    except rospy.ROSInterruptException:
+        pass
