@@ -284,10 +284,25 @@
 
     <sensor name="imu_link" type="imu" rate="20.0">
         <link name="Vehicle"/>
-        <origin rpy="0.0 -1.5707 0.0" xyz="0.9 0.0 0.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.9 0.0 0.0"/>
         <noise angle="0.000001745" angular_velocity="0.00001745"/>
-        <ros_publisher topic="/$(param robot_name)/core/stim_imu"/>
+        <ros_publisher topic="/$(param robot_name)/core/stim_imu_sim"/>
     </sensor>
+
+    <sensor name="sbg_link" type="imu" rate="50.0">
+        <link name="Vehicle"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.472 0 0.03"/>
+        <noise angle="0.000001745" angular_velocity="0.00001745"/>
+        <ros_publisher topic="/$(param robot_name)/core/sbg_imu_sim"/>
+    </sensor>
+
+    <!-- Compass doesn't seem to have a ROS parser -->
+<!--     <sensor name="mag_link" type="compass" rate="50.0">
+        <link name="Vehicle"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.472 0 0.03"/>
+        <noise heading="0.000001745"/>
+        <ros_publisher topic="/$(param robot_name)/core/mag_sim"/>
+    </sensor> -->
 
     <sensor name="gps_link" type="gps" rate="1.0">
         <link name="Vehicle"/>

@@ -126,6 +126,7 @@ do
 	tmux new-window -t $ROBOT_SESSION:4 -n 'sam_static_ctrl'
 	tmux new-window -t $ROBOT_SESSION:5 -n 'sam_dyn_ctrl'
 	tmux new-window -t $ROBOT_SESSION:6 -n 'sam_mission'
+	tmux new-window -t $ROBOT_SESSION:7 -n 'sam_dr'
 
 	tmux select-window -t $ROBOT_SESSION:2
 	tmux send-keys "mon launch flexxros sam_controls.launch robot_name:=$ROBOT_NAME display_ip:=localhost display_port:=$WEBGUI_PORT --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W')" C-m
@@ -141,6 +142,9 @@ do
 
 	tmux select-window -t $ROBOT_SESSION:6
 	tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND bridge_port:=$BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP imc_system_name:=$ROBOT_NAME imc_src:=$IMC_SRC --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
+
+	tmux select-window -t $ROBOT_SESSION:7
+	tmux send-keys "mon launch sam_dead_reckoning dual_ekf_test.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 
 
