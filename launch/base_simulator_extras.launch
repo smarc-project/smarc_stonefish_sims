@@ -7,6 +7,9 @@
 
     <group ns="$(arg robot_name)">
 
+        <!-- Necessary for GT odom from simulator -->
+        <node name="map_2_ned" pkg="tf" type="static_transform_publisher" args="0 0 0 1.57 0 3.14 map world_ned 100" />
+
         <!-- Robot description -->
         <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg xacro_file)' debug:=true robot_namespace:=$(arg robot_name)"/>
 
@@ -36,7 +39,11 @@
             <param name="robot_name" value="$(arg robot_name)"/>
         </node>
 
-        <node name="odom_republish" type="relay" pkg="topic_tools" args="dynamics/odometry dr/odom" output="screen" if="$(arg simulate_dr)"/>
+        <node name="gt_odom_provider" type="odom_gt_prov.py" pkg="sam_stonefish_sim" output="screen">
+            <param name="robot_name" value="$(arg robot_name)"/>
+        </node>
+
+        <!-- <node name="odom_republish" type="relay" pkg="topic_tools" args="dynamics/odometry dr/odom" output="screen" if="$(arg simulate_dr)"/> -->
   
         <!-- This could be added eventually but we'd need to put it in a public package, like sam_common -->
         <!-- <node pkg="sam_drivers" type="sam_startup_check.py" name="startup_check" output="screen"/> -->
