@@ -9,8 +9,10 @@ ROBOT_BASE_NAME=sam
 # Biograd
 UTM_ZONE=33
 UTM_BAND=T
-LATITUDE=43.93183
-LONGITUDE=15.44264
+# LATITUDE=43.93183
+# LONGITUDE=15.44264
+LATITUDE=58.811480
+LONGITUDE=17.596177
 # ADD other environments, do not just replace above
 
 # localhost for simulation, unless the simulation is done on
@@ -33,7 +35,8 @@ GFX_QUALITY="high" # high/medium/low
 
 # the scenario and environment that will be loaded in the simulation
 # it includes the world map, auvs, where the auvs are etc.
-SCENARIO="sam_biograd_hd"
+# SCENARIO="sam_biograd_hd"
+SCENARIO="sam_asko_hd"
 # and it is found here
 SAM_STONEFISH_SIM_PATH="$(rospack find sam_stonefish_sim)"
 SCENARIO_DESC=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO".scn
@@ -60,6 +63,13 @@ else
 	exit 1
 fi
 
+
+# ros mon can create gigantic core dumps. I had well over 4Gb of dumps happen.
+# this cmd will limit system-wide core dumps to a tiny amount. uncomment if
+# you need the core dumps for some reason.
+# there is currently no way to configure rosmon only.
+# see: https://github.com/xqms/rosmon/issues/107
+ulimit -c 1
 
 
 # Main simulation, has its own session and does not loop over num robots
