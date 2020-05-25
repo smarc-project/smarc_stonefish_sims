@@ -225,24 +225,24 @@
         </propeller>
     </actuator>
 
-    <actuator name="StatusLED1" type="light">
-        <link name="Vehicle"/>
-        <origin rpy="3.1416 0.0 0.0" xyz="0.3 0.0 0.12"/>
-        <specs illuminance="1000.0" cone_angle="10.0"/>
-        <color rgb="0.0 256.0 0.0"/>
-    </actuator> 
-    <actuator name="StatusLED2" type="light">
-        <link name="Vehicle"/>
-        <origin rpy="3.1416 0.0 0.0" xyz="0.32 0.0 0.12"/>
-        <specs illuminance="1000.0" cone_angle="10.0"/>
-        <color rgb="256.0 0.0 0.0"/>
-    </actuator> 
-    <actuator name="FlashLED" type="light">
-        <link name="Vehicle"/>
-        <origin rpy="0.0 2.5 0.0" xyz="0.2 0.0 -0.12"/>
-        <specs illuminance="500.0" cone_angle="60.0"/>
-        <color rgb="256.0 256.0 256.0"/>
-    </actuator> 
+    <!-- <actuator name="StatusLED1" type="light"> -->
+        <!-- <link name="Vehicle"/> -->
+        <!-- <origin rpy="3.1416 0.0 0.0" xyz="0.3 0.0 0.12"/> -->
+        <!-- <specs illuminance="1000.0" cone_angle="10.0"/> -->
+        <!-- <color rgb="0.0 256.0 0.0"/> -->
+    <!-- </actuator>  -->
+    <!-- <actuator name="StatusLED2" type="light"> -->
+        <!-- <link name="Vehicle"/> -->
+        <!-- <origin rpy="3.1416 0.0 0.0" xyz="0.32 0.0 0.12"/> -->
+        <!-- <specs illuminance="1000.0" cone_angle="10.0"/> -->
+        <!-- <color rgb="256.0 0.0 0.0"/> -->
+    <!-- </actuator>  -->
+    <!-- <actuator name="FlashLED" type="light"> -->
+        <!-- <link name="Vehicle"/> -->
+        <!-- <origin rpy="0.0 2.5 0.0" xyz="0.2 0.0 -0.12"/> -->
+        <!-- <specs illuminance="500.0" cone_angle="60.0"/> -->
+        <!-- <color rgb="256.0 256.0 256.0"/> -->
+    <!-- </actuator>  -->
 
     <actuator name="ServoLCG" type="servo">
         <joint name="lcg_joint"/>
@@ -299,21 +299,21 @@
     <sensor name="camera_down_link" type="camera" rate="5.0">
         <link name="Vehicle"/>
         <origin rpy="3.1416 0.0 -1.5707" xyz="1.15 0.0 -0.07"/>
-        <specs resolution_x="1360" resolution_y="1024" horizontal_fov="107.0"/>
+        <specs resolution_x="1360" resolution_y="1024" horizontal_fov="55.0"/>
         <ros_publisher topic="/$(param robot_name)/perception/camera_down"/>
     </sensor>
 
     <sensor name="camera_front_left_link" type="camera" rate="5.0">
         <link name="Vehicle"/>
         <origin rpy="1.3 3.1416 2.3416" xyz="1.32 0.05 0.005"/>
-        <specs resolution_x="1360" resolution_y="1024" horizontal_fov="107.0"/>
+        <specs resolution_x="1360" resolution_y="1024" horizontal_fov="55.0"/>
         <ros_publisher topic="/$(param robot_name)/perception/camera_front_left"/>
     </sensor>
 
     <sensor name="camera_front_right_link" type="camera" rate="5.0">
         <link name="Vehicle"/>
         <origin rpy="1.3 3.1416 0.8" xyz="1.32 -0.05 0.005"/>
-        <specs resolution_x="1360" resolution_y="1024" horizontal_fov="107.0"/>
+        <specs resolution_x="1360" resolution_y="1024" horizontal_fov="55.0"/>
         <ros_publisher topic="/$(param robot_name)/perception/camera_front_right"/>
     </sensor>
 

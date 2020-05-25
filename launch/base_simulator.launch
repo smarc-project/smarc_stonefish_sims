@@ -9,23 +9,19 @@
 
 
 	<arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn" />
-	<!-- <arg name="environment_file" default="$(find sam_stonefish_sim)/data/biograd_world/biograd_env.scn"/> -->
-    <arg name="environment_file" default="$(find sam_stonefish_sim)/data/asko_world/asko_env.scn"/>
+	<arg name="environment_file" default="$(find sam_stonefish_sim)/data/biograd_world/biograd_env.scn"/>
     <arg name="simulation_data" default="$(find sam_stonefish_sim)/data"/> <!-- path to the data directory -->
     <arg name="robot_name" default="sam"/>
     <arg name="xacro_file" default="$(find sam_description)/urdf/sam_auv.urdf.xacro"/>
-    <!-- <arg name="latitude" default="43.93183"/> -->
-    <!-- <arg name="longitude" default="15.44264"/> -->
-    <!-- <arg name="robot_pos" default="0.0 0.0 1.0"/> -->
-    <arg name="latitude" default="58.811480"/>
-    <arg name="longitude" default="17.596177"/>
-    <arg name="robot_pos" default="1134.0 4006.0 1.0"/>
+    <arg name="latitude" default="43.93183"/>
+    <arg name="longitude" default="15.44264"/>
+    <arg name="robot_pos" default="0.0 0.0 1.0"/>
     <arg name="simulate_dr" default="true"/>
 
     <!-- Static transform -->
     <node pkg="tf" type="static_transform_publisher" name="world_local_broadcaster" args="0 0 0 0 0 0 1 world_local world 100" />
     <node pkg="tf" type="static_transform_publisher" name="world2ned" args="0 0 0 1.571 0 3.1416 world world_ned 100"/>
-    <node pkg="tf" type="static_transform_publisher" name="world_utm_broadcaster" args="649947.082 6521967.432 0 0 0 0 1 world_utm world_local 100" />
+    <node pkg="tf" type="static_transform_publisher" name="world_utm_broadcaster" args="535529 4864397 0 0 0 0 1 world_utm world_local 100" />
 
     <!-- Run Simulator -->
     <include file="$(find sam_stonefish_sim)/launch/simulator.launch">
