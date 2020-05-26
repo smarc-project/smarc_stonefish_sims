@@ -1,0 +1,7 @@
+<scenario>
+
+    <include file="$(find sam_stonefish_sim)/data/asko_world/asko_env.scn"/>
+    <include file="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml">
+        <arg name="robot_pos" value="0.0 0.0 0.0" />
+	</include>
+</scenario>
