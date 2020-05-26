@@ -3,7 +3,7 @@
     <include file="$(find sam_stonefish_sim)/data/biograd_world/biograd_env.scn"/>
 
     <include file="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml">
-		<arg name="robot_name" value="sam" />
+		<arg name="robot_name" value="$(param robot_name)" />
 		<arg name="robot_pos" value="0.0 0.0 0.0" />
 	</include>
 
