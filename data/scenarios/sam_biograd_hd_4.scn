@@ -3,22 +3,22 @@
     <include file="$(find sam_stonefish_sim)/data/biograd_world/biograd_env.scn"/>
 
     <include file="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml">
-		<arg name="robot_name" value="sam_1" />
+		<arg name="robot_name" value="$(param robot_name)_1" />
 		<arg name="robot_pos" value="0.0 0.0 0.0" />
 	</include>
 
     <include file="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml">
-		<arg name="robot_name" value="sam_2" />
+		<arg name="robot_name" value="$(param robot_name)_2" />
 		<arg name="robot_pos" value="0.0 2.0 0.0" />
 	</include>
 
     <include file="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml">
-		<arg name="robot_name" value="sam_3" />
+		<arg name="robot_name" value="$(param robot_name)_3" />
 		<arg name="robot_pos" value="0.0 4.0 0.0" />
 	</include>
 
     <include file="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml">
-		<arg name="robot_name" value="sam_4" />
+		<arg name="robot_name" value="$(param robot_name)_4" />
 		<arg name="robot_pos" value="0.0 6.0 0.0" />
 	</include>
 
