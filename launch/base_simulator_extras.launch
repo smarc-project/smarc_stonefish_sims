@@ -39,8 +39,13 @@
             <param name="robot_name" value="$(arg robot_name)"/>
         </node>
 
+        <!-- Required to provide "compass" heading since the actual compass is not supported on stonefish ROS -->
         <node name="gt_odom_provider" type="odom_gt_prov.py" pkg="sam_stonefish_sim" output="screen">
-            <param name="robot_name" value="$(arg robot_name)"/>
+            <param name="thrust_fb" value="/$(arg robot_name)/core/rpm_fb"/>
+            <param name="gt_odom_top" value="/$(arg robot_name)/gt/odom"/>
+            <param name="base_frame" value="$(arg robot_name)/base_link"/>
+            <param name="map_frame" value="map"/>
+            <param name="sim_odom_top" value="/$(arg robot_name)/dynamics/odometry"/>
         </node>
 
         <!-- <node name="odom_republish" type="relay" pkg="topic_tools" args="dynamics/odometry dr/odom" output="screen" if="$(arg simulate_dr)"/> -->

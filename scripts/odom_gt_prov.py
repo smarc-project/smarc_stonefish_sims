@@ -17,13 +17,14 @@ class GTOdom(object):
     def __init__(self):
         
         self.rpm_fb_topic = rospy.get_param('~thrust_fb', '/sam/core/rpm_fb')
-        self.imu_topic = rospy.get_param('~sbg_imu', '/sam/core/stim_imu')
+        self.gt_odom_top = rospy.get_param('~gt_odom_top', '/sam/gt/odom')
         self.base_frame = rospy.get_param('~base_frame', 'sam/base_link')
-        self.odom_frame = rospy.get_param('~odom_frame', 'world')
+        self.map_frame = rospy.get_param('~map_frame', 'map')
+        self.sim_odom_top = rospy.get_param('~sim_odom_top', '/sam/dynamics/odometry')
 
-        self.sub_stone_odom = rospy.Subscriber('/sam/dynamics/odometry', Odometry, self.gt_odom_cb)
+        self.sub_stone_odom = rospy.Subscriber(self.sim_odom_top, Odometry, self.gt_odom_cb)
 
-        self.pub_odom = rospy.Publisher('/sam/gt/odom', Odometry, queue_size=10)
+        self.pub_odom = rospy.Publisher(self.gt_odom_top, Odometry, queue_size=10)
        
         rospy.spin()
 
@@ -31,9 +32,9 @@ class GTOdom(object):
     def gt_odom_cb(self, stone_odom_msg):
 
         odom_msg = Odometry()
-        odom_msg.header.frame_id = 'map'
+        odom_msg.header.frame_id = self.map_frame
         odom_msg.header.stamp = stone_odom_msg.header.stamp 
-        odom_msg.child_frame_id = 'gt/sam/base_link'
+        odom_msg.child_frame_id = 'gt/'+ self.base_frame
         odom_msg.pose.pose.position.x = stone_odom_msg.pose.pose.position.y
         odom_msg.pose.pose.position.y =  stone_odom_msg.pose.pose.position.x
         odom_msg.pose.pose.position.z = -stone_odom_msg.pose.pose.position.z
