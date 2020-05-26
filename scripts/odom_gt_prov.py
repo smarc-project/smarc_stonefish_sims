@@ -42,12 +42,17 @@ class GTOdom(object):
                                                                        stone_odom_msg.pose.pose.orientation.x,
                                                                        -stone_odom_msg.pose.pose.orientation.z,
                                                                        stone_odom_msg.pose.pose.orientation.w])
-
-        quat = tf.transformations.quaternion_from_euler(roll, pitch, yaw-1.57)            
+        
+        quat = tf.transformations.quaternion_from_euler(pitch, roll+3.14, yaw-1.57)            
         odom_msg.pose.pose.orientation = Quaternion(quat[0], quat[1], quat[2], quat[3])
 
         self.pub_odom.publish(odom_msg)
 
+        #  br = tf.TransformBroadcaster()
+        #  position_t = [odom_msg.pose.pose.position.x,
+                     #  odom_msg.pose.pose.position.y,
+                     #  odom_msg.pose.pose.position.z]
+        #  br.sendTransform(position_t, quat, rospy.Time.now(), "sam_test", self.map_frame)
 
 if __name__ == "__main__":
 

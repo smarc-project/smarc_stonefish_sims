@@ -29,16 +29,19 @@ class SAMSimMsgBridge(object):
     def sbg_callback(self, imu_msg, odom_msg):
         enu_imu_msg = imu_msg
 
-        # Conversion to ENU
+        # Using the Yaw from the GT SAM as compass heading
         (roll_gt, pitch_gt, yaw_gt) = tf.transformations.euler_from_quaternion([odom_msg.pose.pose.orientation.x,
-                                                          odom_msg.pose.pose.orientation.y,
-                                                          odom_msg.pose.pose.orientation.z, 
-                                                          odom_msg.pose.pose.orientation.w])
+                                                                              odom_msg.pose.pose.orientation.y,
+                                                                              odom_msg.pose.pose.orientation.z, 
+                                                                              odom_msg.pose.pose.orientation.w])
 
-        quat_rot = np.array([0, 0, 0.7071068, 0.7071068]) * np.array([imu_msg.orientation.y,  imu_msg.orientation.x,  -imu_msg.orientation.z,  imu_msg.orientation.w])
-        (roll_sbg, pitch_sbg, yaw_sbg) =  tf.transformations.euler_from_quaternion([quat_rot[0], quat_rot[1], quat_rot[2], quat_rot[3]])
-        
-        quat_rot = tf.transformations.quaternion_from_euler(roll_sbg, pitch_sbg, yaw_gt)
+        # Conversion to ENU
+        (roll_sbg, pitch_sbg, yaw_sbg) = tf.transformations.euler_from_quaternion([imu_msg.orientation.y,
+                                                                              imu_msg.orientation.x,
+                                                                              -imu_msg.orientation.z, 
+                                                                              imu_msg.orientation.w])
+
+        quat_rot = tf.transformations.quaternion_from_euler(pitch_sbg, roll_sbg+3.14, yaw_gt)
         enu_imu_msg.orientation = Quaternion(quat_rot[0], quat_rot[1], quat_rot[2], quat_rot[3])  
 
         enu_imu_msg.angular_velocity.x = imu_msg.angular_velocity.y                                         
@@ -55,7 +58,12 @@ class SAMSimMsgBridge(object):
         enu_imu_msg = imu_msg
 
         # Conversion to ENU
-        quat_rot = np.array([0, 0, 0.7071068, 0.7071068]) * np.array([imu_msg.orientation.y,  imu_msg.orientation.x,  -imu_msg.orientation.z,  imu_msg.orientation.w])
+        (roll, pitch, yaw) = tf.transformations.euler_from_quaternion([imu_msg.orientation.y,
+                                                                              imu_msg.orientation.x,
+                                                                              -imu_msg.orientation.z, 
+                                                                              imu_msg.orientation.w])
+
+        quat_rot = tf.transformations.quaternion_from_euler(pitch, roll+3.14, yaw)
         enu_imu_msg.orientation = Quaternion(quat_rot[0], quat_rot[1], quat_rot[2], quat_rot[3])  
 
         enu_imu_msg.angular_velocity.x = imu_msg.angular_velocity.y                                         
@@ -65,7 +73,7 @@ class SAMSimMsgBridge(object):
         enu_imu_msg.linear_acceleration.x = imu_msg.linear_acceleration.y                                     
         enu_imu_msg.linear_acceleration.y = imu_msg.linear_acceleration.x                                         
         enu_imu_msg.linear_acceleration.z = -imu_msg.linear_acceleration.z 
-        
+
         self.stim_pub.publish(enu_imu_msg)
 
     def press_callback(self, press_msg):
