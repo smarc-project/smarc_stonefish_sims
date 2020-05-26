@@ -1,22 +1,36 @@
 NUM_ROBOTS=1
+# the scenario and environment that will be loaded in the simulation
+# it includes the world map, auvs, where the auvs are etc.
+# SCENARIO="sam_biograd_hd"
+SCENARIO="sam_asko_hd"
 
 
 SIM_SESSION=core_sim
 # by default, no numbering for one robot
 ROBOT_BASE_NAME=sam
 
-# Dont forget to change environment_file in base_simulator too
-# Biograd
-UTM_ZONE=33
-UTM_BAND=T
-# biograd
-# LATITUDE=43.93183
-# LONGITUDE=15.44264
+# ADD other environments to the list here
+# the initial position of the robots are defined in the scenario files
+case "$SCENARIO" in
+	"sam_asko_hd")
+		# asko 
+		UTM_ZONE=33
+		UTM_BAND=V
+		LATITUDE=58.811480
+		LONGITUDE=17.596177
+		;;
+	"sam_biograd_hd")
+		# Biograd
+		UTM_ZONE=33
+		UTM_BAND=T
+		LATITUDE=43.93183
+		LONGITUDE=15.44264
+		;;
+	*)
+		echo "UNKNOWN SCENARIO!"
+		exit 1
+esac
 
-# asko 
-LATITUDE=58.811480
-LONGITUDE=17.596177
-# ADD other environments, do not just replace above
 
 # localhost for simulation, unless the simulation is done on
 # a different computer, no need to change these
@@ -36,11 +50,6 @@ echo "Sim rate set to: $SIMULATION_RATE with $NUM_ROBOTS robots"
 GFX_QUALITY="high" # high/medium/low
 
 
-# the scenario and environment that will be loaded in the simulation
-# it includes the world map, auvs, where the auvs are etc.
-# SCENARIO="sam_biograd_hd"
-SCENARIO="sam_asko_hd"
-# and it is found here
 SAM_STONEFISH_SIM_PATH="$(rospack find sam_stonefish_sim)"
 SCENARIO_DESC=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO".scn
 # if we need more than 1 sam, we need to change the scenario file to one that will
