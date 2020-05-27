@@ -1,0 +1,64 @@
+SWEREF99
+
+Jakobsson:
+X upper right corner = 656004.982
+Y upper right corner = 6528071.249
+
+X lower left corner = 649947.082
+Y lower left corner = 6521967.432
+
+LLC = (649947.082,6521967.432,-60)
+Latitud: 58 48 41.32682
+Longitud: 17 35 46.23725
+Resultat i SWEREF 99 TM
+N: 6521967.432
+E: 649947.082
+Resultat i RT 90 2.5 gon V 0:-15
+x: 6522420.239
+y: 1603493.435
+WGS84 dec	58.811480°	17.596177°
+
+UTM Zone: 33 (on the border to 34)
+
+lowest point = -53.4162
+highest point = -2.92651
+
+width 	= 6057.9
+length  = 6103.817
+
+
+-----------------------------------------------
+NH 65 6 (Lantmäteriet height map 50m, height scaled a factor 3 though to make it more fun):
+X upper right corner = 657192.273
+Y upper right corner = 6528126.622
+
+URC = (657192.273, 6528126.622, -60)
+
+X lower left corner = 648658.319
+Y lower left corner = 6519799.134
+
+LLC: (648658.319,6519799.134,-60)
+
+width 	= 8533.954
+length  = 8327.487
+
+lowest point = 0.599
+highest point = 39.066
+
+H = -60
+
+
+
+-----------------------------------------------
+Svarthäll (fyr)
+Koordinater
+WGS84	58° 51′ 49.7″ N, 17° 40′ 2.2″ E
+58.863806°, 17.667278°
+UTM	33V 653820 6527952
+Rhino coords: (653820,6527952,-60)
+
+
+
+-----------------------------------------------
+Länkar:
+https://wiki.openstreetmap.org/wiki/KAP-charts_from_OpenSeaMap
