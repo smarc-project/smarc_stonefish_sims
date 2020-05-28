@@ -4,6 +4,8 @@ NUM_ROBOTS=1
 # SCENARIO="sam_biograd_hd"
 SCENARIO="sam_asko_hd"
 
+MIN_ALTITUDE=5
+MAX_DEPTH=20
 
 SIM_SESSION=core_sim
 # by default, no numbering for one robot
@@ -158,7 +160,7 @@ do
 	tmux send-keys "mon launch sam_basic_controllers dynamic_controllers.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 	tmux select-window -t $ROBOT_SESSION:7
-	tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND bridge_port:=$BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP imc_system_name:=$ROBOT_NAME imc_src:=$IMC_SRC --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
+	tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND bridge_port:=$BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP imc_system_name:=$ROBOT_NAME imc_src:=$IMC_SRC max_depth:=$MAX_DEPTH min_altitude:=$MIN_ALTITUDE --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 	tmux select-window -t $ROBOT_SESSION:8
 	tmux send-keys "mon launch sam_camera_config sam_detection.launch robot_name:=$ROBOT_NAME camera_direction:=down threshold:=0.003 --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
