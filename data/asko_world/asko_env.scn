@@ -74,7 +74,7 @@
 <static name="Car_MiniCooper" type="model">
     <material name="Aluminum"/>
     <look name="yellow"/>
-    <world_transform rpy="3.14 1.0 1.0" xyz="1717.0 5502.0 13.0"/>
+    <world_transform rpy="3.14 1.0 1.5708" xyz="1717.0 5502.0 10.0"/>
     <physical>
         <mesh filename="$(find sam_stonefish_sim)/data/asko_world/MiniCooper-1965.stl" scale="0.001"/>
         <origin rpy="0.0 0.1 0.0" xyz="0.0 0.0 0.0"/>
