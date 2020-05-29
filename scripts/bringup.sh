@@ -20,7 +20,7 @@ case "$SCENARIO" in
 		UTM_BAND=V
 		LATITUDE=58.811480
 		LONGITUDE=17.596177
-		CAR_DEPTH=13
+		CAR_DEPTH=10
 		;;
 	"sam_biograd_hd")
 		# Biograd
