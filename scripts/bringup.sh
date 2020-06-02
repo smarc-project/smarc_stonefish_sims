@@ -161,7 +161,7 @@ do
 	tmux send-keys "mon launch sam_basic_controllers dynamic_controllers.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 	tmux select-window -t $ROBOT_SESSION:7
-	tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND bridge_port:=$BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP imc_system_name:=$ROBOT_NAME imc_src:=$IMC_SRC max_depth:=$MAX_DEPTH min_altitude:=$MIN_ALTITUDE --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
+	tmux send-keys "mon launch sam_mission mission.launch robot_name:=$ROBOT_NAME utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND bridge_port:=$BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP imc_system_name:=$ROBOT_NAME imc_src:=$IMC_SRC max_depth:=$MAX_DEPTH min_altitude:=$MIN_ALTITUDE --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 	tmux select-window -t $ROBOT_SESSION:8
 	tmux send-keys "mon launch sam_camera_config sam_detection.launch robot_name:=$ROBOT_NAME car_depth:=$CAR_DEPTH --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
