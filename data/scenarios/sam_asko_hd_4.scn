@@ -1,0 +1,28 @@
+<scenario>
+
+    <include file="$(find sam_stonefish_sim)/data/asko_world/asko_env.scn"/>
+    <include file="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml">
+		<!-- 1717.0, 5502.0 corresponds to 58.82,17.69 in lat lon -->
+        <arg name="robot_pos" value="1717.0 5502.0 0.0" />
+        <arg name="robot_name" value="$(param robot_name)_1" />
+	</include>
+
+    <include file="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml">
+		<!-- 1717.0, 5502.0 corresponds to 58.82,17.69 in lat lon -->
+        <arg name="robot_pos" value="1717.0 5504.0 0.0" />
+        <arg name="robot_name" value="$(param robot_name)_2" />
+	</include>
+
+    <include file="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml">
+		<!-- 1717.0, 5502.0 corresponds to 58.82,17.69 in lat lon -->
+        <arg name="robot_pos" value="1717.0 5506.0 0.0" />
+        <arg name="robot_name" value="$(param robot_name)_3" />
+	</include>
+
+    <include file="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml">
+		<!-- 1717.0, 5502.0 corresponds to 58.82,17.69 in lat lon -->
+        <arg name="robot_pos" value="1717.0 5508.0 0.0" />
+        <arg name="robot_name" value="$(param robot_name)_4" />
+	</include>
+</scenario>
+
