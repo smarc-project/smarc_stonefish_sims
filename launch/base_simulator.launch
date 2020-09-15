@@ -1,17 +1,14 @@
 <launch>
 
+    <!-- These are the arguments you need to care about -->
+    <arg name="config_file" default="$(find sam_stonefish_sim)/config/sam_biograd.yaml"/>
+    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn"/>
+
+    <!-- These are more for fine-tuning -->
 	<arg name="graphics_resolution" default="1500 950"/>
 	<arg name="graphics_quality" default="high"/>
     <arg name="simulation_rate" default="100.0"/>
-    <arg name="robot_file" default="$(find sam_stonefish_sim)/data/sam_auv/sam_auv.xml"/>
-
-	<arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn" />
     <arg name="simulation_data" default="$(find sam_stonefish_sim)/data"/> <!-- path to the data directory -->
-    <arg name="robot_name" default="sam"/>
-    <arg name="xacro_file" default="$(find sam_description)/urdf/sam_auv.urdf.xacro"/>
-    <arg name="latitude" default="43.93183"/>
-    <arg name="longitude" default="15.44264"/>
-    <arg name="simulate_dr" default="true"/>
 
     <!-- Static transform -->
     <!--
@@ -22,16 +19,11 @@
 
     <!-- Run Simulator -->
     <include file="$(find sam_stonefish_sim)/launch/simulator.launch">
-        <arg name="simulation_data" value="$(arg simulation_data)"/>
+        <arg name="config_file" value="$(arg config_file)"/>
         <arg name="scenario_description" value="$(arg scenario_description)"/>
-        <arg name="robot_file" value="$(arg robot_file)"/>
         <arg name="simulation_rate" value="$(arg simulation_rate)"/>
         <arg name="graphics_resolution" value="$(arg graphics_resolution)"/>
         <arg name="graphics_quality" value="$(arg graphics_quality)"/>
-        <arg name="robot_name" value="$(arg robot_name)"/>
-        <arg name="latitude" value="$(arg latitude)"/>
-        <arg name="longitude" value="$(arg longitude)"/>
-        <arg name="simulate_dr" value="$(arg simulate_dr)"/>
     </include>
 
 </launch>

@@ -4,12 +4,12 @@
 
     <include file="$(param robot_file)">
         <arg name="robot_name" value="$(param robot_name)_1"/>
-        <arg name="robot_pos" value="$(param robot_pos1)"/>
+        <arg name="robot_pos" value="$(param robot1_pos)"/>
     </include>
 
     <include file="$(param robot_file)">
         <arg name="robot_name" value="$(param robot_name)_2"/>
-        <arg name="robot_pos" value="$(param robot_pos2)"/>
+        <arg name="robot_pos" value="$(param robot2_pos)"/>
     </include>
 
 </scenario>
