@@ -17,8 +17,64 @@ from std_msgs.msg import Header, Float64
 from sensor_msgs.msg import JointState, BatteryState, FluidPressure
 from cola2_msgs.msg import Setpoints
 from sam_msgs.msg import ThrusterAngles, ThrusterRPMs, PercentStamped
+from sensor_msgs.msg import Imu
+from geometry_msgs.msg import Quaternion 
+import numpy as np 
+from nav_msgs.msg import Odometry
+import message_filters 
+import tf
 
 class SAMSimMsgBridge(object):
+    
+    def sbg_callback(self, imu_msg, odom_msg):
+        enu_imu_msg = imu_msg
+
+        # Using the Yaw from the GT SAM as compass heading
+        (roll_gt, pitch_gt, yaw_gt) = tf.transformations.euler_from_quaternion([odom_msg.pose.pose.orientation.x,
+                                                                              odom_msg.pose.pose.orientation.y,
+                                                                              odom_msg.pose.pose.orientation.z, 
+                                                                              odom_msg.pose.pose.orientation.w])
+
+        # Conversion to ENU
+        (roll_sbg, pitch_sbg, yaw_sbg) = tf.transformations.euler_from_quaternion([imu_msg.orientation.y,
+                                                                              imu_msg.orientation.x,
+                                                                              -imu_msg.orientation.z, 
+                                                                              imu_msg.orientation.w])
+
+        quat_rot = tf.transformations.quaternion_from_euler(pitch_sbg, roll_sbg+3.14, yaw_gt)
+        enu_imu_msg.orientation = Quaternion(quat_rot[0], quat_rot[1], quat_rot[2], quat_rot[3])  
+
+        enu_imu_msg.angular_velocity.x = imu_msg.angular_velocity.y                                         
+        enu_imu_msg.angular_velocity.y = imu_msg.angular_velocity.x                                         
+        enu_imu_msg.angular_velocity.z = -imu_msg.angular_velocity.z
+
+        enu_imu_msg.linear_acceleration.x = imu_msg.linear_acceleration.y                                     
+        enu_imu_msg.linear_acceleration.y = imu_msg.linear_acceleration.x                                         
+        enu_imu_msg.linear_acceleration.z = -imu_msg.linear_acceleration.z 
+
+        self.sbg_pub.publish(enu_imu_msg)
+        
+    def stim_callback(self, imu_msg):
+        enu_imu_msg = imu_msg
+
+        # Conversion to ENU
+        (roll, pitch, yaw) = tf.transformations.euler_from_quaternion([imu_msg.orientation.y,
+                                                                              imu_msg.orientation.x,
+                                                                              -imu_msg.orientation.z, 
+                                                                              imu_msg.orientation.w])
+
+        quat_rot = tf.transformations.quaternion_from_euler(pitch, roll+3.14, yaw)
+        enu_imu_msg.orientation = Quaternion(quat_rot[0], quat_rot[1], quat_rot[2], quat_rot[3])  
+
+        enu_imu_msg.angular_velocity.x = imu_msg.angular_velocity.y                                         
+        enu_imu_msg.angular_velocity.y = imu_msg.angular_velocity.x                                         
+        enu_imu_msg.angular_velocity.z = -imu_msg.angular_velocity.z
+
+        enu_imu_msg.linear_acceleration.x = imu_msg.linear_acceleration.y                                     
+        enu_imu_msg.linear_acceleration.y = imu_msg.linear_acceleration.x                                         
+        enu_imu_msg.linear_acceleration.z = -imu_msg.linear_acceleration.z 
+
+        self.stim_pub.publish(enu_imu_msg)
 
     def press_callback(self, press_msg):
 
@@ -96,6 +152,8 @@ class SAMSimMsgBridge(object):
         self.lcg_fb_pub = rospy.Publisher('core/lcg_fb', PercentStamped, queue_size=10)
         self.battery_pub = rospy.Publisher('core/battery_fb', BatteryState, queue_size=10)
         self.press_pub = rospy.Publisher('core/depth20_pressure', FluidPressure, queue_size=10)
+        self.sbg_pub = rospy.Publisher('core/sbg_imu', Imu, queue_size=10)
+        self.stim_pub = rospy.Publisher('core/stim_imu', Imu, queue_size=10)
 
 	rospy.Subscriber("core/rpm_cmd", ThrusterRPMs, self.thruster_callback)
 	rospy.Subscriber("core/thrust_vector_cmd", ThrusterAngles, self.angles_callback)
@@ -104,6 +162,14 @@ class SAMSimMsgBridge(object):
         rospy.Subscriber("vbs/volume_centered", Float64, self.vbs_vol_callback)
         rospy.Subscriber("joint_states", JointState, self.joint_state_callback)
         rospy.Subscriber("core/depth20_pressure_sim", FluidPressure, self.press_callback)
+        #  rospy.Subscriber("core/sbg_imu_sim", Imu, self.sbg_callback)
+        rospy.Subscriber("core/stim_imu_sim", Imu, self.stim_callback)
+
+        self.subs_sbg = message_filters.Subscriber('core/sbg_imu_sim', Imu)
+        self.subs_odom_gt = message_filters.Subscriber('gt/odom', Odometry)  
+        self.ts = message_filters.ApproximateTimeSynchronizer([self.subs_sbg, self.subs_odom_gt],
+                                                          50, slop=50.0, allow_headerless=True)
+        self.ts.registerCallback(self.sbg_callback)
 
         self.battery_msg = BatteryState()
         self.battery_msg.voltage = 12.5

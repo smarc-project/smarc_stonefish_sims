@@ -1,6 +1,6 @@
 <launch>
 
-    <arg name="environment_file"/>
+    <!-- <arg name="environment_file"/> -->
     <arg name="robot_file"/>
     <arg name="simulation_data" default="$(find stonefish_ros)/data"/> <!-- path to the data directory -->
     <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn"/>
@@ -10,16 +10,13 @@
     <arg name="robot_name" default="sam_auv"/>
     <arg name="latitude" default="43.93183"/>
     <arg name="longitude" default="15.44264"/>
-    <arg name="robot_pos" default="0.0 0.0 1.0"/>
     <arg name="simulate_dr" default="true"/>
 
     <node name="stonefish_simulator" pkg="stonefish_ros" type="parsed_simulator" output="screen" args="$(arg simulation_data) $(arg scenario_description) $(arg simulation_rate) $(arg graphics_resolution) $(arg graphics_quality)">
         <param name="robot_name" value="$(arg robot_name)"/>
         <param name="latitude" value="$(arg latitude)" type="string"/>
         <param name="longitude" value="$(arg longitude)" type="string"/>
-        <param name="environment_file" value="$(arg environment_file)"/>
         <param name="robot_file" value="$(arg robot_file)"/>
-        <param name="robot_pos" value="$(arg robot_pos)"/>
         <param name="simulate_dr" value="$(arg simulate_dr)" type="string"/>
     </node>
 </launch>
