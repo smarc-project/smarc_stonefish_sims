@@ -2,11 +2,9 @@
     <!-- Configurable arguments -->
     <arg name="robot_name" default="sam"/>
     <arg name="xacro_file" default="$(find sam_description)/urdf/sam_auv.urdf.xacro"/>
-    <arg name="hd_model" default="true"/>
     <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn"/>
     <arg name="environment_file" default="$(find sam_stonefish_sim)/data/biograd_world/biograd_env.scn"/>
-    <arg name="robot_file" default="$(find sam_stonefish_sim)/data/sam_auv/sam_auv.xml" unless="$(arg hd_model)"/>
-    <arg name="robot_file" default="$(find sam_stonefish_sim)/data/sam_auv/sam_auv_hd.xml" if="$(arg hd_model)"/>
+    <arg name="robot_file" default="$(find sam_stonefish_sim)/data/sam_auv/sam_auv.xml"/>
     <arg name="latitude" default="43.93183"/>
     <arg name="longitude" default="15.44264"/>
      <arg name="robot_pos" default="0.0 0.0 1.0"/>
