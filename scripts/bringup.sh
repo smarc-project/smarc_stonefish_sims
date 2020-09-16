@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-NUM_ROBOTS=2
+NUM_ROBOTS=1
 # the scenario and environment that will be loaded in the simulation
 # it includes the world map, auvs, where the auvs are etc.
 # SCENARIO="sam_biograd_hd"
