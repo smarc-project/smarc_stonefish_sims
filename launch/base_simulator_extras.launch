@@ -8,7 +8,7 @@
     <group ns="$(arg robot_name)">
 
         <!-- Necessary for GT odom from simulator -->
-        <node name="map_2_ned" pkg="tf" type="static_transform_publisher" args="0 0 0 1.57 0 3.14 map world_ned 100" />
+        <node name="gt_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 gt/$(arg robot_name)/base_link $(arg robot_name)/base_link 100" />
 
         <!-- Robot description -->
         <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg xacro_file)' debug:=true robot_namespace:=$(arg robot_name)"/>
