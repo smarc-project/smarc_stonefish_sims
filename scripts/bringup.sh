@@ -1,8 +1,10 @@
-NUM_ROBOTS=1
+#!/usr/bin/env bash
+
+NUM_ROBOTS=2
 # the scenario and environment that will be loaded in the simulation
 # it includes the world map, auvs, where the auvs are etc.
 # SCENARIO="sam_biograd_hd"
-SCENARIO="sam_asko_hd"
+SCENARIO="sam_biograd"
 
 MIN_ALTITUDE=5
 MAX_DEPTH=20
@@ -14,7 +16,7 @@ ROBOT_BASE_NAME=sam
 # ADD other environments to the list here
 # the initial position of the robots are defined in the scenario files
 case "$SCENARIO" in
-	"sam_asko_hd")
+	"sam_asko")
 		# asko 
 		UTM_ZONE=33
 		UTM_BAND=V
@@ -22,7 +24,7 @@ case "$SCENARIO" in
 		LONGITUDE=17.596177
 		CAR_DEPTH=10
 		;;
-	"sam_biograd_hd")
+	"sam_biograd")
 		# Biograd
 		UTM_ZONE=33
 		UTM_BAND=T
@@ -52,9 +54,11 @@ echo "Sim rate set to: $SIMULATION_RATE with $NUM_ROBOTS robots"
 # check nvidia-smi, see if it pins to 100%
 GFX_QUALITY="high" # high/medium/low
 
-
 SAM_STONEFISH_SIM_PATH="$(rospack find sam_stonefish_sim)"
-SCENARIO_DESC=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO".scn
+#SCENARIO_DESC=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO".scn
+CONFIG_FILE="${SAM_STONEFISH_SIM_PATH}/config/${SCENARIO}.yaml"
+SCENARIO_DESC="${SAM_STONEFISH_SIM_PATH}/data/scenarios/default.scn"
+
 # if we need more than 1 sam, we need to change the scenario file to one that will
 # spawn the needed number of sams.
 # and since these scenario files do not support looping or anything, we
@@ -66,7 +70,9 @@ SCENARIO_DESC=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO".scn
 # as done here in the loop below.
 if [ $NUM_ROBOTS -gt 1 ] #spaces important
 then 
-	SCENARIO_DESC=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO"_"$NUM_ROBOTS".scn
+	#SCENARIO_DESC=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO"_"$NUM_ROBOTS".scn
+    CONFIG_FILE="${SAM_STONEFISH_SIM_PATH}/config/${SCENARIO}_${NUM_ROBOTS}_auvs.yaml"
+	SCENARIO_DESC="${SAM_STONEFISH_SIM_PATH}/data/scenarios/default_${NUM_ROBOTS}_auvs.scn"
 fi
 # check if the scenario file exists.
 if [ -f "$SCENARIO_DESC" ]
@@ -78,6 +84,14 @@ else
 	exit 1
 fi
 
+if [ -f "$CONFIG_FILE" ]
+then
+	echo "Using sim config: $CONFIG_FILE"
+else
+	echo "Sim config not found: $CONFIG_FILE"
+	echo "Did you forget to create one for this number of robots?"
+	exit 1
+fi
 
 # ros mon can create gigantic core dumps. I had well over 4Gb of dumps happen.
 # this cmd will limit system-wide core dumps to a tiny amount. uncomment if
@@ -86,6 +100,7 @@ fi
 # see: https://github.com/xqms/rosmon/issues/107
 ulimit -c 1
 
+tmux set-option -g default-shell /usr/bin/bash
 
 # Main simulation, has its own session and does not loop over num robots
 tmux -2 new-session -d -s $SIM_SESSION -n "roscore"
@@ -95,13 +110,10 @@ tmux select-window -t $SIM_SESSION:0
 tmux send-keys "roscore" C-m
 
 tmux select-window -t $SIM_SESSION:1
-tmux send-keys "mon launch sam_stonefish_sim base_simulator.launch simulation_rate:=$SIMULATION_RATE graphics_quality:=$GFX_QUALITY robot_name:=$ROBOT_BASE_NAME latitude:=$LATITUDE longitude:=$LONGITUDE scenario_description:=$SCENARIO_DESC --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+tmux send-keys "mon launch sam_stonefish_sim base_simulator.launch config_file:=$CONFIG_FILE scenario_description:=$SCENARIO_DESC simulation_rate:=$SIMULATION_RATE graphics_quality:=$GFX_QUALITY --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 
 # ADD ANY LAUNCHES THAT NEED TO BE LAUNCHED ONLY ONCE, EVEN WHEN THERE ARE 10 SAMS HERE
-
-
-
 
 SESSION=sam_bringup
 # if one robot, launch everything in the same session
@@ -146,31 +158,32 @@ do
 
 
 	tmux select-window -t $ROBOT_SESSION:2
-	tmux send-keys "mon launch flexxros sam_controls.launch robot_name:=$ROBOT_NAME display_ip:=localhost display_port:=$WEBGUI_PORT --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W')" C-m
+	if [ $ROBOT_NUM -gt 1 ] #spaces important
+	then 
+		tmux send-keys "mon launch flexxros sam_controls.launch robot_name:=$ROBOT_NAME display_ip:=localhost display_port:=$WEBGUI_PORT --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W')"
+    else
+		tmux send-keys "mon launch flexxros sam_controls.launch robot_name:=$ROBOT_NAME display_ip:=localhost display_port:=$WEBGUI_PORT --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W')" C-m
+	fi
 
 	tmux select-window -t $ROBOT_SESSION:3
 	tmux send-keys "mon launch sam_stonefish_sim base_simulator_extras.launch with_teleop:=false robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 	tmux select-window -t $ROBOT_SESSION:4
-	tmux send-keys "mon launch sam_dead_reckoning dual_ekf_test.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
+	tmux send-keys "mon launch sam_dead_reckoning dual_ekf_test.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" #C-m
 
 	tmux select-window -t $ROBOT_SESSION:5
-	tmux send-keys "mon launch sam_basic_controllers static_controllers.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
+	tmux send-keys "mon launch sam_basic_controllers static_controllers.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" #C-m
 
 	tmux select-window -t $ROBOT_SESSION:6
-	tmux send-keys "mon launch sam_basic_controllers dynamic_controllers.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
+	tmux send-keys "mon launch sam_basic_controllers dynamic_controllers.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" #C-m
 
 	tmux select-window -t $ROBOT_SESSION:7
-	tmux send-keys "mon launch sam_mission mission.launch robot_name:=$ROBOT_NAME utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND bridge_port:=$BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP imc_system_name:=$ROBOT_NAME imc_src:=$IMC_SRC max_depth:=$MAX_DEPTH min_altitude:=$MIN_ALTITUDE --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
+	tmux send-keys "mon launch sam_mission mission.launch robot_name:=$ROBOT_NAME utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND bridge_port:=$BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP imc_system_name:=$ROBOT_NAME imc_src:=$IMC_SRC max_depth:=$MAX_DEPTH min_altitude:=$MIN_ALTITUDE --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" #C-m
 
 	tmux select-window -t $ROBOT_SESSION:8
-	tmux send-keys "mon launch sam_camera_config sam_detection.launch robot_name:=$ROBOT_NAME car_depth:=$CAR_DEPTH --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
+	tmux send-keys "mon launch sam_camera_config sam_detection.launch robot_name:=$ROBOT_NAME car_depth:=$CAR_DEPTH --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" #C-m
 
 	# ADD NEW LAUNCHES THAT ARE SPECIFIC TO ONE SAM HERE
-
-
-
-
 done
 
 
