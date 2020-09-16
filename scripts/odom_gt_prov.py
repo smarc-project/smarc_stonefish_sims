@@ -1,16 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import rospy
-import numpy as np
-from sam_msgs.msg import ThrusterRPMs
-from geometry_msgs.msg import TwistStamped
-from uavcan_ros_bridge.msg import ESCStatus
-from sbg_driver.msg import SbgEkfEuler
-from nav_msgs.msg import Odometry
-import message_filters
-from sensor_msgs.msg import Imu
-import tf
 from geometry_msgs.msg import Quaternion
+from nav_msgs.msg import Odometry
+
+import message_filters
+import tf
 
 class GTOdom(object):
 

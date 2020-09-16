@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # Copyright 2018 Nils Bore (nbore@kth.se)
 #
@@ -87,7 +87,7 @@ class SAMSimMsgBridge(object):
 
     def vbs_vol_callback(self, vol_msg):
 
-	header = Header()
+        header = Header()
         self.vbs_fb_pub.publish(100.*(.5+vol_msg.data), header)
 
     def joint_state_callback(self, msg):
@@ -99,7 +99,7 @@ class SAMSimMsgBridge(object):
 
     def lcg_callback(self, lcg_msg):
 
-	header = Header()
+        header = Header()
         lcg_pos = JointState()
         lcg_pos.header = header
         lcg_pos.name = [self.robot_name + "/lcg_joint"]
@@ -108,7 +108,7 @@ class SAMSimMsgBridge(object):
 
     def thruster_callback(self, thruster_msg):
 
-	header = Header()
+        header = Header()
         self.last_thruster_msg = Setpoints(header, [thruster_msg.thruster_1_rpm, thruster_msg.thruster_2_rpm])
         self.last_thruster_msg_time = rospy.get_time()
 
@@ -123,7 +123,7 @@ class SAMSimMsgBridge(object):
 
     def angles_callback(self, angles_msg):
 
-	header = Header()
+        header = Header()
         thruster_angles = JointState()
         thruster_angles.header = header
         thruster_angles.name = [self.robot_name + "/thruster_yaw_joint", self.robot_name + "/thruster_pitch_joint"]
@@ -155,10 +155,10 @@ class SAMSimMsgBridge(object):
         self.sbg_pub = rospy.Publisher('core/sbg_imu', Imu, queue_size=10)
         self.stim_pub = rospy.Publisher('core/stim_imu', Imu, queue_size=10)
 
-	rospy.Subscriber("core/rpm_cmd", ThrusterRPMs, self.thruster_callback)
-	rospy.Subscriber("core/thrust_vector_cmd", ThrusterAngles, self.angles_callback)
-	rospy.Subscriber("core/lcg_cmd", PercentStamped, self.lcg_callback)
-	rospy.Subscriber("core/vbs_cmd", PercentStamped, self.vbs_callback)
+        rospy.Subscriber("core/rpm_cmd", ThrusterRPMs, self.thruster_callback)
+        rospy.Subscriber("core/thrust_vector_cmd", ThrusterAngles, self.angles_callback)
+        rospy.Subscriber("core/lcg_cmd", PercentStamped, self.lcg_callback)
+        rospy.Subscriber("core/vbs_cmd", PercentStamped, self.vbs_callback)
         rospy.Subscriber("vbs/volume_centered", Float64, self.vbs_vol_callback)
         rospy.Subscriber("joint_states", JointState, self.joint_state_callback)
         rospy.Subscriber("core/depth20_pressure_sim", FluidPressure, self.press_callback)
