@@ -100,10 +100,9 @@ fi
 # see: https://github.com/xqms/rosmon/issues/107
 ulimit -c 1
 
-tmux set-option -g default-shell /usr/bin/bash
-
 # Main simulation, has its own session and does not loop over num robots
 tmux -2 new-session -d -s $SIM_SESSION -n "roscore"
+tmux set-option -g default-shell /bin/bash
 tmux new-window -t $SIM_SESSION:1 -n "base_simulator"
 
 tmux select-window -t $SIM_SESSION:0
