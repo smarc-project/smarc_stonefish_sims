@@ -55,8 +55,21 @@ echo "Sim rate set to: $SIMULATION_RATE with $NUM_ROBOTS robots"
 GFX_QUALITY="high" # high/medium/low
 
 SAM_STONEFISH_SIM_PATH="$(rospack find sam_stonefish_sim)"
+
+# use the private sims package if available
+SAM_PRIVATE_SIMS_PATH="$(rospack find sam_private_sims)"
+if [ -z "$SAM_PRIVATE_SIMS_PATH" ]
+then
+	echo "Did not find sam_private_sims, using sam_stonefish_sim instead"
+	SIM_PKG="sam_stonefish_sim"
+else
+	echo "Found sam_private_sims, using that"
+	SIM_PKG="sam_private_sims"
+fi
+
 #SCENARIO_DESC=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO".scn
-CONFIG_FILE="${SAM_STONEFISH_SIM_PATH}/config/${SCENARIO}.yaml"
+#CONFIG_FILE="${SAM_STONEFISH_SIM_PATH}/config/${SCENARIO}.yaml"
+CONFIG="${SCENARIO}.yaml"
 SCENARIO_DESC="${SAM_STONEFISH_SIM_PATH}/data/scenarios/default.scn"
 
 # if we need more than 1 sam, we need to change the scenario file to one that will
@@ -71,7 +84,8 @@ SCENARIO_DESC="${SAM_STONEFISH_SIM_PATH}/data/scenarios/default.scn"
 if [ $NUM_ROBOTS -gt 1 ] #spaces important
 then 
 	#SCENARIO_DESC=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO"_"$NUM_ROBOTS".scn
-    CONFIG_FILE="${SAM_STONEFISH_SIM_PATH}/config/${SCENARIO}_${NUM_ROBOTS}_auvs.yaml"
+	#CONFIG_FILE="${SAM_STONEFISH_SIM_PATH}/config/${SCENARIO}_${NUM_ROBOTS}_auvs.yaml"
+	CONFIG = "${SCENARIO}.yaml"
 	SCENARIO_DESC="${SAM_STONEFISH_SIM_PATH}/data/scenarios/default_${NUM_ROBOTS}_auvs.scn"
 fi
 # check if the scenario file exists.
@@ -84,14 +98,14 @@ else
 	exit 1
 fi
 
-if [ -f "$CONFIG_FILE" ]
-then
-	echo "Using sim config: $CONFIG_FILE"
-else
-	echo "Sim config not found: $CONFIG_FILE"
-	echo "Did you forget to create one for this number of robots?"
-	exit 1
-fi
+#if [ -f "$CONFIG_FILE" ]
+#then
+#	echo "Using sim config: $CONFIG_FILE"
+#else
+#	echo "Sim config not found: $CONFIG_FILE"
+#	echo "Did you forget to create one for this number of robots?"
+#	exit 1
+#fi
 
 # ros mon can create gigantic core dumps. I had well over 4Gb of dumps happen.
 # this cmd will limit system-wide core dumps to a tiny amount. uncomment if
@@ -109,7 +123,7 @@ tmux select-window -t $SIM_SESSION:0
 tmux send-keys "roscore" C-m
 
 tmux select-window -t $SIM_SESSION:1
-tmux send-keys "mon launch sam_stonefish_sim base_simulator.launch config_file:=$CONFIG_FILE scenario_description:=$SCENARIO_DESC simulation_rate:=$SIMULATION_RATE graphics_quality:=$GFX_QUALITY --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+tmux send-keys "mon launch $SIM_PKG base_simulator.launch config:=$CONFIG scenario_description:=$SCENARIO_DESC simulation_rate:=$SIMULATION_RATE graphics_quality:=$GFX_QUALITY --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 
 # ADD ANY LAUNCHES THAT NEED TO BE LAUNCHED ONLY ONCE, EVEN WHEN THERE ARE 10 SAMS HERE
