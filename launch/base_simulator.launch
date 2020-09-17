@@ -1,7 +1,8 @@
 <launch>
 
     <!-- These are the arguments you need to care about -->
-    <arg name="config_file" default="$(find sam_stonefish_sim)/config/sam_biograd.yaml"/>
+    <arg name="config" default="sam_biograd.yaml"/>
+    <arg name="config_file" default="$(find sam_stonefish_sim)/config/$(arg config)"/>
     <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn"/>
 
     <!-- These are more for fine-tuning -->
