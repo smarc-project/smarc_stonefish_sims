@@ -12,8 +12,9 @@
     <arg name="longitude" default="15.44264"/>
     <arg name="robot_pos" default="0.0 0.0 1.0"/>
     <arg name="simulate_dr" default="true"/>
+    <arg name="shader_path" default="$(find stonefish_ros)/external/stonefish/Library/shaders"/>
 
-    <node name="stonefish_simulator" pkg="stonefish_ros" type="parsed_simulator" output="screen" args="$(arg simulation_data) $(arg scenario_description) $(arg simulation_rate) $(arg graphics_resolution) $(arg graphics_quality)">
+    <node name="stonefish_simulator" pkg="stonefish_ros" type="parsed_simulator" output="screen" args="$(arg simulation_data) $(arg scenario_description) $(arg simulation_rate) $(arg graphics_resolution) $(arg graphics_quality) $(arg shader_path)">
         <param name="robot_name" value="$(arg robot_name)"/>
         <param name="latitude" value="$(arg latitude)" type="string"/>
         <param name="longitude" value="$(arg longitude)" type="string"/>
