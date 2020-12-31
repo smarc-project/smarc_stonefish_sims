@@ -52,6 +52,13 @@
   <depend>tf</depend>
   <depend>stonefish_ros</depend>
   <depend>robot_state_publisher</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>cola2_msgs</depend>
+  <depend>sam_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>message_filters</depend>
   <depend>topic_tools</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
