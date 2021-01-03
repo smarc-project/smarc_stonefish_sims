@@ -49,6 +49,7 @@
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
   <depend>tf</depend>
   <depend>stonefish_ros</depend>
   <depend>robot_state_publisher</depend>
@@ -56,6 +57,7 @@
   <depend>sensor_msgs</depend>
   <depend>cola2_msgs</depend>
   <depend>sam_msgs</depend>
+  <depend>smarc_msgs</depend>
   <depend>geometry_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>message_filters</depend>
