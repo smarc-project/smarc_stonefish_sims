@@ -7,10 +7,14 @@
 
 #include <smarc_msgs/ThrusterRPM.h>
 #include <smarc_msgs/ThrusterFeedback.h>
+#include <smarc_msgs/DVL.h>
+#include <smarc_msgs/DVLBeam.h>
 #include <sam_msgs/PercentStamped.h>
 #include <sam_msgs/ThrusterAngles.h>
 
 #include <cola2_msgs/Setpoints.h>
+#include <cola2_msgs/DVL.h>
+#include <cola2_msgs/DVLBeam.h>
 
 class SamSimMsgBridge
 {
@@ -31,6 +35,7 @@ private:
     ros::Subscriber pressure_sub;
     ros::Subscriber vbs_fb_sub;
     ros::Subscriber joint_states_fb_sub;
+    ros::Subscriber dvl_sub;
 
     // sensor outputs from bridge
     ros::Publisher pressure_pub;
@@ -39,6 +44,7 @@ private:
     ros::Publisher lcg_fb_pub;
     ros::Publisher thruster1_fb_pub;
     ros::Publisher thruster2_fb_pub;
+    ros::Publisher dvl_pub;
     
     // command inputs to stonefish
     ros::Publisher thruster_cmd_pub;
@@ -57,6 +63,24 @@ private:
     ros::Timer thruster_timer;
 
 public:
+
+    void dvl_callback(const cola2_msgs::DVL& msg)
+    {
+        smarc_msgs::DVL dvl;
+        dvl.header = msg.header;
+        dvl.velocity = msg.velocity;
+        dvl.velocity_covariance = msg.velocity_covariance;
+        dvl.altitude = msg.altitude;
+        for (const cola2_msgs::DVLBeam& beam : msg.beams) {
+            smarc_msgs::DVLBeam b;
+            b.range = beam.range;
+            b.range_covariance = beam.range_covariance;
+            b.velocity = beam.velocity;
+            b.velocity_covariance = beam.velocity_covariance;
+            b.pose = beam.pose;
+        }
+        dvl_pub.publish(dvl);
+    }
 
     void angles_cmd_callback(const sam_msgs::ThrusterAngles& msg)
     {
@@ -170,6 +194,9 @@ public:
         battery_pub = nh.advertise<sensor_msgs::BatteryState>("core/battery", 1000);
         pressure_pub = nh.advertise<sensor_msgs::FluidPressure>("core/pressure", 1000);
         pressure_sub = nh.subscribe("sim/pressure", 1000, &SamSimMsgBridge::pressure_callback, this);
+
+        dvl_pub = nh.advertise<smarc_msgs::DVL>("core/dvl", 1000);
+        dvl_sub = nh.subscribe("sim/dvl", 1000, &SamSimMsgBridge::dvl_callback, this);
 
         vbs_cmd_sub = nh.subscribe("core/vbs_cmd", 1000, &SamSimMsgBridge::vbs_cmd_callback, this);
         vbs_fb_sub = nh.subscribe("sim/vbs_volume_centered", 1000, &SamSimMsgBridge::vbs_fb_callback, this);
