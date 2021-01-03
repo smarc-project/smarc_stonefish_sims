@@ -145,6 +145,17 @@ public:
         battery_pub.publish(battery_msg);
     }
 
+    void setup_messages()
+    {
+        last_thruster_msg.setpoints.push_back(0.);
+        last_thruster_msg.setpoints.push_back(0.);
+        zero_thruster_msg = last_thruster_msg;
+        last_thruster_msg_time = ros::Time::now();
+        battery_msg.voltage = 12.5;
+        battery_msg.percentage = 81.;
+        battery_msg.power_supply_health = sensor_msgs::BatteryState::POWER_SUPPLY_HEALTH_GOOD;
+    }
+
     SamSimMsgBridge(ros::NodeHandle& nh)
     {
         ros::NodeHandle pn("~");
@@ -154,6 +165,8 @@ public:
         pn.param<double>("vbs_vol_min", vbs_vol_min, -.5);
         pn.param<double>("vbs_vol_max", vbs_vol_max, .5);
 
+        setup_messages();
+
         battery_pub = nh.advertise<sensor_msgs::BatteryState>("core/battery", 1000);
         pressure_pub = nh.advertise<sensor_msgs::FluidPressure>("core/pressure", 1000);
         pressure_sub = nh.subscribe("sim/pressure", 1000, &SamSimMsgBridge::pressure_callback, this);
@@ -161,9 +174,11 @@ public:
         vbs_cmd_sub = nh.subscribe("core/vbs_cmd", 1000, &SamSimMsgBridge::vbs_cmd_callback, this);
         vbs_fb_sub = nh.subscribe("sim/vbs_volume_centered", 1000, &SamSimMsgBridge::vbs_fb_callback, this);
         vbs_fb_pub =  nh.advertise<sam_msgs::PercentStamped>("core/vbs_fb", 1000);
+        vbs_cmd_pub = nh.advertise<std_msgs::Float64>("sim/vbs_setpoint", 1000); 
 
+        joint_states_cmd_pub = nh.advertise<sensor_msgs::JointState>("desired_joint_states", 1000);
         joint_states_fb_sub =  nh.subscribe("joint_states", 1000, &SamSimMsgBridge::joint_states_fb_callback, this);
-        lcg_fb_pub =  nh.advertise<sam_msgs::PercentStamped>("core/lcg_fb", 1000);
+        lcg_fb_pub = nh.advertise<sam_msgs::PercentStamped>("core/lcg_fb", 1000);
         lcg_cmd_sub = nh.subscribe("core/lcg_cmd", 1000, &SamSimMsgBridge::lcg_cmd_callback, this);
 
         angles_cmd_sub = nh.subscribe("core/thrust_vector_cmd", 1000, &SamSimMsgBridge::angles_cmd_callback, this);

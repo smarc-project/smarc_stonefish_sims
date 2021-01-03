@@ -14,20 +14,7 @@
         <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg xacro_file)' debug:=true robot_namespace:=$(arg robot_name)"/>
 
         <!-- Robot state publisher -->
-        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
-            <!-- <remap from="robot_description" to="$(arg robot_name)/robot_description"/> -->
-        </node>
-
-        <!-- The joint state publisher is useful if you just want to move the actuators around -->
-        <!--
-        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen">
-          <remap from="joint_states" to="$(arg robot_name)/desired_joint_states"/>
-          <remap from="$(arg robot_name)/joint_states" to="$(arg robot_name)/dummy_joint_states"/>
-          <remap from="robot_description" to="$(arg robot_name)/robot_description"/>
-          <param name="use_gui" value="true"/>
-          <param name="publish_default_positions" value="false"/>
-        </node>
-        -->
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen"/>
 
         <node name="teleop" type="sam_teleop.py" pkg="sam_stonefish_sim" output="screen" if="$(arg with_teleop)"/> 
     
@@ -35,11 +22,12 @@
               <arg name="robot_name" value="$(arg robot_name)"/>
         </include>
 
-        <node name="msg_bridge" type="sam_sim_msg_bridge.py" pkg="sam_stonefish_sim" output="screen">
+        <node name="msg_bridge" type="sam_sim_msg_bridge" pkg="sam_stonefish_sim" output="screen">
             <param name="robot_name" value="$(arg robot_name)"/>
         </node>
 
         <!-- Required to provide "compass" heading since the actual compass is not supported on stonefish ROS -->
+        <!--
         <node name="gt_odom_provider" type="odom_gt_prov.py" pkg="sam_stonefish_sim" output="screen">
             <param name="thrust_fb" value="/$(arg robot_name)/core/rpm_fb"/>
             <param name="gt_odom_top" value="/$(arg robot_name)/gt/odom"/>
@@ -47,12 +35,21 @@
             <param name="map_frame" value="map"/>
             <param name="sim_odom_top" value="/$(arg robot_name)/dynamics/odometry"/>
         </node>
+        -->
 
-        <!-- <node name="odom_republish" type="relay" pkg="topic_tools" args="dynamics/odometry dr/odom" output="screen" if="$(arg simulate_dr)"/> -->
-  
-        <!-- This could be added eventually but we'd need to put it in a public package, like sam_common -->
-        <!-- <node pkg="sam_drivers" type="sam_startup_check.py" name="startup_check" output="screen"/> -->
+        <!-- <node name="odom_republish" type="relay" pkg="topic_tools" args="sim/odom dr/odom" output="screen" if="$(arg simulate_dr)"/> -->
 
     </group>
 
 </launch>
+
+<!-- The joint state publisher is useful if you just want to move the actuators around -->
+<!--
+<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen" ns="$(arg robot_name)">
+  <remap from="joint_states" to="$(arg robot_name)/desired_joint_states"/>
+  <remap from="$(arg robot_name)/joint_states" to="$(arg robot_name)/dummy_joint_states"/>
+  <remap from="robot_description" to="$(arg robot_name)/robot_description"/>
+  <param name="use_gui" value="true"/>
+  <param name="publish_default_positions" value="false"/>
+</node>
+-->
