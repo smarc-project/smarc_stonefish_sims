@@ -78,6 +78,7 @@ public:
             b.velocity = beam.velocity;
             b.velocity_covariance = beam.velocity_covariance;
             b.pose = beam.pose;
+            dvl.beams.push_back(b);
         }
         dvl_pub.publish(dvl);
     }
