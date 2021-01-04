@@ -61,7 +61,7 @@ public:
         std_msgs::Float64 travel_depth;
         travel_depth.data = goal->travel_depth;
 
-        ros::Rate rate(.5); // 2hz
+        ros::Rate rate(20.); // 20hz for thruster publish
         while (ros::ok()) {
 
             geometry_msgs::TransformStamped transformStamped;
@@ -89,17 +89,19 @@ public:
             yaw_pub.publish(goal_yaw);
             //depth_pub.publish(travel_depth);
 
-            rpm.rpm = 1000;
-            rpm1_pub.publish(rpm);
-            rpm2_pub.publish(rpm);
-
             ROS_INFO("Distance: %fm", dist);
 
             double eta_s = dist / speed;
             feedback_.ETA = ros::Time::now() + ros::Duration(eta_s);
             as_.publishFeedback(feedback_);
-            rate.sleep();
-            //ros::spinOnce();
+            
+            rpm.rpm = 1000;
+            for (int i = 0; i < 10; ++i) {
+                rpm1_pub.publish(rpm);
+                rpm2_pub.publish(rpm);
+                rate.sleep();
+                //ros::spinOnce();
+            }
         }
 
         rpm.rpm = 0;

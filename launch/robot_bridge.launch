@@ -5,6 +5,13 @@
     <arg name="with_teleop" default="true"/>
     <arg name="simulate_dr" default="true"/>
 
+    <!-- UTM Zone for Biograd simulation -->
+    <arg name="utm_zone" default="33"/>
+    <arg name="utm_band" default="T"/>
+
+    <param name="utm_zone" type="int" value="$(arg utm_zone)"/>
+    <param name="utm_band" type="string" value="$(arg utm_band)"/> 
+
     <group ns="$(arg robot_name)">
 
         <!-- Use the ground truth TF transform from sim -->
@@ -32,6 +39,16 @@
             <param name="robot_name" value="$(arg robot_name)"/>
         </node>
 
+        <!-- Simple yaw controller for waypoint navigation -->
+        <node name="yaw_controller" type="sim_yaw_controller_node" pkg="sam_stonefish_sim" output="screen">
+            <param name="frame_id" value="$(arg robot_name)/base_link"/>
+        </node>
+
+        <!-- Simple action server for waypoint navigation -->
+        <node name="waypoint_nav" type="sim_waypoint_nav" pkg="sam_stonefish_sim" output="screen">
+            <param name="frame_id" value="$(arg robot_name)/base_link"/>
+        </node>
+
         <!-- Transfrom STIM imu to ENU coordinates -->
         <include file="$(find sam_stonefish_sim)/launch/ned_to_enu_imu.launch">
             <arg name="imu_id" value="stim"/>
@@ -48,6 +65,11 @@
             <arg name="ned_topic" value="sim/sbg_imu_ned"/>
             <arg name="enu_frame_id" value="$(arg robot_name)/sbg_link"/>
             <arg name="ned_frame_id" value="$(arg robot_name)/sbg_link_ned"/>
+        </include>
+
+        <include file="$(find tf_lat_lon)/launch/tf_lat_lon.launch">
+            <arg name="frame" value="$(arg robot_name)/base_link"/>
+            <arg name="lat_lon_topic" value="dr/lat_lon"/>
         </include>
 
     </group>

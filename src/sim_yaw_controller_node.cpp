@@ -30,7 +30,7 @@ public:
     {
         ROS_INFO("Initializing yaw controller...");
         ros::NodeHandle pn("~");
-        pn.param<double>("max_thruster_angle", max_thruster_angle, 0.12);
+        pn.param<double>("max_thruster_angle", max_thruster_angle, 0.11);
         pn.param<std::string>("frame_id", frame_id, "base_link");
 
         thruster_angle_pub = nh.advertise<sam_msgs::ThrusterAngles>("core/thrust_vector_cmd", 1000);
@@ -40,7 +40,6 @@ public:
 
     void yaw_callback(const std_msgs::Float64& yaw)
     {
-        ROS_INFO("Got yaw setpoint callback!");
         geometry_msgs::TransformStamped transformStamped;
         try {
             transformStamped = tfBuffer.lookupTransform("map", frame_id, ros::Time(0));
@@ -54,17 +53,17 @@ public:
 
         Eigen::Vector3d euler_angles = transform_matrix.rotation().eulerAngles(2, 1, 0); 
 
-        ROS_INFO("Yaw setpoint: %f, current angle: %f", 180./M_PI*yaw.data, 180./M_PI*euler_angles(0));
-
         Eigen::Vector2d goal_dir(cos(yaw.data), sin(yaw.data));
         Eigen::Vector2d vehicle_frame = transform_matrix.rotation().topLeftCorner<2, 2>().transpose()*goal_dir;
         double yaw_offset = atan2(vehicle_frame[1], vehicle_frame[0]);
+        //ROS_INFO("Yaw setpoint: %f, current angle: %f, offset: %f", 180./M_PI*yaw.data, 180./M_PI*euler_angles(0), 180./M_PI*yaw_offset);
+
         // 0.1 radians per PI radian offset
         sam_msgs::ThrusterAngles angles;
 
         angles.header.stamp = ros::Time::now();
-        angles.thruster_horizontal_radians = std::max(-max_thruster_angle, std::min(max_thruster_angle, .01*yaw_offset));
-        angles.thruster_vertical_radians = 0;
+        angles.thruster_horizontal_radians = std::min(max_thruster_angle, std::max(-max_thruster_angle, -.1*yaw_offset));
+        angles.thruster_vertical_radians = 0.05;
         thruster_angle_pub.publish(angles);
     }
 };
