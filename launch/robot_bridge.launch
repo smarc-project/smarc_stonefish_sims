@@ -5,13 +5,6 @@
     <arg name="with_teleop" default="true"/>
     <arg name="simulate_dr" default="true"/>
 
-    <!-- UTM Zone for Biograd simulation -->
-    <arg name="utm_zone" default="33"/>
-    <arg name="utm_band" default="T"/>
-
-    <param name="utm_zone" type="int" value="$(arg utm_zone)"/>
-    <param name="utm_band" type="string" value="$(arg utm_band)"/> 
-
     <group ns="$(arg robot_name)">
 
         <!-- Use the ground truth TF transform from sim -->
