@@ -7,7 +7,9 @@ project(sam_stonefish_sim)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp std_msgs sensor_msgs cola2_msgs sam_msgs smarc_msgs geometry_msgs nav_msgs)
+find_package(catkin REQUIRED COMPONENTS roscpp tf2_ros tf2_geometry_msgs tf2_eigen
+                                        std_msgs sensor_msgs cola2_msgs sam_msgs
+                                        smarc_msgs geometry_msgs nav_msgs)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -130,6 +132,8 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(sam_sim_msg_bridge src/sam_sim_msg_bridge.cpp)
+add_executable(sim_yaw_controller_node src/sim_yaw_controller_node.cpp)
+add_executable(sim_waypoint_nav src/sim_waypoint_nav.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -140,9 +144,19 @@ add_executable(sam_sim_msg_bridge src/sam_sim_msg_bridge.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(sam_sim_msg_bridge ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(sim_yaw_controller_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(sim_waypoint_nav ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(sam_sim_msg_bridge
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(sim_yaw_controller_node
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(sim_waypoint_nav
   ${catkin_LIBRARIES}
 )
 
@@ -166,7 +180,7 @@ install(PROGRAMS
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS sam_sim_msg_bridge
+install(TARGETS sam_sim_msg_bridge sim_yaw_controller_node sim_waypoint_nav
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
