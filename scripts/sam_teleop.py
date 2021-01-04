@@ -20,7 +20,8 @@ from std_msgs.msg import Header
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 #from cola2_msgs.msg import Setpoints
-from sam_msgs.msg import ThrusterAngles, ThrusterRPMs
+from sam_msgs.msg import ThrusterAngles
+from smarc_msgs.msg import ThrusterRPM
 
 class TeleopServer(object):
 
@@ -44,7 +45,8 @@ class TeleopServer(object):
         #self.joint_states = rospy.Publisher('/sam_auv/desired_joint_states', JointState, queue_size=10)
         #self.thrusters = rospy.Publisher('/sam_auv/thruster_setpoints', Setpoints, queue_size=10)
         self.thruster_angles = rospy.Publisher('core/thrust_vector_cmd', ThrusterAngles, queue_size=10)
-        self.thruster_rpms = rospy.Publisher('core/rpm_cmd', ThrusterRPMs, queue_size=10)
+        self.thruster1_rpms = rospy.Publisher('core/thruster1_cmd', ThrusterRPM, queue_size=10)
+        self.thruster2_rpms = rospy.Publisher('core/thruster2_cmd', ThrusterRPM, queue_size=10)
 
         rospy.Subscriber("/sam_auv/camera_thruster/camera_image", Image, self.callback)
 
@@ -79,16 +81,18 @@ class TeleopServer(object):
             if keys[K_DOWN]:
                 self.joint_y_angle = -joint_angle
             if keys[K_w]:
-                self.thruster_rpms.publish(thrust_level, thrust_level, header)
+                self.thruster1_rpms.publish(thrust_level)
+                self.thruster2_rpms.publish(thrust_level)
             if keys[K_s]:
-                self.thruster_rpms.publish(0., 0., header)
+                self.thruster1_rpms.publish(0.)
+                self.thruster2_rpms.publish(0.)
 
             #thruster_angles.position = [self.joint_z_angle, self.joint_y_angle]
             #self.joint_states.publish(thruster_angles)
             self.thruster_angles.publish(self.joint_y_angle, self.joint_z_angle, header)
 
             pygame.event.pump()
-            clock.tick(10)
+            clock.tick(20)
 
 if __name__ == "__main__":
     

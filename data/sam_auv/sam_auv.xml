@@ -102,7 +102,7 @@
         <child name="ThrusterYawFixture"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         <axis xyz="0.0 0.0 1.0"/>
-        <limits min="-0.2" max="0.2"/>
+        <limits min="-0.12" max="0.12"/>
     </joint>
 
     <joint name="thruster_pitch_joint" type="revolute">
@@ -110,7 +110,7 @@
         <child name="ThrusterLink"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         <axis xyz="0.0 1.0 0.0"/>
-        <limits min="-0.2" max="0.2"/>
+        <limits min="-0.12" max="0.12"/>
     </joint>
 
     <!-- Actuators -->
@@ -128,7 +128,7 @@
     <actuator name="ThrusterSurge1" type="thruster">
         <link name="ThrusterLink"/>
         <origin rpy="0.0 0.0 0.0" xyz="-0.04 0.0 0.0"/>
-        <specs thrust_coeff="0.2" torque_coeff="0.05" max_rpm="1000.0"/>
+        <specs thrust_coeff="0.2" torque_coeff="0.05" max_rpm="1000.0" inverted="false"/>
         <propeller diameter="0.12" right="true">
             <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/sam_propeller.obj" scale="1.0"/>
             <material name="Neutral"/>
@@ -139,7 +139,7 @@
     <actuator name="ThrusterSurge2" type="thruster">
         <link name="ThrusterLink"/>
         <origin rpy="0.0 0.0 0.0" xyz="-0.055 0.0 0.0"/>
-        <specs thrust_coeff="0.2" torque_coeff="0.05" max_rpm="1000.0"/>
+        <specs thrust_coeff="0.2" torque_coeff="0.05" max_rpm="1000.0" inverted="true"/>
         <propeller diameter="0.12" right="false">
             <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/sam_propeller.obj" scale="1.0"/>
             <material name="Neutral"/>
