@@ -102,7 +102,7 @@
         <child name="ThrusterYawFixture"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         <axis xyz="0.0 0.0 1.0"/>
-        <limits min="-0.2" max="0.2"/>
+        <limits min="-0.12" max="0.12"/>
     </joint>
 
     <joint name="thruster_pitch_joint" type="revolute">
@@ -110,7 +110,7 @@
         <child name="ThrusterLink"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         <axis xyz="0.0 1.0 0.0"/>
-        <limits min="-0.2" max="0.2"/>
+        <limits min="-0.12" max="0.12"/>
     </joint>
 
     <!-- Actuators -->
@@ -121,26 +121,14 @@
             <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/vbs_min.obj"/>
             <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/vbs_max.obj"/>
         </volume>
-        <ros_publisher topic="/$(arg robot_name)/vbs/volume"/>
-        <ros_subscriber topic="/$(arg robot_name)/vbs/flow_rate"/>
-    </actuator>
-
-    <!-- Example of a variable buoyancy system actuator -->
-    <actuator name="VBS" type="vbs">
-        <link name="Vehicle"/>
-        <origin rpy="0.0 0.0 0.0" xyz="0.543 0.0 0.0"/>
-        <volume initial="0.00002">
-            <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/vbs_min.obj"/>
-            <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/vbs_max.obj"/>
-        </volume>
-        <ros_publisher topic="/$(arg robot_name)/vbs/volume"/>
-        <ros_subscriber topic="/$(arg robot_name)/vbs/flow_rate"/>
+        <ros_publisher topic="/$(arg robot_name)/sim/vbs_volume"/>
+        <ros_subscriber topic="/$(arg robot_name)/sim/vbs_flow_rate"/>
     </actuator>
 
     <actuator name="ThrusterSurge1" type="thruster">
         <link name="ThrusterLink"/>
         <origin rpy="0.0 0.0 0.0" xyz="-0.04 0.0 0.0"/>
-        <specs thrust_coeff="0.2" torque_coeff="0.05" max_rpm="1000.0"/>
+        <specs thrust_coeff="0.2" torque_coeff="0.05" max_rpm="1000.0" inverted="false"/>
         <propeller diameter="0.12" right="true">
             <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/sam_propeller.obj" scale="1.0"/>
             <material name="Neutral"/>
@@ -151,7 +139,7 @@
     <actuator name="ThrusterSurge2" type="thruster">
         <link name="ThrusterLink"/>
         <origin rpy="0.0 0.0 0.0" xyz="-0.055 0.0 0.0"/>
-        <specs thrust_coeff="0.2" torque_coeff="0.05" max_rpm="1000.0"/>
+        <specs thrust_coeff="0.2" torque_coeff="0.05" max_rpm="1000.0" inverted="true"/>
         <propeller diameter="0.12" right="false">
             <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/sam_propeller.obj" scale="1.0"/>
             <material name="Neutral"/>
@@ -197,14 +185,14 @@
     <sensor name="dynamics" type="odometry" rate="30.0">
         <link name="Vehicle"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
-        <ros_publisher topic="/$(arg robot_name)/dynamics/odometry"/>
+        <ros_publisher topic="/$(arg robot_name)/sim/odom"/>
     </sensor>
 
     <sensor name="pressure_link" type="pressure" rate="5.0">
         <link name="Vehicle"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.3 0.0 0.07"/>
         <noise pressure="5.0"/>
-        <ros_publisher topic="/$(arg robot_name)/core/depth20_pressure_sim"/>
+        <ros_publisher topic="/$(arg robot_name)/sim/pressure"/>
     </sensor>
 
     <sensor name="dvl_link" type="dvl" rate="5.0">
@@ -213,21 +201,21 @@
         <specs beam_angle="30.0"/>
         <range velocity="9.0 9.0 9.0" altitude_min="0.5" altitude_max="81.0"/>
         <noise velocity="0.0015" altitude="0.001"/>
-        <ros_publisher topic="/$(arg robot_name)/core/dvl"/>
+        <ros_publisher topic="/$(arg robot_name)/sim/dvl"/>
     </sensor>
 
-    <sensor name="imu_link" type="imu" rate="20.0">
+    <sensor name="imu_link_ned" type="imu" rate="20.0">
         <link name="Vehicle"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.9 0.0 0.0"/>
         <noise angle="0.000001745" angular_velocity="0.00001745"/>
-        <ros_publisher topic="/$(arg robot_name)/core/stim_imu_sim"/>
+        <ros_publisher topic="/$(arg robot_name)/sim/imu_ned"/>
     </sensor>
 
-    <sensor name="sbg_link" type="imu" rate="50.0">
+    <sensor name="sbg_link_ned" type="imu" rate="50.0">
         <link name="Vehicle"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.472 0 0.03"/>
         <noise angle="0.000001745" angular_velocity="0.00001745"/>
-        <ros_publisher topic="/$(arg robot_name)/core/sbg_imu_sim"/>
+        <ros_publisher topic="/$(arg robot_name)/sim/sbg_imu_ned"/>
     </sensor>
 
     <sensor name="gps_link" type="gps" rate="1.0">
@@ -265,14 +253,13 @@
         <history samples="-1"/>
         <range distance_min="0.5" distance_max="150.0"/>
         <noise distance="0.001"/>
-        <ros_publisher topic="/$(arg robot_name)/perception/mbes_down"/>
+        <ros_publisher topic="/$(arg robot_name)/perception/mbes"/>
     </sensor>
-
 
     <world_transform rpy="3.1416 0.0 0.0" xyz="$(arg robot_pos)"/>
 
     <ros_publisher servos="/$(arg robot_name)/joint_states"/>
-    <ros_subscriber thrusters="/$(arg robot_name)/thruster_setpoints" servos="/$(arg robot_name)/desired_joint_states"/> 
+    <ros_subscriber thrusters="/$(arg robot_name)/sim/thruster_setpoints" servos="/$(arg robot_name)/desired_joint_states"/> 
     <ros_base_link_transforms publish="$(param simulate_dr)"/>
 </robot>
 </scenario>

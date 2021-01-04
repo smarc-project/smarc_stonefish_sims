@@ -1,0 +1,92 @@
+<launch>
+
+    <arg name="robot_name" default="sam"/>
+    <arg name="xacro_file" default="$(find sam_description)/urdf/sam_auv.urdf.xacro"/>
+    <arg name="with_teleop" default="true"/>
+    <arg name="simulate_dr" default="true"/>
+
+    <group ns="$(arg robot_name)">
+
+        <!-- Use the ground truth TF transform from sim -->
+        <node name="gt_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 gt/$(arg robot_name)/base_link $(arg robot_name)/base_link 100" />
+
+        <!-- Republish ground truth odometry msg from sim -->
+        <!-- <node name="odom_republish" type="relay" pkg="topic_tools" args="sim/odom dr/odom" output="screen" if="$(arg simulate_dr)"/> -->
+
+        <!-- Robot description -->
+        <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg xacro_file)' debug:=true robot_namespace:=$(arg robot_name)"/>
+
+        <!-- Robot state publisher -->
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen"/>
+
+        <!-- Teleop interface -->
+        <node name="teleop" type="sam_teleop.py" pkg="sam_stonefish_sim" output="screen" if="$(arg with_teleop)"/> 
+    
+        <!-- VBS Setpoint controller -->
+        <include file="$(find sam_stonefish_sim)/launch/vbs_controller.launch">
+            <arg name="robot_name" value="$(arg robot_name)"/>
+        </include>
+
+        <!-- Bridge to SMARC msg interface -->
+        <node name="msg_bridge" type="sam_sim_msg_bridge" pkg="sam_stonefish_sim" output="screen">
+            <param name="robot_name" value="$(arg robot_name)"/>
+        </node>
+
+        <!-- Simple yaw controller for waypoint navigation -->
+        <node name="yaw_controller" type="sim_yaw_controller_node" pkg="sam_stonefish_sim" output="screen">
+            <param name="frame_id" value="$(arg robot_name)/base_link"/>
+        </node>
+
+        <!-- Simple action server for waypoint navigation -->
+        <node name="waypoint_nav" type="sim_waypoint_nav" pkg="sam_stonefish_sim" output="screen">
+            <param name="frame_id" value="$(arg robot_name)/base_link"/>
+        </node>
+
+        <!-- Transfrom STIM imu to ENU coordinates -->
+        <include file="$(find sam_stonefish_sim)/launch/ned_to_enu_imu.launch">
+            <arg name="imu_id" value="stim"/>
+            <arg name="enu_topic" value="core/imu"/>
+            <arg name="ned_topic" value="sim/imu_ned"/>
+            <arg name="enu_frame_id" value="$(arg robot_name)/imu_link"/>
+            <arg name="ned_frame_id" value="$(arg robot_name)/imu_link_ned"/>
+        </include>
+
+        <!-- Transfrom SBG imu to ENU coordinates -->
+        <include file="$(find sam_stonefish_sim)/launch/ned_to_enu_imu.launch">
+            <arg name="imu_id" value="sbg"/>
+            <arg name="enu_topic" value="core/sbg_imu"/>
+            <arg name="ned_topic" value="sim/sbg_imu_ned"/>
+            <arg name="enu_frame_id" value="$(arg robot_name)/sbg_link"/>
+            <arg name="ned_frame_id" value="$(arg robot_name)/sbg_link_ned"/>
+        </include>
+
+        <include file="$(find tf_lat_lon)/launch/tf_lat_lon.launch">
+            <arg name="frame" value="$(arg robot_name)/base_link"/>
+            <arg name="lat_lon_topic" value="dr/lat_lon"/>
+        </include>
+
+    </group>
+
+<!-- Required to provide "compass" heading since the actual compass is not supported on stonefish ROS -->
+<!--
+<node name="gt_odom_provider" type="odom_gt_prov.py" pkg="sam_stonefish_sim" output="screen" ns="$(arg robot_name)">
+    <param name="thrust_fb" value="/$(arg robot_name)/core/rpm_fb"/>
+    <param name="gt_odom_top" value="/$(arg robot_name)/gt/odom"/>
+    <param name="base_frame" value="$(arg robot_name)/base_link"/>
+    <param name="map_frame" value="map"/>
+    <param name="sim_odom_top" value="/$(arg robot_name)/dynamics/odometry"/>
+</node>
+-->
+
+<!-- The joint state publisher is useful if you just want to move the actuators around -->
+<!--
+<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen" ns="$(arg robot_name)">
+  <remap from="joint_states" to="$(arg robot_name)/desired_joint_states"/>
+  <remap from="$(arg robot_name)/joint_states" to="$(arg robot_name)/dummy_joint_states"/>
+  <remap from="robot_description" to="$(arg robot_name)/robot_description"/>
+  <param name="use_gui" value="true"/>
+  <param name="publish_default_positions" value="false"/>
+</node>
+-->
+
+</launch>

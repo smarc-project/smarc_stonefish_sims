@@ -123,7 +123,7 @@ tmux select-window -t $SIM_SESSION:0
 tmux send-keys "roscore" C-m
 
 tmux select-window -t $SIM_SESSION:1
-tmux send-keys "mon launch $SIM_PKG base_simulator.launch config:=$CONFIG scenario_description:=$SCENARIO_DESC simulation_rate:=$SIMULATION_RATE graphics_quality:=$GFX_QUALITY --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+tmux send-keys "mon launch $SIM_PKG stonefish.launch config:=$CONFIG scenario_description:=$SCENARIO_DESC simulation_rate:=$SIMULATION_RATE graphics_quality:=$GFX_QUALITY --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 
 # ADD ANY LAUNCHES THAT NEED TO BE LAUNCHED ONLY ONCE, EVEN WHEN THERE ARE 10 SAMS HERE
@@ -162,7 +162,7 @@ do
 	# echo "Launched new session: $ROBOT_SESSION"
 
 	tmux new-window -t $ROBOT_SESSION:2 -n 'sam_gui'
-	tmux new-window -t $ROBOT_SESSION:3 -n 'sam_sim_extras'
+	tmux new-window -t $ROBOT_SESSION:3 -n 'sam_robot_bridge'
 	tmux new-window -t $ROBOT_SESSION:4 -n 'sam_dr'
 	tmux new-window -t $ROBOT_SESSION:5 -n 'sam_static_ctrl'
 	tmux new-window -t $ROBOT_SESSION:6 -n 'sam_dyn_ctrl'
@@ -179,7 +179,7 @@ do
 	fi
 
 	tmux select-window -t $ROBOT_SESSION:3
-	tmux send-keys "mon launch sam_stonefish_sim base_simulator_extras.launch with_teleop:=false robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
+	tmux send-keys "mon launch sam_stonefish_sim robot_bridge.launch with_teleop:=false robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 	tmux select-window -t $ROBOT_SESSION:4
 	tmux send-keys "mon launch sam_dead_reckoning dual_ekf_test.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" #C-m
