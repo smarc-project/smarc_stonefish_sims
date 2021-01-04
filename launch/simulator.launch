@@ -16,7 +16,7 @@
     <arg name="graphics_resolution" default="1200 800"/> <!-- resolution of the simulation window -->
     <arg name="graphics_quality" default="medium"/> <!-- low, medium or high -->
 
-    <include file="$(find sam_stonefish_sim)/launch/simulator.launch">
+    <include file="$(find sam_stonefish_sim)/launch/stonefish.launch">
         <arg name="config" value="$(arg config)"/>
         <arg name="config_file" value="$(arg config_file)"/>
         <arg name="scenario_description" value="$(arg scenario_description)"/>
