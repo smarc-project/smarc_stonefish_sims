@@ -1,0 +1,28 @@
+<launch>
+
+    <arg name="robot_name" default="lolo"/>
+    <arg name="with_teleop" default="true"/>
+    <!--
+    <arg name="xacro_file" default="$(find sam_description)/urdf/sam_auv.urdf.xacro"/>
+    <arg name="simulate_dr" default="true"/>
+    -->
+
+    <group ns="$(arg robot_name)">
+
+        <!-- Use the ground truth TF transform from sim -->
+        <node name="gt_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 gt/$(arg robot_name)/base_link $(arg robot_name)/base_link 100" />
+
+        <!-- Republish ground truth odometry msg from sim -->
+        <!-- <node name="odom_republish" type="relay" pkg="topic_tools" args="sim/odom dr/odom" output="screen" if="$(arg simulate_dr)"/> -->
+
+        <!-- Teleop interface -->
+        <node name="teleop" type="lolo_teleop.py" pkg="lolo_stonefish_sim" output="screen" if="$(arg with_teleop)"/> 
+    
+        <!-- Bridge to SMARC msg interface -->
+        <node name="msg_bridge" type="lolo_sim_msg_bridge" pkg="lolo_stonefish_sim" output="screen">
+            <param name="robot_name" value="$(arg robot_name)"/>
+        </node>
+
+    </group>
+
+</launch>
