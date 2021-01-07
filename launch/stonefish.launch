@@ -11,7 +11,7 @@
 
     <!-- These are more for fine-tuning -->
     <arg name="simulation_data" default="$(find sam_stonefish_sim)/data"/> <!-- path to the data directory -->
-    <arg name="simulation_rate" default="100"/> <!-- number of simulation steps per second -->
+    <arg name="simulation_rate" default="500"/> <!-- number of simulation steps per second -->
     <arg name="graphics_resolution" default="1200 800"/> <!-- resolution of the simulation window -->
     <arg name="graphics_quality" default="medium"/> <!-- low, medium or high -->
     <arg name="shader_path" default="$(find stonefish_ros)/external/stonefish/Library/shaders"/>
@@ -32,5 +32,9 @@
     <node name="stonefish_simulator" pkg="stonefish_ros" type="parsed_simulator" output="screen" args="$(arg simulation_data) $(arg scenario_description) $(arg simulation_rate) $(arg graphics_resolution) $(arg graphics_quality) $(arg shader_path)">
         <rosparam file="$(arg config_file)" subst_value="true"/>
     </node>
+
+    <include file="$(find lolo_stonefish_sim)/launch/robot_bridge.launch">
+        <arg name="robot_name" value="lolo"/>
+    </include>
 
 </launch>

@@ -91,8 +91,8 @@ class TeleopServer(object):
             #thruster_angles.position = [self.joint_z_angle, self.joint_y_angle]
             #self.joint_states.publish(thruster_angles)
             #self.thruster_angles.publish(self.joint_y_angle, self.joint_z_angle, header)
-            #self.rudder_angles.publish(self.joint_z_angle)
-            #self.elevator_angle.publish(self.joint_y_angle)
+            self.rudder_angles.publish(self.joint_z_angle)
+            self.elevator_angle.publish(self.joint_y_angle)
 
             pygame.event.pump()
             clock.tick(20)
