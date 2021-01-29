@@ -26,6 +26,7 @@ private:
     double vbs_vol_min, vbs_vol_max;
 
     // messages to publish
+    cola2_msgs::Setpoints last_rudder_msg;
     cola2_msgs::Setpoints last_thruster_msg;
     cola2_msgs::Setpoints zero_thruster_msg;
     ros::Time last_thruster_msg_time;
@@ -48,6 +49,7 @@ private:
     
     // command inputs to stonefish
     ros::Publisher thruster_cmd_pub;
+    ros::Publisher rudder_cmd_pub;
     ros::Publisher vbs_cmd_pub;
     ros::Publisher joint_states_cmd_pub;
 
@@ -85,8 +87,9 @@ public:
         dvl_pub.publish(dvl);
     }
 
-    void rudder_cmd_callback(const std_msgs::Float32& msg)
+    void rudder_cmd_callback(const std_msgs::Float32::ConstPtr& msg, int rudder_ind)
     {
+        /*
         sensor_msgs::JointState rudder_angles;
         rudder_angles.header.stamp = ros::Time::now();
         rudder_angles.name.push_back(robot_name + "/rudder_port_joint");
@@ -94,8 +97,17 @@ public:
         rudder_angles.position.push_back(msg.data);
         rudder_angles.position.push_back(msg.data);
         joint_states_cmd_pub.publish(rudder_angles);
+        */
+
+        last_rudder_msg.header.stamp = ros::Time::now();
+        last_rudder_msg.setpoints[rudder_ind] = msg->data;
+        if (rudder_ind == 1) {
+            last_rudder_msg.setpoints[2] = msg->data;
+        }
+        rudder_cmd_pub.publish(last_rudder_msg);
     }
 
+    /*
     void elevator_cmd_callback(const std_msgs::Float32& msg)
     {
         sensor_msgs::JointState elevator_angle;
@@ -104,6 +116,7 @@ public:
         elevator_angle.position.push_back(msg.data);
         joint_states_cmd_pub.publish(elevator_angle);
     }
+    */
 
     /*
     void joint_states_fb_callback(const sensor_msgs::JointState& msg)
@@ -187,6 +200,9 @@ public:
 
     void setup_messages()
     {
+        last_rudder_msg.setpoints.push_back(0.);
+        last_rudder_msg.setpoints.push_back(0.);
+        last_rudder_msg.setpoints.push_back(0.);
         last_thruster_msg.setpoints.push_back(0.);
         last_thruster_msg.setpoints.push_back(0.);
         zero_thruster_msg = last_thruster_msg;
@@ -227,12 +243,15 @@ public:
         */
 
         //angles_cmd_sub = nh.subscribe("core/thrust_vector_cmd", 1000, &LoloSimMsgBridge::angles_cmd_callback, this);
-        rudder_cmd_sub = nh.subscribe("core/rudder_cmd", 1000, &LoloSimMsgBridge::rudder_cmd_callback, this);
-        elevator_cmd_sub = nh.subscribe("core/elevator_cmd", 1000, &LoloSimMsgBridge::elevator_cmd_callback, this);
+        //rudder_cmd_sub = nh.subscribe("core/rudder_cmd", 1000, &LoloSimMsgBridge::rudder_cmd_callback, this);
+        //elevator_cmd_sub = nh.subscribe("core/elevator_cmd", 1000, &LoloSimMsgBridge::elevator_cmd_callback, this);
 
         thruster1_cmd_sub = nh.subscribe<smarc_msgs::ThrusterRPM>("core/thruster1_cmd", 1000, boost::bind(&LoloSimMsgBridge::thruster_cmd_callback, this, _1, 0));
         thruster2_cmd_sub = nh.subscribe<smarc_msgs::ThrusterRPM>("core/thruster2_cmd", 1000, boost::bind(&LoloSimMsgBridge::thruster_cmd_callback, this, _1, 1));
+        elevator_cmd_sub = nh.subscribe<std_msgs::Float32>("core/elevator_cmd", 1000, boost::bind(&LoloSimMsgBridge::rudder_cmd_callback, this, _1, 0));
+        rudder_cmd_sub = nh.subscribe<std_msgs::Float32>("core/rudder_cmd", 1000, boost::bind(&LoloSimMsgBridge::rudder_cmd_callback, this, _1, 1));
         thruster_cmd_pub = nh.advertise<cola2_msgs::Setpoints>("sim/thruster_setpoints", 1000);
+        rudder_cmd_pub = nh.advertise<cola2_msgs::Setpoints>("sim/rudder_setpoints", 1000);
         thruster1_fb_pub = nh.advertise<smarc_msgs::ThrusterFeedback>("core/thruster1_fb", 1000);
         thruster2_fb_pub = nh.advertise<smarc_msgs::ThrusterFeedback>("core/thruster2_fb", 1000);
 

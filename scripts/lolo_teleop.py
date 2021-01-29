@@ -58,7 +58,7 @@ class TeleopServer(object):
         #thruster_angles.header = header
         #thruster_angles.name = ["sam_auv/joint1", "sam_auv/joint2"]
 
-        joint_angle = 0.12
+        joint_angle = 0.62
         thrust_level = 2000
 
         clock = pygame.time.Clock()
