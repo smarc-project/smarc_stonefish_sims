@@ -133,6 +133,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(lolo_sim_msg_bridge src/lolo_sim_msg_bridge.cpp)
+add_executable(sim_yaw_controller_node src/sim_yaw_controller_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -143,9 +144,14 @@ add_executable(lolo_sim_msg_bridge src/lolo_sim_msg_bridge.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(lolo_sim_msg_bridge ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(sim_yaw_controller_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(lolo_sim_msg_bridge
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(sim_yaw_controller_node
   ${catkin_LIBRARIES}
 )
 
@@ -165,7 +171,7 @@ install(PROGRAMS
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS lolo_sim_msg_bridge 
+install(TARGETS lolo_sim_msg_bridge sim_yaw_controller_node
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

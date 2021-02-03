@@ -35,6 +35,7 @@
 
     <include file="$(find lolo_stonefish_sim)/launch/robot_bridge.launch">
         <arg name="robot_name" value="lolo"/>
+        <arg name="with_teleop" value="false"/>
     </include>
 
 </launch>
