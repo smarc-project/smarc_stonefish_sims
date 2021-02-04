@@ -46,6 +46,8 @@ class TeleopServer(object):
         #self.thrusters = rospy.Publisher('/sam_auv/thruster_setpoints', Setpoints, queue_size=10)
         self.rudder_angles = rospy.Publisher('core/rudder_cmd', Float32, queue_size=10)
         self.elevator_angle = rospy.Publisher('core/elevator_cmd', Float32, queue_size=10)
+        self.elevon_stbd_angle = rospy.Publisher('core/elevon_strb_cmd', Float32, queue_size=10)
+        self.elevon_port_angle = rospy.Publisher('core/elevon_port_cmd', Float32, queue_size=10)
         self.thruster1_rpms = rospy.Publisher('core/thruster1_cmd', ThrusterRPM, queue_size=10)
         self.thruster2_rpms = rospy.Publisher('core/thruster2_cmd', ThrusterRPM, queue_size=10)
 
@@ -93,6 +95,8 @@ class TeleopServer(object):
             #self.thruster_angles.publish(self.joint_y_angle, self.joint_z_angle, header)
             self.rudder_angles.publish(self.joint_z_angle)
             self.elevator_angle.publish(self.joint_y_angle)
+            self.elevon_port_angle.publish(-self.joint_y_angle)
+            self.elevon_stbd_angle.publish(self.joint_y_angle)
 
             pygame.event.pump()
             clock.tick(20)

@@ -60,6 +60,8 @@ private:
     //ros::Subscriber angles_cmd_sub;
     ros::Subscriber rudder_cmd_sub;
     ros::Subscriber elevator_cmd_sub;
+    ros::Subscriber elevon_port_cmd_sub;
+    ros::Subscriber elevon_stbd_cmd_sub;
     //ros::Subscriber lcg_cmd_sub;
     
     // publish timers
@@ -203,6 +205,8 @@ public:
         last_rudder_msg.setpoints.push_back(0.);
         last_rudder_msg.setpoints.push_back(0.);
         last_rudder_msg.setpoints.push_back(0.);
+        last_rudder_msg.setpoints.push_back(0.);
+        last_rudder_msg.setpoints.push_back(0.);
         last_thruster_msg.setpoints.push_back(0.);
         last_thruster_msg.setpoints.push_back(0.);
         zero_thruster_msg = last_thruster_msg;
@@ -250,6 +254,8 @@ public:
         thruster2_cmd_sub = nh.subscribe<smarc_msgs::ThrusterRPM>("core/thruster2_cmd", 1000, boost::bind(&LoloSimMsgBridge::thruster_cmd_callback, this, _1, 1));
         elevator_cmd_sub = nh.subscribe<std_msgs::Float32>("core/elevator_cmd", 1000, boost::bind(&LoloSimMsgBridge::rudder_cmd_callback, this, _1, 0));
         rudder_cmd_sub = nh.subscribe<std_msgs::Float32>("core/rudder_cmd", 1000, boost::bind(&LoloSimMsgBridge::rudder_cmd_callback, this, _1, 1));
+        elevon_port_cmd_sub = nh.subscribe<std_msgs::Float32>("core/elevon_port_cmd", 1000, boost::bind(&LoloSimMsgBridge::rudder_cmd_callback, this, _1, 3));
+        elevon_stbd_cmd_sub = nh.subscribe<std_msgs::Float32>("core/elevon_strb_cmd", 1000, boost::bind(&LoloSimMsgBridge::rudder_cmd_callback, this, _1, 4));
         thruster_cmd_pub = nh.advertise<cola2_msgs::Setpoints>("sim/thruster_setpoints", 1000);
         rudder_cmd_pub = nh.advertise<cola2_msgs::Setpoints>("sim/rudder_setpoints", 1000);
         thruster1_fb_pub = nh.advertise<smarc_msgs::ThrusterFeedback>("core/thruster1_fb", 1000);
