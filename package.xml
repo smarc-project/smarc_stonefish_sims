@@ -57,7 +57,7 @@
   <depend>std_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>cola2_msgs</depend>
-  <depend>sam_msgs</depend>
+  <!-- <depend>sam_msgs</depend> -->
   <depend>smarc_msgs</depend>
   <depend>geometry_msgs</depend>
   <depend>nav_msgs</depend>
@@ -71,7 +71,7 @@
   <exec_depend>tf_lat_lon</exec_depend>
   <exec_depend>bt_mission</exec_depend>
   <exec_depend>pid</exec_depend>
-  <exec_depend>sam_description</exec_depend>
+  <exec_depend>lolo_description</exec_depend>
   <exec_depend>imc_ros_bridge</exec_depend>
   <exec_depend>sam_stonefish_sim</exec_depend>
 
