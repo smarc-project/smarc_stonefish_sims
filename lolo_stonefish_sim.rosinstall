@@ -1,4 +1,4 @@
-- git: {local-name: lolo_stonefish_sim, uri: 'https://github.com/nilsbore/lolo_stonefish_sim.git', version: noetic-devel}
+- git: {local-name: lolo_stonefish_sim, uri: 'https://github.com/smarc-project/lolo_stonefish_sim.git', version: noetic-devel}
 - git: {local-name: smarc_msgs, uri: 'https://github.com/smarc-project/smarc_msgs.git', version: noetic-devel}
 - git: {local-name: smarc_missions, uri: 'https://github.com/smarc-project/smarc_missions.git', version: noetic-devel}
 - git: {local-name: sam_stonefish_sim, uri: 'https://github.com/smarc-project/sam_stonefish_sim.git', version: noetic-devel}
