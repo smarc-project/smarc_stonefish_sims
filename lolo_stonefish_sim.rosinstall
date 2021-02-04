@@ -1,0 +1,3 @@
+- git: {local-name: lolo_stonefish_sim, uri: 'https://github.com/nilsbore/lolo_stonefish_sim.git', version: noetic-devel}
+- git: {local-name: smarc_msgs, uri: 'https://github.com/smarc-project/smarc_msgs.git', version: noetic-devel}
+- git: {local-name: cola2_msgs, uri: 'https://bitbucket.org/iquarobotics/cola2_msgs.git', version: master}
