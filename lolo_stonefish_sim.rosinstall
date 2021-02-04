@@ -9,3 +9,4 @@
 - git: {local-name: stonefish_ros, uri: 'https://github.com/smarc-project/stonefish_ros.git', version: noetic-devel}
 - git: {local-name: sbg_ros_driver, uri: 'https://github.com/smarc-project/sbg_ros_driver.git', version: noetic-devel}
 - git: {local-name: cola2_msgs, uri: 'https://bitbucket.org/iquarobotics/cola2_msgs.git', version: master}
+- git: {local-name: geographic_info, uri: 'https://github.com/ros-geographic-info/geographic_info.git', version: master}
