@@ -1,4 +1,5 @@
 # sam_stonefish_sim
+![CI](https://github.com/smarc-project/sam_stonefish_sim/workflows/CI/badge.svg?branch=noetic-devel) [![license](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 Simlation of the SAM AUV based on the [Stonefish simulator](https://github.com/patrykcieslak/stonefish).
 
