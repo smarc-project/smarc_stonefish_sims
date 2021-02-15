@@ -1,7 +1,7 @@
 <launch>
 
     <arg name="robot_name" default="lolo"/>
-    <arg name="with_teleop" default="true"/>
+    <arg name="with_teleop" default="false"/>
     <arg name="xacro_file" default="$(find lolo_description)/urdf/lolo_auv.urdf.xacro"/>
     <!--
     <arg name="simulate_dr" default="true"/>

@@ -2,7 +2,7 @@
 
     <arg name="robot_name" default="lolo"/>
     <arg name="xacro_file" default="$(find lolo_description)/urdf/lolo_auv.urdf.xacro"/>
-    <arg name="with_teleop" default="true"/>
+    <arg name="with_teleop" default="false"/>
     <arg name="simulate_dr" default="true"/>
 
     <!-- These are the arguments you need to care about -->

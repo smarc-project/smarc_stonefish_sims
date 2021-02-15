@@ -74,6 +74,8 @@
   <exec_depend>lolo_description</exec_depend>
   <exec_depend>imc_ros_bridge</exec_depend>
   <exec_depend>sam_stonefish_sim</exec_depend>
+  <exec_depend>tmux</exec_depend>
+  <exec_depend>rosmon</exec_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

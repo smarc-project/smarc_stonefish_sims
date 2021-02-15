@@ -1,13 +1,26 @@
 <launch>
 
     <arg name="robot_name" default="lolo"/>
+    <arg name="neptus_addr" default="127.0.0.1"/>
+    <arg name="bridge_addr" default="127.0.0.1"/>
+    <arg name="bridge_port" default="6002"/>
+    <!-- 5=sam, 6=lolo -->
+    <arg name="imc_id" default="6"/>
+    <arg name="imc_src" default="40"/>
+    <arg name="imc_system_name" default="$(arg robot_name)"/>
+    <arg name="max_depth" default="20.0"/>
+    <arg name="min_altitude" default="5.0"/>
 
     <include file="$(find bt_mission)/launch/mission.launch">
-        <!-- utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND --> 
-        <arg name="neptus_addr" value="127.0.0.1"/>
-        <arg name="bridge_addr" value="127.0.0.1"/>
-        <arg name="bridge_port" value="6002"/>
         <arg name="robot_name" value="$(arg robot_name)"/>
+        <arg name="neptus_addr" value="$(arg neptus_addr)"/>
+        <arg name="bridge_addr" value="$(arg bridge_addr)"/>
+        <arg name="bridge_port" value="$(arg bridge_port)"/>
+        <arg name="imc_id" value="$(arg imc_id)"/>
+        <arg name="imc_src" value="$(arg imc_src)"/>
+        <arg name="imc_system_name" value="$(arg imc_system_name)"/>
+        <arg name="max_depth" value="$(arg max_depth)"/>
+        <arg name="min_altitude" value="$(arg min_altitude)"/>
     </include>
 
 </launch>
