@@ -2,7 +2,7 @@
 
     <arg name="robot_name" default="sam"/>
     <arg name="xacro_file" default="$(find sam_description)/urdf/sam_auv.urdf.xacro"/>
-    <arg name="with_teleop" default="true"/>
+    <arg name="with_teleop" default="false"/>
     <arg name="simulate_dr" default="true"/>
 
     <group ns="$(arg robot_name)">
