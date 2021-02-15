@@ -76,7 +76,7 @@
   <exec_depend>sam_stonefish_sim</exec_depend>
   <exec_depend>tmux</exec_depend>
   <exec_depend>rosmon</exec_depend>
-  <exec_depend>lolo_webgui_native</exec_depend>
+  <!-- <exec_depend>lolo_webgui_native</exec_depend> -->
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
