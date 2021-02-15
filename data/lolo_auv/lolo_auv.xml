@@ -53,7 +53,7 @@
     <actuator name="Elevator" type="rudder">
         <link name="Vehicle"/>
         <origin rpy="-1.5707 0.0 0.0" xyz="-2.68 0.0 0.0"/>
-        <specs drag_coeff="2.0" lift_coeff="3.0" max_angle="0.6" inverted="false" area="0.1"/>
+        <specs drag_coeff="2.0" lift_coeff="3.0" max_angle="0.6" inverted="false" area="0.12"/>
         <visual>
             <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/back_fin.obj" scale="1.0"/>
             <material name="Neutral"/>
@@ -65,7 +65,7 @@
     <actuator name="RudderPort" type="rudder">
         <link name="Vehicle"/>
         <origin rpy="0.0 0.0 0.0" xyz="-2.4 0.275 0.0"/>
-        <specs drag_coeff="2.0" lift_coeff="3.0" max_angle="0.6" inverted="false" area="0.03"/>
+        <specs drag_coeff="2.0" lift_coeff="3.0" max_angle="0.6" inverted="false" area="0.06"/>
         <visual>
             <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/fin.obj" scale="1.0"/>
             <material name="Neutral"/>
@@ -77,7 +77,7 @@
     <actuator name="RudderStbd" type="rudder">
         <link name="Vehicle"/>
         <origin rpy="0.0 0.0 0.0" xyz="-2.4 -0.275 0.0"/>
-        <specs drag_coeff="2.0" lift_coeff="3.0" max_angle="0.6" inverted="false" area="0.03"/>
+        <specs drag_coeff="2.0" lift_coeff="3.0" max_angle="0.6" inverted="false" area="0.06"/>
         <visual>
             <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/fin.obj" scale="1.0"/>
             <material name="Neutral"/>
@@ -89,7 +89,7 @@
     <actuator name="ElevonPort" type="rudder">
         <link name="Vehicle"/>
         <origin rpy="-1.5707 0.0 0.0" xyz="-0.8 0.5 0.0"/>
-        <specs drag_coeff="2.0" lift_coeff="3.0" max_angle="0.6" inverted="false" area="0.03"/>
+        <specs drag_coeff="2.0" lift_coeff="3.0" max_angle="0.6" inverted="false" area="0.06"/>
         <visual>
             <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/fin.obj" scale="1.0"/>
             <material name="Neutral"/>
@@ -101,7 +101,7 @@
     <actuator name="ElevonStbd" type="rudder">
         <link name="Vehicle"/>
         <origin rpy="1.5707 0.0 0.0" xyz="-0.8 -0.5 0.0"/>
-        <specs drag_coeff="2.0" lift_coeff="3.0" max_angle="0.6" inverted="false" area="0.03"/>
+        <specs drag_coeff="2.0" lift_coeff="3.0" max_angle="0.6" inverted="false" area="0.06"/>
         <visual>
             <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/fin.obj" scale="1.0"/>
             <material name="Neutral"/>
