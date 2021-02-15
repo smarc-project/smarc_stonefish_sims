@@ -60,14 +60,17 @@ if [ -z "$SAM_PRIVATE_SIMS_PATH" ]
 then
 	echo "Did not find sam_private_sims, using sam_stonefish_sim instead"
 	SIM_PKG="sam_stonefish_sim"
+    SIM_PKG_PATH=$SAM_STONEFISH_SIM_PATH
 else
 	echo "Found sam_private_sims, using that"
 	SIM_PKG="sam_private_sims"
+    SIM_PKG_PATH=$SAM_PRIVATE_SIMS_PATH
 fi
 
 #SCENARIO_DESC=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO".scn
 #CONFIG_FILE="${SAM_STONEFISH_SIM_PATH}/config/${SCENARIO}.yaml"
 CONFIG="${SCENARIO}.yaml"
+CONFIG_FILE="${SIM_PKG_PATH}/config/${CONFIG}"
 SCENARIO_DESC="${SAM_STONEFISH_SIM_PATH}/data/scenarios/default.scn"
 
 # if we need more than 1 sam, we need to change the scenario file to one that will
@@ -96,6 +99,14 @@ else
 	exit 1
 fi
 
+if [ -f "$CONFIG_FILE" ]
+then
+	echo "Using config file: $CONFIG_FILE"
+else
+	echo "Config not found: $CONFIG_FILE"
+	exit 1
+fi
+
 # ros mon can create gigantic core dumps. I had well over 4Gb of dumps happen.
 # this cmd will limit system-wide core dumps to a tiny amount. uncomment if
 # you need the core dumps for some reason.
@@ -112,7 +123,7 @@ tmux select-window -t $SIM_SESSION:0
 tmux send-keys "roscore" C-m
 
 tmux select-window -t $SIM_SESSION:1
-tmux send-keys "mon launch $SIM_PKG stonefish.launch config:=$CONFIG scenario_description:=$SCENARIO_DESC simulation_rate:=$SIMULATION_RATE graphics_quality:=$GFX_QUALITY --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+tmux send-keys "mon launch sam_stonefish_sim stonefish.launch config_file:=$CONFIG_FILE scenario_description:=$SCENARIO_DESC simulation_rate:=$SIMULATION_RATE graphics_quality:=$GFX_QUALITY --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 
 # ADD ANY LAUNCHES THAT NEED TO BE LAUNCHED ONLY ONCE, EVEN WHEN THERE ARE 10 SAMS HERE
