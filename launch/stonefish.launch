@@ -11,7 +11,7 @@
 
     <!-- These are more for fine-tuning -->
     <arg name="simulation_data" default="$(find sam_stonefish_sim)/data"/> <!-- path to the data directory -->
-    <arg name="simulation_rate" default="100"/> <!-- number of simulation steps per second -->
+    <arg name="simulation_rate" default="300"/> <!-- number of simulation steps per second -->
     <arg name="graphics_resolution" default="1200 800"/> <!-- resolution of the simulation window -->
     <arg name="graphics_quality" default="medium"/> <!-- low, medium or high -->
     <arg name="shader_path" default="$(find stonefish_ros)/external/stonefish/Library/shaders"/>
