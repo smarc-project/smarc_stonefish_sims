@@ -165,6 +165,7 @@ target_link_libraries(sim_yaw_controller_node
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 install(PROGRAMS
+  scripts/bringup.sh
   scripts/lolo_teleop.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
