@@ -25,6 +25,7 @@
         <!-- VBS Setpoint controller -->
         <include file="$(find sam_stonefish_sim)/launch/vbs_controller.launch">
             <arg name="robot_name" value="$(arg robot_name)"/>
+            <arg name="vbs_name" value="vbs"/>
         </include>
 
         <!-- Bridge to SMARC msg interface -->

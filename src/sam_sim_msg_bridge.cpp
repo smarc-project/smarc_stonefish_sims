@@ -200,9 +200,9 @@ public:
         dvl_sub = nh.subscribe("sim/dvl", 1000, &SamSimMsgBridge::dvl_callback, this);
 
         vbs_cmd_sub = nh.subscribe("core/vbs_cmd", 1000, &SamSimMsgBridge::vbs_cmd_callback, this);
-        vbs_fb_sub = nh.subscribe("sim/vbs_volume_centered", 1000, &SamSimMsgBridge::vbs_fb_callback, this);
+        vbs_fb_sub = nh.subscribe("sim/vbs/volume_centered", 1000, &SamSimMsgBridge::vbs_fb_callback, this);
         vbs_fb_pub =  nh.advertise<sam_msgs::PercentStamped>("core/vbs_fb", 1000);
-        vbs_cmd_pub = nh.advertise<std_msgs::Float64>("sim/vbs_setpoint", 1000); 
+        vbs_cmd_pub = nh.advertise<std_msgs::Float64>("sim/vbs/setpoint", 1000); 
 
         joint_states_cmd_pub = nh.advertise<sensor_msgs::JointState>("desired_joint_states", 1000);
         joint_states_fb_sub =  nh.subscribe("joint_states", 1000, &SamSimMsgBridge::joint_states_fb_callback, this);

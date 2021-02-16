@@ -121,8 +121,8 @@
             <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/vbs_min.obj"/>
             <mesh filename="$(find sam_stonefish_sim)/data/sam_auv/mesh/vbs_max.obj"/>
         </volume>
-        <ros_publisher topic="/$(arg robot_name)/sim/vbs_volume"/>
-        <ros_subscriber topic="/$(arg robot_name)/sim/vbs_flow_rate"/>
+        <ros_publisher topic="/$(arg robot_name)/sim/vbs/volume"/>
+        <ros_subscriber topic="/$(arg robot_name)/sim/vbs/flow_rate"/>
     </actuator>
 
     <actuator name="ThrusterSurge1" type="thruster">
