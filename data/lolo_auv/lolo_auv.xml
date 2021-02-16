@@ -110,6 +110,50 @@
         </visual>
     </actuator>
 
+    <actuator name="VBSFrontStbd" type="vbs">
+        <link name="Vehicle"/>
+        <origin rpy="0.0 1.5707 0.0" xyz="-0.3 -0.35 0.0"/>
+        <volume initial="0.00002">
+            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/vbs_min.obj"/>
+            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/vbs_max.obj"/>
+        </volume>
+        <ros_publisher topic="/$(arg robot_name)/sim/vbs_front_stbd/volume"/>
+        <ros_subscriber topic="/$(arg robot_name)/sim/vbs_front_stbd/flow_rate"/>
+    </actuator>
+
+    <actuator name="VBSFrontPort" type="vbs">
+        <link name="Vehicle"/>
+        <origin rpy="0.0 1.5707 0.0" xyz="-0.3 0.35 0.0"/>
+        <volume initial="0.00002">
+            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/vbs_min.obj"/>
+            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/vbs_max.obj"/>
+        </volume>
+        <ros_publisher topic="/$(arg robot_name)/sim/vbs_front_port/volume"/>
+        <ros_subscriber topic="/$(arg robot_name)/sim/vbs_front_port/flow_rate"/>
+    </actuator>
+
+    <actuator name="VBSBackStbd" type="vbs">
+        <link name="Vehicle"/>
+        <origin rpy="0.0 1.5707 0.0" xyz="-1.3 -0.35 0.0"/>
+        <volume initial="0.00002">
+            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/vbs_min.obj"/>
+            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/vbs_max.obj"/>
+        </volume>
+        <ros_publisher topic="/$(arg robot_name)/sim/vbs_back_stbd/volume"/>
+        <ros_subscriber topic="/$(arg robot_name)/sim/vbs_back_stbd/flow_rate"/>
+    </actuator>
+
+    <actuator name="VBSBackPort" type="vbs">
+        <link name="Vehicle"/>
+        <origin rpy="0.0 1.5707 0.0" xyz="-1.3 0.35 0.0"/>
+        <volume initial="0.00002">
+            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/vbs_min.obj"/>
+            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/vbs_max.obj"/>
+        </volume>
+        <ros_publisher topic="/$(arg robot_name)/sim/vbs_back_port/volume"/>
+        <ros_subscriber topic="/$(arg robot_name)/sim/vbs_back_port/flow_rate"/>
+    </actuator>
+
     <!--
     <link name="Elevator" type="model" physics="submerged" buoyant="false">
         <physical>

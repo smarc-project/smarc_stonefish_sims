@@ -34,14 +34,14 @@ private:
 
     // sensor outputs from stonefish
     ros::Subscriber pressure_sub;
-    //ros::Subscriber vbs_fb_sub;
+    ros::Subscriber vbs_fb_sub[4];
     //ros::Subscriber joint_states_fb_sub;
     ros::Subscriber dvl_sub;
 
     // sensor outputs from bridge
     ros::Publisher pressure_pub;
     ros::Publisher battery_pub;
-    //ros::Publisher vbs_fb_pub;
+    ros::Publisher vbs_fb_pub[4];
     //ros::Publisher lcg_fb_pub;
     ros::Publisher thruster1_fb_pub;
     ros::Publisher thruster2_fb_pub;
@@ -50,13 +50,13 @@ private:
     // command inputs to stonefish
     ros::Publisher thruster_cmd_pub;
     ros::Publisher rudder_cmd_pub;
-    ros::Publisher vbs_cmd_pub;
+    ros::Publisher vbs_cmd_pub[4];
     ros::Publisher joint_states_cmd_pub;
 
     // command inputs to bridge
     ros::Subscriber thruster1_cmd_sub;
     ros::Subscriber thruster2_cmd_sub;
-    //ros::Subscriber vbs_cmd_sub;
+    ros::Subscriber vbs_cmd_sub[4];
     //ros::Subscriber angles_cmd_sub;
     ros::Subscriber rudder_cmd_sub;
     ros::Subscriber elevator_cmd_sub;
@@ -141,21 +141,21 @@ public:
         lcg_pos.position.push_back(lcg_joint_min + 0.01*msg.value*(lcg_joint_max-lcg_joint_min));
         joint_states_cmd_pub.publish(lcg_pos);
     }
+    */
 
-    void vbs_cmd_callback(const sam_msgs::PercentStamped& msg)
+    void vbs_cmd_callback(const std_msgs::Float32::ConstPtr& msg, int vbs_ind)
     {
         std_msgs::Float64 cmd;
-        cmd.data = vbs_vol_min + 0.01*msg.value*(vbs_vol_max - vbs_vol_min);
-        vbs_cmd_pub.publish(cmd);
+        cmd.data = vbs_vol_min + 0.01*msg->data*(vbs_vol_max - vbs_vol_min);
+        vbs_cmd_pub[vbs_ind].publish(cmd);
     }
 
-    void vbs_fb_callback(const std_msgs::Float64& msg)
+    void vbs_fb_callback(const std_msgs::Float64::ConstPtr& msg, int vbs_ind)
     {
-        sam_msgs::PercentStamped fb;
-        fb.value = 100.*(.5+msg.data);
-        vbs_fb_pub.publish(fb);
+        std_msgs::Float32 fb;
+        fb.data = 100.*(.5+msg->data);
+        vbs_fb_pub[vbs_ind].publish(fb);
     }
-    */
 
     void pressure_callback(const sensor_msgs::FluidPressure& msg)
     {
@@ -232,12 +232,14 @@ public:
         dvl_pub = nh.advertise<smarc_msgs::DVL>("core/dvl", 1000);
         dvl_sub = nh.subscribe("sim/dvl", 1000, &LoloSimMsgBridge::dvl_callback, this);
 
-        /*
-        vbs_cmd_sub = nh.subscribe("core/vbs_cmd", 1000, &LoloSimMsgBridge::vbs_cmd_callback, this);
-        vbs_fb_sub = nh.subscribe("sim/vbs_volume_centered", 1000, &LoloSimMsgBridge::vbs_fb_callback, this);
-        vbs_fb_pub =  nh.advertise<sam_msgs::PercentStamped>("core/vbs_fb", 1000);
-        vbs_cmd_pub = nh.advertise<std_msgs::Float64>("sim/vbs_setpoint", 1000); 
-        */
+        std::vector<std::string> vbs_names = {"vbs_front_stbd", "vbs_front_port", "vbs_back_stbd", "vbs_back_port"};
+        for (int i = 0; i < vbs_names.size(); ++i) {
+            std::string name = vbs_names[i];
+            vbs_cmd_sub[i] = nh.subscribe<std_msgs::Float32>(std::string("core/") + name + "_cmd", 1000, boost::bind(&LoloSimMsgBridge::vbs_cmd_callback, this, _1, i));
+            vbs_fb_sub[i] = nh.subscribe<std_msgs::Float64>(std::string("sim/") + name + "/volume_centered", 1000, boost::bind(&LoloSimMsgBridge::vbs_fb_callback, this, _1, i));
+            vbs_fb_pub[i] =  nh.advertise<std_msgs::Float32>(std::string("core/") + name + "_fb", 1000);
+            vbs_cmd_pub[i] = nh.advertise<std_msgs::Float64>(std::string("sim/") + name + "/setpoint", 1000); 
+        }
 
         joint_states_cmd_pub = nh.advertise<sensor_msgs::JointState>("desired_joint_states", 1000);
         /*
