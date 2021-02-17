@@ -14,9 +14,10 @@
             <material name="Fiberglass"/>
             <look name="yellow"/>
             <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
-            <mass value="70.0"/>
+            <mass value="135.0"/>
             <!-- <cg xyz="-0.419064 0.002501 0.000001" rpy="0.0 0.0 0.0"/> -->
         </external_part>
+        <!--
         <internal_part name="WeightCylinder" type="cylinder" physics="submerged" buoyant="true">
             <dimensions radius="0.3" height="1.5"/>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
@@ -24,6 +25,16 @@
             <mass value="350.0"/>
             <look name="manipulator"/>
             <compound_transform rpy="0.0 1.571 0.0" xyz="-0.7 0.0 0.2"/>
+        </internal_part>
+        -->
+        <internal_part name="WeightBlock" type="box" physics="submerged" buoyant="true">
+            <!-- <dimensions radius="0.3" height="1.5"/> -->
+            <dimensions xyz="1.7 0.8 0.3"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <material name="Neutral"/>
+            <mass value="270.0"/>
+            <look name="manipulator"/>
+            <compound_transform rpy="0.0 0.0 0.0" xyz="-0.7 0.0 0.17"/>
         </internal_part>
     </base_link>
 
