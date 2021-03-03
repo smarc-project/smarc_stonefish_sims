@@ -7,7 +7,7 @@ import subprocess
 OBJ_NAME = 'algae_cube'  # OR 'algae_plane'
 NUM_OBJ = 50
 
-sim_dir = subprocess.run(['rospack', 'find', 'sam_stonefish_sim'],
+sim_dir = subprocess.run(['rospack', 'find', 'smarc_stonefish_sims'],
                          stdout=subprocess.PIPE)
 sim_dir = sim_dir.stdout.decode('utf-8').strip()
 OUTDIR = f'{sim_dir}/data/algae/{OBJ_NAME}'
