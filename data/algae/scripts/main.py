@@ -1,6 +1,7 @@
 """Generate algae simulation environment files"""
 
 import parser
+import random
 import subprocess
 
 import env_gen
@@ -30,6 +31,7 @@ def generate_algae_env(args):
 
 
 if __name__ == '__main__':
+    random.seed(0)
     SIM_DIR = subprocess.run(['rospack', 'find', 'smarc_stonefish_sims'],
                              stdout=subprocess.PIPE,
                              check=True)
