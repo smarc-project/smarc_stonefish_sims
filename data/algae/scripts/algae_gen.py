@@ -5,7 +5,7 @@ import random
 import subprocess
 
 OBJ_NAME = 'algae_cube'  # OR 'algae_plane'
-NUM_OBJ = 50
+NUM_OBJ = 200
 
 sim_dir = subprocess.run(['rospack', 'find', 'smarc_stonefish_sims'],
                          stdout=subprocess.PIPE)
@@ -39,9 +39,9 @@ def generate_algae_obj(filepath):
     mod_deform.factor = random.uniform(min_deform, max_deform)
 
     algae_obj_dim = {
-        'x': random.uniform(.1, .5),
-        'y': random.uniform(.1, .3),
-        'z': random.uniform(2, 6)
+        'x': random.uniform(.05, .25),
+        'y': random.uniform(.01, .1),
+        'z': random.uniform(2, 5)
     }
     algae_obj.dimensions[0] = algae_obj_dim['x']
     algae_obj.dimensions[1] = algae_obj_dim['y']
