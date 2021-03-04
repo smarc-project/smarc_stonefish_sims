@@ -32,7 +32,7 @@ def generate_algae_env(args):
 
 if __name__ == '__main__':
     random.seed(0)
-    SIM_DIR = subprocess.run(['rospack', 'find', 'smarc_stonefish_sims'],
+    SIM_DIR = subprocess.run(['rospack', 'find', 'algae_world'],
                              stdout=subprocess.PIPE,
                              check=True)
     SIM_DIR = SIM_DIR.stdout.decode('utf-8').strip()

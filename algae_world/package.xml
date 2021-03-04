@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>smarc_stonefish_sims_algae_world</name>
+  <name>algae_world</name>
   <version>0.0.0</version>
-  <description>The smarc_stonefish_sims_algae_world package</description>
+  <description>The algae_world stonefish simulation package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -20,7 +20,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/smarc_stonefish_sims_algae_world</url> -->
+  <!-- <url type="website">http://wiki.ros.org/algae_world</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
