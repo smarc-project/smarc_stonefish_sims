@@ -3,7 +3,7 @@
 
     <!-- These are the arguments you need to care about -->
     <arg name="config" default="algae.yaml"/>
-    <arg name="config_file" default="$(find smarc_stonefish_sims)/config/$(arg config)"/>
+    <arg name="config_file" default="$(find smarc_stonefish_sims_algae_world)/config/$(arg config)"/>
     <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn"/>
 
     <!-- UTM Zone for Biograd simulation -->
