@@ -75,13 +75,12 @@ def generate_row(world_x, world_rpy=[0.0, 0.0, 0.0]):
     }
 
     # Add rope
-    rope_polyester_wool_16mm_200m = generate_static_obj_def(
-        name="Rope",
-        look="black",
-        mesh="$(param rope_polyester_wool_16mm_200m)",
-        world_xyz=[world_x, rope_y, rope_z],
-        world_rpy=world_rpy)
-    components.append(rope_polyester_wool_16mm_200m)
+    rope = generate_static_obj_def(name="Rope",
+                                   look="black",
+                                   mesh="$(param rope)",
+                                   world_xyz=[world_x, rope_y, rope_z],
+                                   world_rpy=world_rpy)
+    components.append(rope)
 
     # Add A0 buoys, 1 per 10 meters
     for y in range(rope_y - 85, rope_y + 90, 10):
