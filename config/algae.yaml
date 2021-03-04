@@ -1,5 +1,5 @@
 robot_file: "$(find sam_stonefish_sim)/data/sam_auv/sam_auv.xml"
-environment_file: "$(find smarc_stonefish_sims)/data/algae/rope.scn" 
+environment_file: "$(find smarc_stonefish_sims)/data/algae/algae_env.scn"
 robot_name: "sam"
 robot_pos: "0.0 0.0 0.0"
 latitude: "43.93183"
@@ -10,3 +10,5 @@ anchoring_buoy_rope: "$(find smarc_stonefish_sims)/data/algae/components/anchori
 a0_buoy: "$(find smarc_stonefish_sims)/data/algae/components/a0_buoy.obj"
 a0_buoy_rope: "$(find smarc_stonefish_sims)/data/algae/components/a0_buoy_rope.obj"
 rope: "$(find smarc_stonefish_sims)/data/algae/components/rope.obj"
+algae_obj_dir: "$(find smarc_stonefish_sims)/data/algae/algae_cube"
+algae_texture_dir: "$(find smarc_stonefish_sims)/data/algae/textures"
