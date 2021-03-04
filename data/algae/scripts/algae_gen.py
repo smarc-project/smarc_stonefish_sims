@@ -1,5 +1,6 @@
 import bpy
 import csv
+import math
 import os
 import random
 import subprocess
@@ -24,6 +25,8 @@ mod_dy = algae_obj.modifiers['displace_y']
 mod_deform = algae_obj.modifiers['simple_deform']
 deform_methods = ['TWIST', 'BEND', 'TAPER', 'STRETCH']
 deform_axis = ['X', 'Y', 'Z']
+# Reduce number of faces
+mod_decimate = algae_obj.modifiers['decimate']
 
 
 def generate_algae_obj(filepath):
@@ -37,6 +40,14 @@ def generate_algae_obj(filepath):
         0,
         len(deform_axis) - 1)]
     mod_deform.factor = random.uniform(min_deform, max_deform)
+
+    # Reduce number of faces
+    if random.random() > 0.5:
+        mod_decimate.decimate_type = 'DISSOLVE'
+        mod_decimate.angle_limit = random.randint(3, 10) / math.pi
+    else:
+        mod_decimate.decimate_type = 'UNSUBDIV'
+        mod_decimate.iterations = random.randint(5, 10)
 
     algae_obj_dim = {
         'x': random.uniform(.05, .25),
