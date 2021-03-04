@@ -1,4 +1,5 @@
 import math
+from operator import add
 
 
 def generate_static_obj_def(name,
@@ -92,7 +93,7 @@ def generate_row(world_x, world_rpy=[0.0, 0.0, 0.0]):
     for _, param in anchoring_buoy_params.items():
         anchoring_buoy = generate_anchoring_group(
             world_xyz=[world_x, rope_y + param['y_offset'], buoy_z],
-            world_rpy=param['rpy'])
+            world_rpy=list(map(add, world_rpy, param['rpy'])))
         components.append(anchoring_buoy)
 
     return '\n'.join(components)
