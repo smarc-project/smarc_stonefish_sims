@@ -4,7 +4,7 @@ NUM_ROBOTS=1
 # the scenario and environment that will be loaded in the simulation
 # it includes the world map, auvs, where the auvs are etc.
 # SCENARIO="sam_biograd_hd"
-SCENARIO="sam_biograd_no_payload_sensors"
+SCENARIO="biograd_world"
 
 MIN_ALTITUDE=5
 MAX_DEPTH=20
@@ -32,7 +32,7 @@ GFX_QUALITY="low" # high/medium/low
 # ADD other environments to the list here
 # the initial position of the robots are defined in the scenario files
 case "$SCENARIO" in
-	"sam_asko")
+	"asko_world")
 		# asko 
 		UTM_ZONE=33
 		UTM_BAND=V
@@ -40,8 +40,15 @@ case "$SCENARIO" in
 		LONGITUDE=17.596177
 		CAR_DEPTH=10
 		;;
-	"sam_biograd_no_payload_sensors")
+	"biograd_world")
 		# Biograd
+		UTM_ZONE=33
+		UTM_BAND=T
+		LATITUDE=43.93183
+		LONGITUDE=15.44264
+		;;
+	"algae_world")
+		# Algae farm
 		UTM_ZONE=33
 		UTM_BAND=T
 		LATITUDE=43.93183
@@ -67,11 +74,15 @@ else
     SIM_PKG_PATH=$SAM_PRIVATE_SIMS_PATH
 fi
 
+SMARC_STONEFISH_WORLDS_PATH="$(rospack find smarc_stonefish_worlds)"
+
 #SCENARIO_DESC=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO".scn
 #CONFIG_FILE="${SAM_STONEFISH_SIM_PATH}/config/${SCENARIO}.yaml"
-CONFIG="${SCENARIO}.yaml"
-CONFIG_FILE="${SIM_PKG_PATH}/config/${CONFIG}"
-SCENARIO_DESC="${SAM_STONEFISH_SIM_PATH}/data/scenarios/default.scn"
+WORLD_CONFIG="${SCENARIO}.yaml"
+WORLD_CONFIG_FILE="${SMARC_STONEFISH_WORLDS_PATH}/config/${WORLD_CONFIG}"
+ROBOT_CONFIG="sam_no_payload_sensors.yaml"
+ROBOT_CONFIG_FILE="${SIM_PKG_PATH}/config/${ROBOT_CONFIG}"
+SCENARIO_DESC="${SMARC_STONEFISH_WORLDS_PATH}/data/scenarios/default.scn"
 
 # if we need more than 1 sam, we need to change the scenario file to one that will
 # spawn the needed number of sams.
@@ -86,8 +97,7 @@ if [ $NUM_ROBOTS -gt 1 ] #spaces important
 then 
 	#SCENARIO_DESC=$SAM_STONEFISH_SIM_PATH/data/scenarios/"$SCENARIO"_"$NUM_ROBOTS".scn
 	#CONFIG_FILE="${SAM_STONEFISH_SIM_PATH}/config/${SCENARIO}_${NUM_ROBOTS}_auvs.yaml"
-	CONFIG = "${SCENARIO}.yaml"
-	SCENARIO_DESC="${SAM_STONEFISH_SIM_PATH}/data/scenarios/default_${NUM_ROBOTS}_auvs.scn"
+	SCENARIO_DESC="${SMARC_STONEFISH_WORLDS_PATH}/data/scenarios/default_${NUM_ROBOTS}_auvs.scn"
 fi
 # check if the scenario file exists.
 if [ -f "$SCENARIO_DESC" ]
@@ -99,11 +109,19 @@ else
 	exit 1
 fi
 
-if [ -f "$CONFIG_FILE" ]
+if [ -f "$WORLD_CONFIG_FILE" ]
 then
-	echo "Using config file: $CONFIG_FILE"
+	echo "Using config file: $WORLD_CONFIG_FILE"
 else
-	echo "Config not found: $CONFIG_FILE"
+	echo "Config not found: $WORLD_CONFIG_FILE"
+	exit 1
+fi
+
+if [ -f "$ROBOT_CONFIG_FILE" ]
+then
+	echo "Using config file: $ROBOT_CONFIG_FILE"
+else
+	echo "Config not found: $ROBOT_CONFIG_FILE"
 	exit 1
 fi
 
@@ -123,7 +141,7 @@ tmux select-window -t $SIM_SESSION:0
 tmux send-keys "roscore" C-m
 
 tmux select-window -t $SIM_SESSION:1
-tmux send-keys "mon launch sam_stonefish_sim stonefish.launch config_file:=$CONFIG_FILE scenario_description:=$SCENARIO_DESC simulation_rate:=$SIMULATION_RATE graphics_quality:=$GFX_QUALITY --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+tmux send-keys "mon launch smarc_stonefish_worlds stonefish.launch robot_config_file:=$ROBOT_CONFIG_FILE world_config_file:=$WORLD_CONFIG_FILE scenario_description:=$SCENARIO_DESC simulation_rate:=$SIMULATION_RATE graphics_quality:=$GFX_QUALITY --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 
 # ADD ANY LAUNCHES THAT NEED TO BE LAUNCHED ONLY ONCE, EVEN WHEN THERE ARE 10 SAMS HERE
