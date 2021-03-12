@@ -1,0 +1,38 @@
+<launch>
+
+    <arg name="robot_name" default="sam"/>
+    <arg name="xacro_file" default="$(find sam_description)/urdf/sam_auv.urdf.xacro"/>
+    <arg name="with_teleop" default="false"/>
+    <arg name="simulate_dr" default="true"/>
+
+    <!-- These are the arguments you need to care about -->
+    <arg name="world_config" default="biograd_world.yaml"/>
+    <arg name="world_config_file" default="$(find smarc_stonefish_worlds)/config/$(arg world_config)"/>
+    <arg name="robot_config" default="sam_no_payload_sensors.yaml"/>
+    <arg name="robot_config_file" default="$(find sam_stonefish_sim)/config/$(arg robot_config)"/>
+    <arg name="scenario_description" default="$(find smarc_stonefish_worlds)/data/scenarios/default.scn"/>
+
+    <!-- These are more for fine-tuning -->
+    <arg name="simulation_data" default="$(find smarc_stonefish_worlds)/data"/> <!-- path to the data directory -->
+    <arg name="simulation_rate" default="300"/> <!-- number of simulation steps per second -->
+    <arg name="graphics_resolution" default="1200 800"/> <!-- resolution of the simulation window -->
+    <arg name="graphics_quality" default="medium"/> <!-- low, medium or high -->
+
+    <include file="$(find smarc_stonefish_worlds)/launch/stonefish.launch">
+        <arg name="robot_config_file" value="$(arg robot_config_file)"/>
+        <arg name="world_config_file" value="$(arg world_config_file)"/>
+        <arg name="scenario_description" value="$(arg scenario_description)"/>
+        <arg name="simulation_data" value="$(arg simulation_data)"/>
+        <arg name="simulation_rate" value="$(arg simulation_rate)"/>
+        <arg name="graphics_resolution" value="$(arg graphics_resolution)"/>
+        <arg name="graphics_quality" value="$(arg graphics_quality)"/>
+    </include>
+
+    <include file="$(find sam_stonefish_sim)/launch/robot_bridge.launch">
+        <arg name="robot_name" value="$(arg robot_name)"/>
+        <arg name="xacro_file" value="$(arg xacro_file)"/>
+        <arg name="with_teleop" value="$(arg with_teleop)"/>
+        <arg name="simulate_dr" value="$(arg simulate_dr)"/>
+    </include>
+
+</launch>

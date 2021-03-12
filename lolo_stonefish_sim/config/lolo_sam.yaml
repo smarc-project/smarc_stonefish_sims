@@ -1,0 +1,7 @@
+robot1_file: "$(find lolo_stonefish_sim)/data/lolo_auv/lolo_auv.xml"
+robot1_name: "lolo"
+robot1_pos: "0.0 0.0 0.0"
+robot2_file: "$(find sam_stonefish_sim)/data/sam_auv/sam_auv_no_payload_sensors.xml"
+robot2_name: "sam"
+robot2_pos: "3.0 0.0 0.0"
+simulate_dr: "true"
