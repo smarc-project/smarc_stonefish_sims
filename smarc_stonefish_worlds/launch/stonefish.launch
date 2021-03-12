@@ -10,7 +10,7 @@
     <arg name="utm_band" default="T"/>
 
     <!-- These are more for fine-tuning -->
-    <arg name="simulation_data" default="$(find sam_stonefish_sim)/data"/> <!-- path to the data directory -->
+    <arg name="simulation_data" default="$(find smarc_stonefish_worlds)/data"/> <!-- path to the data directory -->
     <arg name="simulation_rate" default="300"/> <!-- number of simulation steps per second -->
     <arg name="graphics_resolution" default="1200 800"/> <!-- resolution of the simulation window -->
     <arg name="graphics_quality" default="medium"/> <!-- low, medium or high -->
@@ -24,7 +24,7 @@
     <!--
     <node name="utm2map" pkg="tf" type="static_transform_publisher" args="535529 4864397 0 0 0 0 1 utm map 100" />
     -->
-    <node name="utm2map" type="sim_utm_offset_publisher" pkg="sam_stonefish_sim" output="screen">
+    <node name="utm2map" type="sim_utm_offset_publisher" pkg="smarc_stonefish_worlds" output="screen">
         <rosparam file="$(arg config_file)" subst_value="true"/>
     </node>
 

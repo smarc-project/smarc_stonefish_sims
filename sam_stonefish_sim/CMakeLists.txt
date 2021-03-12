@@ -135,7 +135,6 @@ include_directories(
 add_executable(sam_sim_msg_bridge src/sam_sim_msg_bridge.cpp)
 add_executable(sim_yaw_controller_node src/sim_yaw_controller_node.cpp)
 add_executable(sim_waypoint_nav src/sim_waypoint_nav.cpp)
-add_executable(sim_utm_offset_publisher src/sim_utm_offset_publisher.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -148,7 +147,6 @@ add_executable(sim_utm_offset_publisher src/sim_utm_offset_publisher.cpp)
 add_dependencies(sam_sim_msg_bridge ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(sim_yaw_controller_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(sim_waypoint_nav ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(sim_utm_offset_publisher ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(sam_sim_msg_bridge
@@ -160,10 +158,6 @@ target_link_libraries(sim_yaw_controller_node
 )
 
 target_link_libraries(sim_waypoint_nav
-  ${catkin_LIBRARIES}
-)
-
-target_link_libraries(sim_utm_offset_publisher
   ${catkin_LIBRARIES}
 )
 
@@ -187,7 +181,7 @@ install(PROGRAMS
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS sam_sim_msg_bridge sim_yaw_controller_node sim_waypoint_nav sim_utm_offset_publisher
+install(TARGETS sam_sim_msg_bridge sim_yaw_controller_node sim_waypoint_nav
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
