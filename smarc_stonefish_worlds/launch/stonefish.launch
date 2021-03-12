@@ -1,9 +1,9 @@
 <launch>
 
     <!-- These are the arguments you need to care about -->
-    <arg name="config" default="sam_biograd_no_payload_sensors.yaml"/>
-    <arg name="config_file" default="$(find sam_stonefish_sim)/config/$(arg config)"/>
-    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn"/>
+    <arg name="world_config_file" default="$(find sam_stonefish_sim)/config/biograd_world.yaml"/>
+    <arg name="robot_config_file" default="$(find sam_stonefish_sim)/config/sam_no_payload_sensors.yaml"/>
+    <arg name="scenario_description" default="$(find smarc_stonefish_worlds)/data/scenarios/default.scn"/>
 
     <!-- UTM Zone for Biograd simulation -->
     <arg name="utm_zone" default="33"/>
@@ -25,12 +25,13 @@
     <node name="utm2map" pkg="tf" type="static_transform_publisher" args="535529 4864397 0 0 0 0 1 utm map 100" />
     -->
     <node name="utm2map" type="sim_utm_offset_publisher" pkg="smarc_stonefish_worlds" output="screen">
-        <rosparam file="$(arg config_file)" subst_value="true"/>
+        <rosparam file="$(arg world_config_file)" subst_value="true"/>
     </node>
 
     <!-- Run Simulator -->
     <node name="stonefish_simulator" pkg="stonefish_ros" type="parsed_simulator" output="screen" args="$(arg simulation_data) $(arg scenario_description) $(arg simulation_rate) $(arg graphics_resolution) $(arg graphics_quality) $(arg shader_path)">
-        <rosparam file="$(arg config_file)" subst_value="true"/>
+        <rosparam file="$(arg world_config_file)" subst_value="true"/>
+        <rosparam file="$(arg robot_config_file)" subst_value="true"/>
     </node>
 
 </launch>

@@ -6,19 +6,21 @@
     <arg name="simulate_dr" default="true"/>
 
     <!-- These are the arguments you need to care about -->
-    <arg name="config" default="lolo_biograd.yaml"/>
-    <arg name="config_file" default="$(find lolo_stonefish_sim)/config/$(arg config)"/>
-    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn"/>
+    <arg name="world_config" default="biograd_world.yaml"/>
+    <arg name="world_config_file" default="$(find smarc_stonefish_worlds)/config/$(arg world_config)"/>
+    <arg name="robot_config" default="lolo.yaml"/>
+    <arg name="robot_config_file" default="$(find lolo_stonefish_sim)/config/$(arg robot_config)"/>
+    <arg name="scenario_description" default="$(find smarc_stonefish_worlds)/data/scenarios/default.scn"/>
 
     <!-- These are more for fine-tuning -->
-    <arg name="simulation_data" default="$(find sam_stonefish_sim)/data"/> <!-- path to the data directory -->
+    <arg name="simulation_data" default="$(find smarc_stonefish_worlds)/data"/> <!-- path to the data directory -->
     <arg name="simulation_rate" default="300"/> <!-- number of simulation steps per second -->
     <arg name="graphics_resolution" default="1200 800"/> <!-- resolution of the simulation window -->
     <arg name="graphics_quality" default="medium"/> <!-- low, medium or high -->
 
     <include file="$(find smarc_stonefish_worlds)/launch/stonefish.launch">
-        <arg name="config" value="$(arg config)"/>
-        <arg name="config_file" value="$(arg config_file)"/>
+        <arg name="world_config_file" value="$(arg world_config_file)"/>
+        <arg name="robot_config_file" value="$(arg robot_config_file)"/>
         <arg name="scenario_description" value="$(arg scenario_description)"/>
         <arg name="simulation_data" value="$(arg simulation_data)"/>
         <arg name="simulation_rate" value="$(arg simulation_rate)"/>
