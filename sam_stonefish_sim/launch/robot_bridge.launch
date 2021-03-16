@@ -34,14 +34,14 @@
         </node>
 
         <!-- Simple yaw controller for waypoint navigation -->
-        <node name="yaw_controller" type="sim_yaw_controller_node" pkg="sam_stonefish_sim" output="screen">
+        <!--node name="yaw_controller" type="sim_yaw_controller_node" pkg="sam_stonefish_sim" output="screen">
             <param name="frame_id" value="$(arg robot_name)/base_link"/>
-        </node>
+        </node-->
 
         <!-- Simple action server for waypoint navigation -->
-        <node name="waypoint_nav" type="sim_waypoint_nav" pkg="sam_stonefish_sim" output="screen">
+        <!--node name="waypoint_nav" type="sim_waypoint_nav" pkg="sam_stonefish_sim" output="screen">
             <param name="frame_id" value="$(arg robot_name)/base_link"/>
-        </node>
+        </node-->
 
         <!-- Transfrom STIM imu to ENU coordinates -->
         <include file="$(find sam_stonefish_sim)/launch/ned_to_enu_imu.launch">
