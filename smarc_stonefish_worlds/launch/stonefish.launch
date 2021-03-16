@@ -1,17 +1,16 @@
-<?xml version="1.0"?>
 <launch>
 
     <!-- These are the arguments you need to care about -->
-    <arg name="config" default="algae.yaml"/>
-    <arg name="config_file" default="$(find algae_world)/config/$(arg config)"/>
-    <arg name="scenario_description" default="$(find sam_stonefish_sim)/data/scenarios/default.scn"/>
+    <arg name="world_config_file" default="$(find sam_stonefish_sim)/config/biograd_world.yaml"/>
+    <arg name="robot_config_file" default="$(find sam_stonefish_sim)/config/sam_no_payload_sensors.yaml"/>
+    <arg name="scenario_description" default="$(find smarc_stonefish_worlds)/data/scenarios/default.scn"/>
 
     <!-- UTM Zone for Biograd simulation -->
     <arg name="utm_zone" default="33"/>
     <arg name="utm_band" default="T"/>
 
     <!-- These are more for fine-tuning -->
-    <arg name="simulation_data" default="$(find sam_stonefish_sim)/data"/> <!-- path to the data directory -->
+    <arg name="simulation_data" default="$(find smarc_stonefish_worlds)/data"/> <!-- path to the data directory -->
     <arg name="simulation_rate" default="300"/> <!-- number of simulation steps per second -->
     <arg name="graphics_resolution" default="1200 800"/> <!-- resolution of the simulation window -->
     <arg name="graphics_quality" default="medium"/> <!-- low, medium or high -->
@@ -25,13 +24,14 @@
     <!--
     <node name="utm2map" pkg="tf" type="static_transform_publisher" args="535529 4864397 0 0 0 0 1 utm map 100" />
     -->
-    <node name="utm2map" type="sim_utm_offset_publisher" pkg="sam_stonefish_sim" output="screen">
-        <rosparam file="$(arg config_file)" subst_value="true"/>
+    <node name="utm2map" type="sim_utm_offset_publisher" pkg="smarc_stonefish_worlds" output="screen">
+        <rosparam file="$(arg world_config_file)" subst_value="true"/>
     </node>
 
     <!-- Run Simulator -->
     <node name="stonefish_simulator" pkg="stonefish_ros" type="parsed_simulator" output="screen" args="$(arg simulation_data) $(arg scenario_description) $(arg simulation_rate) $(arg graphics_resolution) $(arg graphics_quality) $(arg shader_path)">
-        <rosparam file="$(arg config_file)" subst_value="true"/>
+        <rosparam file="$(arg world_config_file)" subst_value="true"/>
+        <rosparam file="$(arg robot_config_file)" subst_value="true"/>
     </node>
 
 </launch>

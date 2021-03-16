@@ -1,0 +1,74 @@
+<launch>
+
+    <arg name="robot_name" default="lolo"/>
+    <arg name="with_teleop" default="false"/>
+    <arg name="xacro_file" default="$(find lolo_description)/urdf/lolo_auv.urdf.xacro"/>
+    <!--
+    <arg name="simulate_dr" default="true"/>
+    -->
+
+    <group ns="$(arg robot_name)">
+
+        <!-- Use the ground truth TF transform from sim -->
+        <node name="gt_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 gt/$(arg robot_name)/base_link $(arg robot_name)/base_link 100" />
+
+        <!-- Republish ground truth odometry msg from sim -->
+        <!-- <node name="odom_republish" type="relay" pkg="topic_tools" args="sim/odom dr/odom" output="screen" if="$(arg simulate_dr)"/> -->
+
+        <!-- Robot description -->
+        <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg xacro_file)' debug:=true robot_namespace:=$(arg robot_name)"/>
+
+        <!-- Robot state publisher -->
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen"/>
+
+        <!-- Teleop interface -->
+        <node name="teleop" type="lolo_teleop.py" pkg="lolo_stonefish_sim" output="screen" if="$(arg with_teleop)"/> 
+
+        <!-- VBS Setpoint controllers -->
+        <include file="$(find sam_stonefish_sim)/launch/vbs_controller.launch">
+            <arg name="robot_name" value="$(arg robot_name)"/>
+            <arg name="vbs_name" value="vbs_front_stbd"/>
+            <arg name="max_volume" value="0.00155"/>
+        </include>
+
+        <include file="$(find sam_stonefish_sim)/launch/vbs_controller.launch">
+            <arg name="robot_name" value="$(arg robot_name)"/>
+            <arg name="vbs_name" value="vbs_front_port"/>
+            <arg name="max_volume" value="0.00155"/>
+        </include>
+
+        <include file="$(find sam_stonefish_sim)/launch/vbs_controller.launch">
+            <arg name="robot_name" value="$(arg robot_name)"/>
+            <arg name="vbs_name" value="vbs_back_stbd"/>
+            <arg name="max_volume" value="0.00155"/>
+        </include>
+
+        <include file="$(find sam_stonefish_sim)/launch/vbs_controller.launch">
+            <arg name="robot_name" value="$(arg robot_name)"/>
+            <arg name="vbs_name" value="vbs_back_port"/>
+            <arg name="max_volume" value="0.00155"/>
+        </include>
+    
+        <!-- Bridge to SMARC msg interface -->
+        <node name="msg_bridge" type="lolo_sim_msg_bridge" pkg="lolo_stonefish_sim" output="screen">
+            <param name="robot_name" value="$(arg robot_name)"/>
+        </node>
+
+        <!-- Simple yaw controller for waypoint navigation -->
+        <node name="yaw_controller" type="sim_yaw_controller_node" pkg="lolo_stonefish_sim" output="screen">
+            <param name="frame_id" value="$(arg robot_name)/base_link"/>
+        </node>
+
+        <!-- Simple action server for waypoint navigation -->
+        <node name="waypoint_nav" type="sim_waypoint_nav" pkg="sam_stonefish_sim" output="screen">
+            <param name="frame_id" value="$(arg robot_name)/base_link"/>
+        </node>
+
+        <include file="$(find tf_lat_lon)/launch/tf_lat_lon.launch">
+            <arg name="frame" value="$(arg robot_name)/base_link"/>
+            <arg name="lat_lon_topic" value="dr/lat_lon"/>
+        </include>
+
+    </group>
+
+</launch>

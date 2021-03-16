@@ -1,0 +1,15 @@
+<scenario>
+
+    <include file="$(param environment_file)"/>
+
+    <include file="$(param robot1_file)">
+        <arg name="robot_name" value="$(param robot1_name)"/>
+        <arg name="robot_pos" value="$(param robot1_pos)"/>
+    </include>
+
+    <include file="$(param robot2_file)">
+        <arg name="robot_name" value="$(param robot2_name)"/>
+        <arg name="robot_pos" value="$(param robot2_pos)"/>
+    </include>
+
+</scenario>

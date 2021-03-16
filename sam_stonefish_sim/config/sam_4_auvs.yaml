@@ -1,0 +1,7 @@
+robot_file: "$(find sam_stonefish_sim)/data/sam_auv/sam_auv.xml"
+robot_name: "sam"
+robot1_pos: "0.0 0.0 0.0"
+robot2_pos: "0.0 2.0 0.0"
+robot3_pos: "0.0 4.0 0.0"
+robot4_pos: "0.0 6.0 0.0"
+simulate_dr: true
