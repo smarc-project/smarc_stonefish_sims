@@ -1,7 +1,7 @@
 <launch>
 
     <!-- These are the arguments you need to care about -->
-    <arg name="world_config_file" default="$(find sam_stonefish_sim)/config/biograd_world.yaml"/>
+    <arg name="world_config_file" default="$(find smarc_stonefish_worlds)/config/biograd_world.yaml"/>
     <arg name="robot_config_file" default="$(find sam_stonefish_sim)/config/sam_no_payload_sensors.yaml"/>
     <arg name="scenario_description" default="$(find smarc_stonefish_worlds)/data/scenarios/default.scn"/>
 
