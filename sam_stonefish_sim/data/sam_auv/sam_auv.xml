@@ -263,7 +263,7 @@
         <settings range_min="1.0" range_max="100.0" gain="1.0"/>
         <noise multiplicative="0.02" additive="0.04"/>
         <display colormap="hot"/>
-        <ros_publisher topic="/$(arg robot_name)/perception/sss"/>
+        <ros_publisher topic="/$(arg robot_name)/sim/sidescan"/>
     </sensor>
 
     <world_transform rpy="3.1416 0.0 0.0" xyz="$(arg robot_pos)"/>
