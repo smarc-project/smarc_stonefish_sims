@@ -259,7 +259,7 @@
     <sensor name="side_scan_sonar" type="sss" rate="5.0">
         <link name="Vehicle"/>
         <origin rpy="0.0 3.1416 1.5707" xyz="0.7 0.0 -0.07"/>
-        <specs bins="500" lines="400" horizontal_beam_width="0.5" vertical_beam_width="60.0" vertical_tilt="60.0"/>
+        <specs bins="2000" lines="400" horizontal_beam_width="0.5" vertical_beam_width="60.0" vertical_tilt="60.0"/>
         <settings range_min="1.0" range_max="100.0" gain="1.0"/>
         <noise multiplicative="0.02" additive="0.04"/>
         <display colormap="hot"/>
