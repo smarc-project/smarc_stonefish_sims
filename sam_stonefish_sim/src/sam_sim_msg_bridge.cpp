@@ -4,17 +4,20 @@
 #include <sensor_msgs/FluidPressure.h>
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/JointState.h>
+#include <sensor_msgs/Image.h>
 
 #include <smarc_msgs/ThrusterRPM.h>
 #include <smarc_msgs/ThrusterFeedback.h>
 #include <smarc_msgs/DVL.h>
 #include <smarc_msgs/DVLBeam.h>
+#include <smarc_msgs/Sidescan.h>
 #include <sam_msgs/PercentStamped.h>
 #include <sam_msgs/ThrusterAngles.h>
 
 #include <cola2_msgs/Setpoints.h>
 #include <cola2_msgs/DVL.h>
 #include <cola2_msgs/DVLBeam.h>
+
 
 class SamSimMsgBridge
 {
@@ -26,18 +29,21 @@ private:
     double lcg_joint_min, lcg_joint_max;
 
     // messages to publish
+    smarc_msgs::Sidescan sidescan_msg;
     cola2_msgs::Setpoints last_thruster_msg;
     cola2_msgs::Setpoints zero_thruster_msg;
     ros::Time last_thruster_msg_time;
     sensor_msgs::BatteryState battery_msg;
 
     // sensor outputs from stonefish
+    ros::Subscriber sidescan_sub;
     ros::Subscriber pressure_sub;
     ros::Subscriber vbs_fb_sub;
     ros::Subscriber joint_states_fb_sub;
     ros::Subscriber dvl_sub;
 
     // sensor outputs from bridge
+    ros::Publisher sidescan_pub;
     ros::Publisher pressure_pub;
     ros::Publisher battery_pub;
     ros::Publisher vbs_fb_pub;
@@ -63,6 +69,28 @@ private:
     ros::Timer thruster_timer;
 
 public:
+
+    void sidescan_callback(const sensor_msgs::Image& msg)
+    {
+        sidescan_msg.header.stamp = ros::Time::now();
+        // The following fields are filled with dummy values
+        sidescan_msg.type = 0xE2;
+        sidescan_msg.time = 1;
+        sidescan_msg.gain = 100;
+        sidescan_msg.decimation = 1;
+        sidescan_msg.max_duration = 1;
+
+        // Stonefish publishes SSS signal as an Image of size (sss_bins, sss_lines)
+        // Take the first row of the image and publish as sidescan message
+        // Assumption: consecutive SSS signals differ by one row
+        auto mid = msg.width/2;
+        auto end = msg.width;
+        sidescan_msg.port_channel = std::vector<uint8_t> (msg.data.begin(), msg.data.begin() + mid);
+        std::reverse(sidescan_msg.port_channel.begin(), sidescan_msg.port_channel.end());
+        sidescan_msg.starboard_channel = std::vector<uint8_t> (msg.data.begin() + mid, msg.data.begin() + end);
+
+        sidescan_pub.publish(sidescan_msg);
+    }
 
     void dvl_callback(const cola2_msgs::DVL& msg)
     {
@@ -191,6 +219,9 @@ public:
         pn.param<double>("vbs_vol_max", vbs_vol_max, .5);
 
         setup_messages();
+
+        sidescan_pub  = nh.advertise<smarc_msgs::Sidescan>("payload/sidescan", 1000);
+        sidescan_sub = nh.subscribe("sim/sidescan/image", 1000, &SamSimMsgBridge::sidescan_callback, this);
 
         battery_pub = nh.advertise<sensor_msgs::BatteryState>("core/battery", 1000);
         pressure_pub = nh.advertise<sensor_msgs::FluidPressure>("core/pressure", 1000);
