@@ -68,6 +68,11 @@
 
     </group>
 
+    <!--Including tf_convenience topics-->
+    <include file="$(find tf_convenience_topics)/launch/odom_listener.launch" if="$(arg simulate_dr)">
+        <arg name="robot_name" value="$(arg robot_name)" />
+    </include>
+
 <!-- Required to provide "compass" heading since the actual compass is not supported on stonefish ROS -->
 <!--
 <node name="gt_odom_provider" type="odom_gt_prov.py" pkg="sam_stonefish_sim" output="screen" ns="$(arg robot_name)">

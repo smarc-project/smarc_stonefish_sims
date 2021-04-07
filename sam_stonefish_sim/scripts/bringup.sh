@@ -180,9 +180,8 @@ do
 	tmux new-window -t $ROBOT_SESSION:2 -n 'gui'
 	tmux new-window -t $ROBOT_SESSION:3 -n 'robot_bridge'
 	tmux new-window -t $ROBOT_SESSION:4 -n 'mission'
-	tmux new-window -t $ROBOT_SESSION:5 -n 'dr'
-    tmux new-window -t $ROBOT_SESSION:6 -n 'static_ctrl'
-    tmux new-window -t $ROBOT_SESSION:7 -n 'dynamic_ctrl'
+    tmux new-window -t $ROBOT_SESSION:5 -n 'static_ctrl'
+    tmux new-window -t $ROBOT_SESSION:6 -n 'dynamic_ctrl'
 
 	tmux select-window -t $ROBOT_SESSION:2
     tmux send-keys "mon launch sam_webgui_native native_webgui.launch namespace:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W')"
@@ -199,12 +198,9 @@ do
 
 	# ADD NEW LAUNCHES THAT ARE SPECIFIC TO ONE SAM HERE
 	tmux select-window -t $ROBOT_SESSION:5
-	tmux send-keys "mon launch tf_convenience_topics odom_listener.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
-
-	tmux select-window -t $ROBOT_SESSION:6
 	tmux send-keys "mon launch sam_basic_controllers static_controllers.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
-	tmux select-window -t $ROBOT_SESSION:7
+	tmux select-window -t $ROBOT_SESSION:6
     tmux send-keys "mon launch sam_basic_controllers dynamic_controllers.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 done
