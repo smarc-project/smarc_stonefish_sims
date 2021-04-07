@@ -77,6 +77,7 @@
   <exec_depend>tmux</exec_depend>
   <exec_depend>rosmon</exec_depend>
   <exec_depend>tf_convenience_topics</exec_depend>
+  <exec_depend>sam_basic_controllers</exec_depend>
   <!-- <exec_depend>sam_webgui_native</exec_depend> -->
 
   <!-- The export tag contains other, unspecified, tags -->
