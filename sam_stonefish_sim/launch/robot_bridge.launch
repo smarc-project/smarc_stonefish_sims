@@ -11,7 +11,7 @@
         <node name="gt_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 gt/$(arg robot_name)/base_link $(arg robot_name)/base_link 100" />
 
         <!-- Republish ground truth odometry msg from sim -->
-        <!-- <node name="odom_republish" type="relay" pkg="topic_tools" args="sim/odom dr/odom" output="screen" if="$(arg simulate_dr)"/> -->
+        <node name="odom_republish" type="relay" pkg="topic_tools" args="sim/odom dr/odom" output="screen" if="$(arg simulate_dr)"/> 
 
         <!-- Robot description -->
         <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg xacro_file)' debug:=true robot_namespace:=$(arg robot_name)"/>
@@ -34,14 +34,14 @@
         </node>
 
         <!-- Simple yaw controller for waypoint navigation -->
-        <node name="yaw_controller" type="sim_yaw_controller_node" pkg="sam_stonefish_sim" output="screen">
+        <!--node name="yaw_controller" type="sim_yaw_controller_node" pkg="sam_stonefish_sim" output="screen">
             <param name="frame_id" value="$(arg robot_name)/base_link"/>
-        </node>
+        </node-->
 
         <!-- Simple action server for waypoint navigation -->
-        <node name="waypoint_nav" type="sim_waypoint_nav" pkg="sam_stonefish_sim" output="screen">
+        <!--node name="waypoint_nav" type="sim_waypoint_nav" pkg="sam_stonefish_sim" output="screen">
             <param name="frame_id" value="$(arg robot_name)/base_link"/>
-        </node>
+        </node-->
 
         <!-- Transfrom STIM imu to ENU coordinates -->
         <include file="$(find sam_stonefish_sim)/launch/ned_to_enu_imu.launch">
@@ -67,6 +67,11 @@
         </include>
 
     </group>
+
+    <!--Including tf_convenience topics-->
+    <include file="$(find tf_convenience_topics)/launch/odom_listener.launch" if="$(arg simulate_dr)">
+        <arg name="robot_name" value="$(arg robot_name)" />
+    </include>
 
 <!-- Required to provide "compass" heading since the actual compass is not supported on stonefish ROS -->
 <!--
