@@ -4,6 +4,9 @@
     <arg name="world_config_file" default="$(find smarc_stonefish_worlds)/config/biograd_world.yaml"/>
     <arg name="robot_config_file" default="$(find sam_stonefish_sim)/config/sam_no_payload_sensors.yaml"/>
     <arg name="scenario_description" default="$(find smarc_stonefish_worlds)/data/scenarios/default.scn"/>
+    <arg name="simulate_dr" default="true"/>
+    <arg name="map_frame" value="map" if="$(arg simulate_dr)"/>
+    <arg name="map_frame" value="gt/map" unless="$(arg simulate_dr)"/>
 
     <!-- UTM Zone for Biograd simulation -->
     <arg name="utm_zone" default="33"/>
@@ -20,12 +23,13 @@
     <param name="utm_band" type="string" value="$(arg utm_band)"/> 
 
     <!-- Static transform -->
-    <node name="map2ned" pkg="tf" type="static_transform_publisher" args="0 0 0 1.571 0 3.1416 map world_ned 100" />
+    <node name="map2ned" pkg="tf" type="static_transform_publisher" args="0 0 0 1.571 0 3.1416 $(arg map_frame) world_ned 100"/>
     <!--
     <node name="utm2map" pkg="tf" type="static_transform_publisher" args="535529 4864397 0 0 0 0 1 utm map 100" />
     -->
     <node name="utm2map" type="sim_utm_offset_publisher" pkg="smarc_stonefish_worlds" output="screen">
         <rosparam file="$(arg world_config_file)" subst_value="true"/>
+        <param name="map_frame" value="$(arg map_frame)"/>
     </node>
 
     <!-- Run Simulator -->
