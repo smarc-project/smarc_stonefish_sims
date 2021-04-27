@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 
 #include <std_msgs/Float64.h>
+#include <std_srvs/SetBool.h>
 #include <sensor_msgs/FluidPressure.h>
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/JointState.h>
@@ -10,6 +11,7 @@
 #include <smarc_msgs/ThrusterFeedback.h>
 #include <smarc_msgs/DVL.h>
 #include <smarc_msgs/DVLBeam.h>
+#include <smarc_msgs/SensorStatus.h>
 #include <smarc_msgs/Sidescan.h>
 #include <sam_msgs/PercentStamped.h>
 #include <sam_msgs/ThrusterAngles.h>
@@ -28,8 +30,13 @@ private:
     double vbs_vol_min, vbs_vol_max;
     double lcg_joint_min, lcg_joint_max;
 
+    // service to toggle sidescan
+    ros::ServiceServer sidescan_toggle_service;
+    bool sidescan_enabled;
+
     // messages to publish
     smarc_msgs::Sidescan sidescan_msg;
+    smarc_msgs::SensorStatus sidescan_status_msg;
     cola2_msgs::Setpoints last_thruster_msg;
     cola2_msgs::Setpoints zero_thruster_msg;
     ros::Time last_thruster_msg_time;
@@ -43,6 +50,7 @@ private:
     ros::Subscriber dvl_sub;
 
     // sensor outputs from bridge
+    ros::Publisher sidescan_status_pub;
     ros::Publisher sidescan_pub;
     ros::Publisher pressure_pub;
     ros::Publisher battery_pub;
@@ -67,11 +75,39 @@ private:
     // publish timers
     ros::Timer battery_timer;
     ros::Timer thruster_timer;
+    ros::Timer sidescan_status_timer;
 
 public:
 
+    void sidescan_status_timer_callback(const ros::TimerEvent& event)
+    {
+        if (sidescan_enabled) {
+            sidescan_status_msg.sensor_status = smarc_msgs::SensorStatus::SENSOR_STATUS_ACTIVE;
+            sidescan_status_msg.diagnostics_message = "sidescan is active!";
+        } else {
+            sidescan_status_msg.sensor_status = smarc_msgs::SensorStatus::SENSOR_STATUS_NOT_ACTIVE;
+            sidescan_status_msg.diagnostics_message = "sidescan is NOT active!";
+        }
+
+        sidescan_status_pub.publish(sidescan_status_msg);
+    }
+
+    bool toggle_sidescan(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res)
+    {
+        sidescan_enabled = req.data;
+        res.success = true;
+        res.message = std::string("Toggle sidescan sonar: enabled = ") + (sidescan_enabled ? "true" : "false");
+        return true;
+    }
+
     void sidescan_callback(const sensor_msgs::Image& msg)
     {
+        // Only publish sidescan message if the sidescan is enabled
+        if (!sidescan_enabled)
+        {
+            return;
+        }
+
         sidescan_msg.header.stamp = ros::Time::now();
         // The following fields are filled with dummy values
         sidescan_msg.type = 0xE2;
@@ -222,6 +258,11 @@ public:
 
         sidescan_pub  = nh.advertise<smarc_msgs::Sidescan>("payload/sidescan", 1000);
         sidescan_sub = nh.subscribe("sim/sidescan/image", 1000, &SamSimMsgBridge::sidescan_callback, this);
+        sidescan_enabled = false;
+        sidescan_toggle_service = nh.advertiseService("payload/toggle_sidescan", &SamSimMsgBridge::toggle_sidescan, this);
+        sidescan_status_msg.service_name = "/sam/payload/toggle_sidescan";
+        sidescan_status_pub = nh.advertise<smarc_msgs::SensorStatus>("payload/sidescan_status", 1000);
+        sidescan_status_timer = nh.createTimer(ros::Duration(1), &SamSimMsgBridge::sidescan_status_timer_callback, this);
 
         battery_pub = nh.advertise<sensor_msgs::BatteryState>("core/battery", 1000);
         pressure_pub = nh.advertise<sensor_msgs::FluidPressure>("core/pressure", 1000);
