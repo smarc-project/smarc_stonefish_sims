@@ -10,7 +10,7 @@
 
     <!-- Static tfs -->
     <node pkg="tf" type="static_transform_publisher" name="$(arg imu_id)_tf_imu_ned_enu"
-    args="0 0 0 3.1416 0 0 $(arg enu_frame_id) $(arg ned_frame_id) 10" output="screen"/>
+    args="0 0 0 0 0 3.1416 $(arg enu_frame_id) $(arg ned_frame_id) 10" output="screen"/>
     <!--
     args="0 0 0 0 0 0 $(arg enu_frame_id) $(arg ned_frame_id) 10" output="screen"/>
     -->
@@ -19,8 +19,13 @@
     ENU data in frame imu_link published on /imu/data_enu and /imu/mag_enu -->
     <node pkg="imu_transformer" type="imu_transformer_node" name="$(arg imu_id)_imu_data_transformer" output="screen">
         <remap from="imu_in/data" to="$(arg ned_topic)"/>
-        <remap from="imu_out/data" to="$(arg enu_topic)"/>
+        <remap from="imu_out/data" to="$(arg ned_topic)_enu_yawed"/>
         <param name="target_frame" value="$(arg enu_frame_id)"/>
+    </node>
+
+    <node pkg="smarc_stonefish_worlds" type="rotate_imu_orientation" name="$(arg imu_id)_rotate_imu_orientation" output="screen">
+        <remap from="imu_in/data" to="$(arg ned_topic)_enu_yawed"/>
+        <remap from="imu_out/data" to="$(arg enu_topic)"/>
     </node>
 
 </launch>
