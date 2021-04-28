@@ -26,6 +26,7 @@
         <arg name="simulation_rate" value="$(arg simulation_rate)"/>
         <arg name="graphics_resolution" value="$(arg graphics_resolution)"/>
         <arg name="graphics_quality" value="$(arg graphics_quality)"/>
+        <arg name="simulate_dr" value="$(arg simulate_dr)"/>
     </include>
 
     <include file="$(find sam_stonefish_sim)/launch/robot_bridge.launch">

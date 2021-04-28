@@ -10,6 +10,7 @@ int main(int argc, char** argv)
 
     int utm_zone;
     std::string utm_band;
+    std::string map_frame;
     if (!nh.hasParam("/utm_zone") || !nh.hasParam("/utm_band")) {
         ROS_ERROR("/utm_zone and /utm_band global parameters needed for UTM transform");
         return -1;
@@ -29,6 +30,7 @@ int main(int argc, char** argv)
         pn.getParam("latitude", str_latitude);
         pn.getParam("longitude", str_longitude);
     }
+    pn.param<std::string>("map_frame", map_frame, "map");
     double latitude = std::stod(str_latitude);
     double longitude = std::stod(str_longitude);
 
@@ -51,7 +53,7 @@ int main(int argc, char** argv)
     transformStamped.transform.translation.z = 0.;
     transformStamped.transform.rotation.w = 1.;
     transformStamped.header.frame_id = "utm";
-    transformStamped.child_frame_id = "map";
+    transformStamped.child_frame_id = map_frame;
     transformStamped.header.stamp = ros::Time::now();
     staticBroadcaster.sendTransform(transformStamped);
 
