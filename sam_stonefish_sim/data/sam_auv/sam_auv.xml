@@ -206,14 +206,14 @@
 
     <sensor name="imu_link_ned" type="imu" rate="20.0">
         <link name="Vehicle"/>
-        <origin rpy="0.0 0.0 0.0" xyz="0.9 0.0 0.0"/>
-        <noise angle="0.000001745" angular_velocity="0.00001745"/>
+        <origin rpy="3.1416 0.0 0.0" xyz="0.9 0.0 0.0"/>
+        <noise angle="0.000001745" angular_velocity="0.00001745" linear_acceleration="0.00001 0.00001 0.00001"/>
         <ros_publisher topic="/$(arg robot_name)/sim/imu_ned"/>
     </sensor>
 
     <sensor name="sbg_link_ned" type="imu" rate="50.0">
         <link name="Vehicle"/>
-        <origin rpy="0.0 0.0 0.0" xyz="0.472 0 0.03"/>
+        <origin rpy="3.1416 0.0 0.0" xyz="0.472 0 0.03"/>
         <noise angle="0.000001745" angular_velocity="0.00001745"/>
         <ros_publisher topic="/$(arg robot_name)/sim/sbg_imu_ned"/>
     </sensor>
