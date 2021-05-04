@@ -66,6 +66,11 @@
             <arg name="lat_lon_topic" value="dr/lat_lon"/>
         </include>
 
+        <!-- Image compression nodes -->
+        <include file="$(find sam_stonefish_sim)/launch/compress_images.launch">
+            <arg name="robot_name" value="$(arg robot_name)"/>
+        </include>
+
     </group>
 
     <!--Including tf_convenience topics-->

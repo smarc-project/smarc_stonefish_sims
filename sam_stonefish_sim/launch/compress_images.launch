@@ -1,0 +1,9 @@
+<launch>
+
+    <arg name="robot_name" default="sam"/>
+
+    <node name="republish_down" type="republish" pkg="image_transport" output="screen" args="raw in:=/$(arg robot_name)/perception/camera_down/image_color compressed out:=/$(arg robot_name)/perception/camera_down/image_color"/>
+    <node name="republish_front_left" type="republish" pkg="image_transport" output="screen" args="raw in:=/$(arg robot_name)/perception/camera_front_left/image_color compressed out:=/$(arg robot_name)/perception/camera_front_left/image_color"/>
+    <node name="republish_front_right" type="republish" pkg="image_transport" output="screen" args="raw in:=/$(arg robot_name)/perception/camera_front_right/image_color compressed out:=/$(arg robot_name)/perception/camera_front_right/image_color"/>
+
+</launch>
