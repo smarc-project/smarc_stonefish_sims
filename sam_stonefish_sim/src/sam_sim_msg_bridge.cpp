@@ -34,9 +34,14 @@ private:
     ros::ServiceServer sidescan_toggle_service;
     bool sidescan_enabled;
 
+    // service to toggle DVL
+    ros::ServiceServer dvl_toggle_service;
+    bool dvl_enabled;
+
     // messages to publish
     smarc_msgs::Sidescan sidescan_msg;
     smarc_msgs::SensorStatus sidescan_status_msg;
+    smarc_msgs::SensorStatus dvl_status_msg;
     cola2_msgs::Setpoints last_thruster_msg;
     cola2_msgs::Setpoints zero_thruster_msg;
     ros::Time last_thruster_msg_time;
@@ -58,6 +63,7 @@ private:
     ros::Publisher lcg_fb_pub;
     ros::Publisher thruster1_fb_pub;
     ros::Publisher thruster2_fb_pub;
+    ros::Publisher dvl_status_pub;
     ros::Publisher dvl_pub;
     
     // command inputs to stonefish
@@ -76,8 +82,30 @@ private:
     ros::Timer battery_timer;
     ros::Timer thruster_timer;
     ros::Timer sidescan_status_timer;
+    ros::Timer dvl_status_timer;
 
 public:
+
+    void dvl_status_timer_callback(const ros::TimerEvent& event)
+    {
+        if (dvl_enabled) {
+            dvl_status_msg.sensor_status = smarc_msgs::SensorStatus::SENSOR_STATUS_ACTIVE;
+            dvl_status_msg.diagnostics_message = "DVL is active!";
+        } else {
+            dvl_status_msg.sensor_status = smarc_msgs::SensorStatus::SENSOR_STATUS_NOT_ACTIVE;
+            dvl_status_msg.diagnostics_message = "DVL is NOT active!";
+        }
+
+        dvl_status_pub.publish(dvl_status_msg);
+    }
+
+    bool toggle_dvl(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res)
+    {
+        dvl_enabled = req.data;
+        res.success = true;
+        res.message = std::string("Toggle DVL sonar: enabled = ") + (dvl_enabled ? "true" : "false");
+        return true;
+    }
 
     void sidescan_status_timer_callback(const ros::TimerEvent& event)
     {
@@ -130,6 +158,12 @@ public:
 
     void dvl_callback(const cola2_msgs::DVL& msg)
     {
+        // Only publish dvl message if the dvl is enabled
+        if (!dvl_enabled)
+        {
+            return;
+        }
+
         smarc_msgs::DVL dvl;
         dvl.header = msg.header;
         dvl.velocity = msg.velocity;
@@ -270,6 +304,11 @@ public:
 
         dvl_pub = nh.advertise<smarc_msgs::DVL>("core/dvl", 1000);
         dvl_sub = nh.subscribe("sim/dvl", 1000, &SamSimMsgBridge::dvl_callback, this);
+        dvl_enabled = true;
+        dvl_toggle_service = nh.advertiseService("core/toggle_dvl", &SamSimMsgBridge::toggle_dvl, this);
+        dvl_status_msg.service_name = "/sam/core/toggle_dvl";
+        dvl_status_pub = nh.advertise<smarc_msgs::SensorStatus>("core/dvl_status", 1000);
+        dvl_status_timer = nh.createTimer(ros::Duration(1), &SamSimMsgBridge::dvl_status_timer_callback, this);
 
         vbs_cmd_sub = nh.subscribe("core/vbs_cmd", 1000, &SamSimMsgBridge::vbs_cmd_callback, this);
         vbs_fb_sub = nh.subscribe("sim/vbs/volume_centered", 1000, &SamSimMsgBridge::vbs_fb_callback, this);
