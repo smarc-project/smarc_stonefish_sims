@@ -12,7 +12,7 @@
 
           <node name="vbs_controller" pkg="pid" type="controller" output="screen" respawn="true">
             <param name="node_name" value="vbs_pid" />
-            <param name="Kp" value="0.001" />
+            <param name="Kp" value="0.0001" />
             <param name="Ki" value="0.0" />
             <param name="Kd" value="0.0" />
             <param name="upper_limit" value="0.5" />
