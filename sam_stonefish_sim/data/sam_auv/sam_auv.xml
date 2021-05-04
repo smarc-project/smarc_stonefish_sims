@@ -168,7 +168,7 @@
 
     <actuator name="ServoLCG" type="servo">
         <joint name="lcg_joint"/>
-        <controller position_gain="1.0" velocity_gain="0.0" max_torque="100.0"/>
+        <controller position_gain="0.001" velocity_gain="0.0" max_torque="100.0"/>
     </actuator> 
 
     <actuator name="Servo1" type="servo">
