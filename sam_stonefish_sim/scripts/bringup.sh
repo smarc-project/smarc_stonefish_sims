@@ -49,15 +49,15 @@ case "$SCENARIO" in
 		;;
 	"algae_world")
         # Algae farm (2 long ropes)
-		UTM_ZONE=33
-		UTM_BAND=T
+		UTM_ZONE=32
+		UTM_BAND=V
 		LATITUDE=58.250833
 		LONGITUDE=11.450283
 		;;
 	"algae_world_small")
 		# Algae farm
-		UTM_ZONE=33
-		UTM_BAND=T
+		UTM_ZONE=32
+		UTM_BAND=V
 		LATITUDE=58.250833
 		LONGITUDE=11.450283
 		;;
