@@ -4,7 +4,7 @@ NUM_ROBOTS=1
 # the scenario and environment that will be loaded in the simulation
 # it includes the world map, auvs, where the auvs are etc.
 # SCENARIO="sam_biograd_hd"
-SCENARIO="biograd_world"
+SCENARIO="algae_world_small"
 
 MIN_ALTITUDE=5
 MAX_DEPTH=20
@@ -48,11 +48,18 @@ case "$SCENARIO" in
 		LONGITUDE=15.44264
 		;;
 	"algae_world")
+        # Algae farm (2 long ropes)
+		UTM_ZONE=32
+		UTM_BAND=V
+		LATITUDE=58.250833
+		LONGITUDE=11.450283
+		;;
+	"algae_world_small")
 		# Algae farm
-		UTM_ZONE=33
-		UTM_BAND=T
-		LATITUDE=43.93183
-		LONGITUDE=15.44264
+		UTM_ZONE=32
+		UTM_BAND=V
+		LATITUDE=58.250833
+		LONGITUDE=11.450283
 		;;
 	*)
 		echo "UNKNOWN SCENARIO!"

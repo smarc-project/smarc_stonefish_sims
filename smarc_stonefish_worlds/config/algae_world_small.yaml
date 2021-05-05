@@ -1,6 +1,6 @@
 environment_file: "$(find smarc_stonefish_worlds)/data/algae/algae_env_small.scn"
-latitude: "43.93183"
-longitude: "15.44264"
+latitude: "58.250833"
+longitude: "11.450283"
 anchoring_buoy_rope: "$(find smarc_stonefish_worlds)/data/algae/components/anchoring_chain.obj"
 a0_buoy: "$(find smarc_stonefish_worlds)/data/algae/components/a0_buoy.obj"
 rope: "$(find smarc_stonefish_worlds)/data/algae/components/a0_buoy_ropes_small_farm.obj"
