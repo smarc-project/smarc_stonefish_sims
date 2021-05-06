@@ -7,3 +7,11 @@ rope: "$(find smarc_stonefish_worlds)/data/algae/components/a0_buoy_ropes_small_
 algae_texture_dir: "$(find smarc_stonefish_worlds)/data/algae/textures"
 algae_row1: "$(find smarc_stonefish_worlds)/data/algae/components/algae_row1_small_farm.obj"
 algae_row2: "$(find smarc_stonefish_worlds)/data/algae/components/algae_row2_small_farm.obj"
+marked_positions: {
+    buoy_corner1: {position: "4.00 -5.00 0.00", orientation: "0.00 0.00 0.00", color: "red"},
+    buoy_corner2: {position: "4.00 5.00 0.00", orientation: "0.00 0.00 0.00", color: "red"},
+    buoy_corner3: {position: "14.00 -5.00 0.00", orientation: "0.00 0.00 0.00", color: "red"},
+    buoy_corner4: {position: "14.00 5.00 0.00", orientation: "0.00 0.00 0.00", color: "red"},
+    buoy_mid1: {position: "9.00 -5.00 0.00", orientation: "0.00 0.00 0.00", color: "white"},
+    buoy_mid2: {position: "9.00 5.00 0.00", orientation: "0.00 0.00 0.00", color: "white"}
+}

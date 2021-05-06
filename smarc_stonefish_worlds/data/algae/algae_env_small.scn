@@ -55,11 +55,11 @@
 </static>
 <!-- End: Farm skeleton ropes -->
 
-<!-- Begin: White A0 buoys at the four corners-->
+<!-- Begin: A0 buoys at the four corners-->
 <static name="A0_Buoy" type="model">
-	<look name="white"/>
+    <look name="$(param marked_positions/buoy_corner1/color)"/>
 	<material name="Neutral"/>
-	<world_transform xyz="4.00 -5.00 0.00" rpy="0.00 0.00 0.00"/>
+    <world_transform xyz="$(param marked_positions/buoy_corner1/position)" rpy="$(param marked_positions/buoy_corner1/orientation)"/>
 	<physical>
 		<mesh filename="$(param a0_buoy)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
@@ -67,9 +67,9 @@
 </static>
 
 <static name="A0_Buoy" type="model">
-	<look name="white"/>
+    <look name="$(param marked_positions/buoy_corner2/color)"/>
 	<material name="Neutral"/>
-	<world_transform xyz="4.00 5.00 0.00" rpy="0.00 0.00 0.00"/>
+    <world_transform xyz="$(param marked_positions/buoy_corner2/position)" rpy="$(param marked_positions/buoy_corner1/orientation)"/>
 	<physical>
 		<mesh filename="$(param a0_buoy)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
@@ -77,9 +77,9 @@
 </static>
 
 <static name="A0_Buoy" type="model">
-	<look name="white"/>
+    <look name="$(param marked_positions/buoy_corner3/color)"/>
 	<material name="Neutral"/>
-	<world_transform xyz="14.00 -5.00 0.00" rpy="0.00 0.00 0.00"/>
+    <world_transform xyz="$(param marked_positions/buoy_corner3/position)" rpy="$(param marked_positions/buoy_corner1/orientation)"/>
 	<physical>
 		<mesh filename="$(param a0_buoy)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
@@ -87,21 +87,21 @@
 </static>
 
 <static name="A0_Buoy" type="model">
-	<look name="white"/>
+    <look name="$(param marked_positions/buoy_corner4/color)"/>
 	<material name="Neutral"/>
-	<world_transform xyz="14.00 5.00 0.00" rpy="0.00 0.00 0.00"/>
+    <world_transform xyz="$(param marked_positions/buoy_corner4/position)" rpy="$(param marked_positions/buoy_corner1/orientation)"/>
 	<physical>
 		<mesh filename="$(param a0_buoy)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
 </static>
-<!-- End: White A0 buoys at the four corners-->
+<!-- End: A0 buoys at the four corners-->
 
-<!-- Begin: Red A0 buoys in the middle -->
+<!-- Begin: A0 buoys in the middle -->
 <static name="A0_Buoy" type="model">
-	<look name="red"/>
+    <look name="$(param marked_positions/buoy_mid1/color)"/>
 	<material name="Neutral"/>
-	<world_transform xyz="9.00 -5.00 0.00" rpy="0.00 0.00 0.00"/>
+    <world_transform xyz="$(param marked_positions/buoy_mid1/position)" rpy="$(param marked_positions/buoy_mid1/orientation)"/>
 	<physical>
 		<mesh filename="$(param a0_buoy)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
@@ -109,15 +109,15 @@
 </static>
 
 <static name="A0_Buoy" type="model">
-	<look name="red"/>
+    <look name="$(param marked_positions/buoy_mid2/color)"/>
 	<material name="Neutral"/>
-	<world_transform xyz="9.00 5.00 0.00" rpy="0.00 0.00 0.00"/>
+    <world_transform xyz="$(param marked_positions/buoy_mid2/position)" rpy="$(param marked_positions/buoy_mid2/orientation)"/>
 	<physical>
 		<mesh filename="$(param a0_buoy)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
 </static>
-<!-- End: Red A0 buoys in the middle -->
+<!-- End: A0 buoys in the middle -->
 
 <!-- Begin: Anchors at the four corners -->
 <static name="Anchor" type="model">
