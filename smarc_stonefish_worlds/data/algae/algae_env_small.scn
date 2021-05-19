@@ -49,7 +49,7 @@
 	<material name="Neutral"/>
 	<world_transform xyz="4.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
 	<physical>
-		<mesh filename="$(param rope)" scale="1.0"/>
+		<mesh filename="$(param mesh/rope)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
 </static>
@@ -61,7 +61,7 @@
 	<material name="Neutral"/>
     <world_transform xyz="$(param marked_positions/buoy_corner1/position)" rpy="$(param marked_positions/buoy_corner1/orientation)"/>
 	<physical>
-		<mesh filename="$(param a0_buoy)" scale="1.0"/>
+		<mesh filename="$(param mesh/a0_buoy)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
 </static>
@@ -71,7 +71,7 @@
 	<material name="Neutral"/>
     <world_transform xyz="$(param marked_positions/buoy_corner2/position)" rpy="$(param marked_positions/buoy_corner1/orientation)"/>
 	<physical>
-		<mesh filename="$(param a0_buoy)" scale="1.0"/>
+		<mesh filename="$(param mesh/a0_buoy)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
 </static>
@@ -81,7 +81,7 @@
 	<material name="Neutral"/>
     <world_transform xyz="$(param marked_positions/buoy_corner3/position)" rpy="$(param marked_positions/buoy_corner1/orientation)"/>
 	<physical>
-		<mesh filename="$(param a0_buoy)" scale="1.0"/>
+		<mesh filename="$(param mesh/a0_buoy)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
 </static>
@@ -91,7 +91,7 @@
 	<material name="Neutral"/>
     <world_transform xyz="$(param marked_positions/buoy_corner4/position)" rpy="$(param marked_positions/buoy_corner1/orientation)"/>
 	<physical>
-		<mesh filename="$(param a0_buoy)" scale="1.0"/>
+		<mesh filename="$(param mesh/a0_buoy)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
 </static>
@@ -103,7 +103,7 @@
 	<material name="Neutral"/>
     <world_transform xyz="$(param marked_positions/buoy_mid1/position)" rpy="$(param marked_positions/buoy_mid1/orientation)"/>
 	<physical>
-		<mesh filename="$(param a0_buoy)" scale="1.0"/>
+		<mesh filename="$(param mesh/a0_buoy)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
 </static>
@@ -113,7 +113,7 @@
 	<material name="Neutral"/>
     <world_transform xyz="$(param marked_positions/buoy_mid2/position)" rpy="$(param marked_positions/buoy_mid2/orientation)"/>
 	<physical>
-		<mesh filename="$(param a0_buoy)" scale="1.0"/>
+		<mesh filename="$(param mesh/a0_buoy)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
 </static>
@@ -125,7 +125,7 @@
 	<material name="Neutral"/>
 	<world_transform xyz="4.00 -5.00 0.00" rpy="0.00 0.00 3.14"/>
 	<physical>
-		<mesh filename="$(param anchoring_buoy_rope)" scale="1.0"/>
+        <mesh filename="$(param mesh/anchoring_buoy_rope)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
 </static>
@@ -135,7 +135,7 @@
 	<material name="Neutral"/>
 	<world_transform xyz="4.00 5.00 0.00" rpy="0.00 0.00 0.00"/>
 	<physical>
-		<mesh filename="$(param anchoring_buoy_rope)" scale="1.0"/>
+        <mesh filename="$(param mesh/anchoring_buoy_rope)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
 </static>
@@ -145,7 +145,7 @@
 	<material name="Neutral"/>
 	<world_transform xyz="14.00 -5.00 0.00" rpy="0.00 0.00 3.14"/>
 	<physical>
-		<mesh filename="$(param anchoring_buoy_rope)" scale="1.0"/>
+		<mesh filename="$(param mesh/anchoring_buoy_rope)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
 </static>
@@ -155,7 +155,7 @@
 	<material name="Neutral"/>
 	<world_transform xyz="14.00 5.00 0.00" rpy="0.00 0.00 0.00"/>
 	<physical>
-		<mesh filename="$(param anchoring_buoy_rope)" scale="1.0"/>
+		<mesh filename="$(param mesh/anchoring_buoy_rope)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
 </static>
@@ -167,7 +167,7 @@
 	<material name="Neutral"/>
 	<world_transform xyz="4.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
 	<physical>
-        <mesh filename="$(param algae_row1)" scale="1.0"/>
+        <mesh filename="$(param mesh/algae_row1)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
 </static>
@@ -177,7 +177,7 @@
 	<material name="Neutral"/>
 	<world_transform xyz="4.00 10.00 0.00" rpy="0.00 0.00 0.00"/>
 	<physical>
-		<mesh filename="$(param algae_row2)" scale="1.0"/>
+		<mesh filename="$(param mesh/algae_row2)" scale="1.0"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
 </static>
