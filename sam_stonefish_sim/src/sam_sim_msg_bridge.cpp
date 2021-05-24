@@ -29,6 +29,7 @@ private:
     std::string robot_name;
     double vbs_vol_min, vbs_vol_max;
     double lcg_joint_min, lcg_joint_max;
+    double max_rpm;
 
     // service to toggle sidescan
     ros::ServiceServer sidescan_toggle_service;
@@ -236,7 +237,7 @@ public:
     {
         last_thruster_msg_time = ros::Time::now();
         last_thruster_msg.header.stamp = last_thruster_msg_time;
-        last_thruster_msg.setpoints[thruster_ind] = msg->rpm;
+        last_thruster_msg.setpoints[thruster_ind] = msg->rpm / max_rpm;
     }
 
     void thruster_timer_callback(const ros::TimerEvent& event)
@@ -255,10 +256,10 @@ public:
 
         // publish feedback
         smarc_msgs::ThrusterFeedback fb;
-        fb.rpm.rpm = msg.setpoints[0];
+        fb.rpm.rpm = msg.setpoints[0] * max_rpm;
         fb.header.stamp = msg.header.stamp;
         thruster1_fb_pub.publish(fb);
-        fb.rpm.rpm = msg.setpoints[1];
+        fb.rpm.rpm = msg.setpoints[1] * max_rpm;
         thruster2_fb_pub.publish(fb);
     }
 
@@ -287,6 +288,8 @@ public:
         pn.param<double>("lcg_joint_max", lcg_joint_max, .01);
         pn.param<double>("vbs_vol_min", vbs_vol_min, -.5);
         pn.param<double>("vbs_vol_max", vbs_vol_max, .5);
+        pn.param<double>("sam_max_rpm", max_rpm, 2000.0);
+        
 
         setup_messages();
 
