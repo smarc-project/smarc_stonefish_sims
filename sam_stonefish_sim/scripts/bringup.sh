@@ -187,9 +187,10 @@ do
 	tmux new-window -t $ROBOT_SESSION:2 -n 'gui'
 	tmux new-window -t $ROBOT_SESSION:3 -n 'robot_bridge'
 	tmux new-window -t $ROBOT_SESSION:4 -n 'dr'
-	tmux new-window -t $ROBOT_SESSION:5 -n 'mission'
-    tmux new-window -t $ROBOT_SESSION:6 -n 'static_ctrl'
-    tmux new-window -t $ROBOT_SESSION:7 -n 'dynamic_ctrl'
+    tmux new-window -t $ROBOT_SESSION:5 -n 'static_ctrl'
+    tmux new-window -t $ROBOT_SESSION:6 -n 'dynamic_ctrl'
+	tmux new-window -t $ROBOT_SESSION:7 -n 'actions'
+	tmux new-window -t $ROBOT_SESSION:8 -n 'mission_exec'
 
 	tmux select-window -t $ROBOT_SESSION:2
     tmux send-keys "mon launch sam_webgui_native native_webgui.launch namespace:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W')"
@@ -204,15 +205,19 @@ do
 	tmux select-window -t $ROBOT_SESSION:4
 	tmux send-keys "mon launch sam_dead_reckoning dual_ekf_test.launch --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
-	tmux select-window -t $ROBOT_SESSION:5
-	tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME bridge_port:=$IMC_BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP imc_system_name:=$ROBOT_NAME imc_src:=$IMC_SRC max_depth:=$MAX_DEPTH min_altitude:=$MIN_ALTITUDE --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
-
 	# ADD NEW LAUNCHES THAT ARE SPECIFIC TO ONE SAM HERE
-	tmux select-window -t $ROBOT_SESSION:6
+	tmux select-window -t $ROBOT_SESSION:5
 	tmux send-keys "mon launch sam_basic_controllers static_controllers.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
-	tmux select-window -t $ROBOT_SESSION:7
+	tmux select-window -t $ROBOT_SESSION:6
     tmux send-keys "mon launch sam_basic_controllers dynamic_controllers.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
+
+    tmux select-window -t $ROBOT_SESSION:7
+    tmux send-keys "mon launch sam_action_servers action_servers.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
+
+	tmux select-window -t $ROBOT_SESSION:8
+	tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME bridge_port:=$IMC_BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP imc_system_name:=$ROBOT_NAME imc_src:=$IMC_SRC max_depth:=$MAX_DEPTH min_altitude:=$MIN_ALTITUDE --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
+
 
 done
 
