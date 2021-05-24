@@ -42,7 +42,7 @@
     <actuator name="ThrusterSurge1" type="thruster">
         <link name="Vehicle"/>
         <origin rpy="0.0 0.0 3.1416" xyz="-2.85 -0.275 0.0"/>
-        <specs thrust_coeff="0.5" torque_coeff="0.05" max_rpm="$(arg lolo_max_rpm)" inverted="true"/>
+        <specs thrust_coeff="0.5" torque_coeff="0.05" max_rpm="$(param lolo_max_rpm)" inverted="true"/>
         <propeller diameter="0.12" right="true">
             <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/propeller.obj" scale="1.0"/>
             <material name="Neutral"/>
@@ -53,7 +53,7 @@
     <actuator name="ThrusterSurge2" type="thruster">
         <link name="Vehicle"/>
         <origin rpy="0.0 0.0 3.1416" xyz="-2.85 0.275 0.0"/>
-        <specs thrust_coeff="0.5" torque_coeff="0.05" max_rpm="$(arg lolo_max_rpm)" inverted="false"/>
+        <specs thrust_coeff="0.5" torque_coeff="0.05" max_rpm="$(param lolo_max_rpm)" inverted="false"/>
         <propeller diameter="0.12" right="false">
             <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/propeller.obj" scale="1.0"/>
             <material name="Neutral"/>
