@@ -1,4 +1,5 @@
 robot_file: "$(find lolo_stonefish_sim)/data/lolo_auv/lolo_auv.xml"
 robot_name: "lolo"
+lolo_max_rpm: "2000.0"
 robot_pos: "0.0 0.0 0.0"
 simulate_dr: "true"

@@ -24,6 +24,7 @@ private:
     // parameters
     std::string robot_name;
     double vbs_vol_min, vbs_vol_max;
+    double max_rpm;
 
     // messages to publish
     cola2_msgs::Setpoints last_rudder_msg;
@@ -168,7 +169,7 @@ public:
     {
         last_thruster_msg_time = ros::Time::now();
         last_thruster_msg.header.stamp = last_thruster_msg_time;
-        last_thruster_msg.setpoints[thruster_ind] = msg->rpm;
+        last_thruster_msg.setpoints[thruster_ind] = msg->rpm / max_rpm;
     }
 
     void thruster_timer_callback(const ros::TimerEvent& event)
@@ -187,10 +188,10 @@ public:
 
         // publish feedback
         smarc_msgs::ThrusterFeedback fb;
-        fb.rpm.rpm = msg.setpoints[0];
+        fb.rpm.rpm = msg.setpoints[0] * max_rpm;
         fb.header.stamp = msg.header.stamp;
         thruster1_fb_pub.publish(fb);
-        fb.rpm.rpm = msg.setpoints[1];
+        fb.rpm.rpm = msg.setpoints[1] * max_rpm;
         thruster2_fb_pub.publish(fb);
     }
 
@@ -222,6 +223,7 @@ public:
         pn.param<std::string>("robot_name", robot_name, "lolo");
         pn.param<double>("vbs_vol_min", vbs_vol_min, -.5);
         pn.param<double>("vbs_vol_max", vbs_vol_max, .5);
+        pn.param<double>("lolo_max_rpm", max_rpm, 2000.0);
 
         setup_messages();
 
