@@ -39,4 +39,9 @@
         <rosparam file="$(arg robot_config_file)" subst_value="true"/>
     </node>
 
+    <!-- Buoy positions -->
+	<group if="$(eval 'algae' in arg('world_config_file'))">
+    	<node name="buoy_markers" pkg="marked_pos_publisher" type="marked_pos_publisher.py"/>
+  	</group>
+
 </launch>
