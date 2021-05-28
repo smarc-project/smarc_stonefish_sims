@@ -217,6 +217,10 @@ do
 
 	tmux select-window -t $ROBOT_SESSION:8
 	tmux send-keys "mon launch sam_stonefish_sim mission.launch robot_name:=$ROBOT_NAME bridge_port:=$IMC_BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP imc_system_name:=$ROBOT_NAME imc_src:=$IMC_SRC max_depth:=$MAX_DEPTH min_altitude:=$MIN_ALTITUDE --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
+	tmux split-window -h
+	tmux send-keys "clear; echo Run this after the BT, to change splits: Ctrl-b o" C-m
+	tmux send-keys "py-trees-tree-watcher"
+	tmux selectp -t 0
 
 
 done
