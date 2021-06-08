@@ -1,0 +1,32 @@
+environment_file: "$(find smarc_stonefish_worlds)/data/kristineberg/kristineberg_env.scn"
+# map ref is located at the start of the bridge (left side corner) over to the sauna
+latitude: "58.249721"
+longitude: "11.44624"
+algae_texture_dir: "$(find smarc_stonefish_worlds)/data/algae/textures"
+mesh: {
+    anchoring_buoy_rope: "$(find smarc_stonefish_worlds)/data/algae/components/anchoring_chain.obj",
+    a0_buoy: "$(find smarc_stonefish_worlds)/data/algae/components/a0_buoy.obj",
+    rope: "$(find smarc_stonefish_worlds)/data/algae/components/a0_buoy_ropes_small_farm.obj",
+    algae_row1: "$(find smarc_stonefish_worlds)/data/algae/components/algae_row1_small_farm.obj",
+    algae_row2: "$(find smarc_stonefish_worlds)/data/algae/components/algae_row2_small_farm.obj"
+}
+marked_positions: {
+    #(x, y) = (N, E)
+    buoy_corner1: {position: "108.00 238.00 0.00", orientation: "0.00 0.00 0.00", color: "white", mesh: "a0_buoy"},
+    buoy_corner2: {position: "105.00 266.00 0.00", orientation: "0.00 0.00 0.00", color: "white", mesh: "a0_buoy"},
+    buoy_corner3: {position: "135.80 241.20 0.00", orientation: "0.00 0.00 0.00", color: "white", mesh: "a0_buoy"},
+    buoy_corner4: {position: "132.80 269.00 0.00", orientation: "0.00 0.00 0.00", color: "white", mesh: "a0_buoy"},
+    buoy_mid1: {position: "122.00 239.60 0.00", orientation: "0.00 0.00 0.00", color: "red", mesh: "a0_buoy"},
+    buoy_mid2: {position: "118.80 267.50 0.00", orientation: "0.00 0.00 0.00", color: "red", mesh: "a0_buoy"},
+}
+other_object_positions: {
+    farm_skeleton: {position: "106.50 252.00 0.00",
+                    orientation: "0.00 0.00 0.11",
+                    color: "yellow", mesh: "rope"},
+    algae_row1: {position: "105.50 253.00 -2.00",
+                    orientation: "0.00 0.00 0.11",
+                    color: "algae_green.jpg", mesh: "algae_row1"},
+    algae_row2: {position: "104.00 281.50 -2.00",
+                    orientation: "0.00 0.00 0.11",
+                    color: "algae_brown1.jpg", mesh: "algae_row2"}
+}

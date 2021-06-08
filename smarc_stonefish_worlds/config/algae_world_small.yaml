@@ -17,3 +17,14 @@ marked_positions: {
     buoy_mid1: {position: "9.00 -5.00 0.00", orientation: "0.00 0.00 0.00", color: "red", mesh: "a0_buoy"},
     buoy_mid2: {position: "9.00 5.00 0.00", orientation: "0.00 0.00 0.00", color: "red", mesh: "a0_buoy"}
 }
+other_object_positions: {
+    farm_skeleton: {position: "4.00 0.00 0.00", # (buoy_corner1.x, buoy_corner1.y + 5, 0)
+                    orientation: "0.00 0.00 0.00",
+                    color: "yellow", mesh: "rope"},
+    algae_row1: {position: "4.00 10.00 0.00", # (buoy_corner1.x, buoy_corner1.y + 15, 0)
+                    orientation: "0.00 0.00 0.00",
+                    color: "algae_green.jpg", mesh: "algae_row1"},
+    algae_row2: {position: "4.00 0.00 0.00", # (buoy_corner1.x, buoy_corner1.y + 5, 0)
+                    orientation: "0.00 0.00 0.00",
+                    color: "algae_brown1.jpg", mesh: "algae_row2"}
+}

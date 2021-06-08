@@ -2,8 +2,8 @@
 <launch>
 
     <!-- These are the arguments you need to care about -->
-    <arg name="world_config_file" default="$(find smarc_stonefish_worlds)/config/algae_world_small.yaml"/>
-    <arg name="robot_config_file" default="$(find sam_stonefish_sim)/config/sam_no_payload_sensors.yaml"/>
+    <arg name="world_config_file" default="$(find smarc_stonefish_worlds)/config/kristineberg_world.yaml"/>
+    <arg name="robot_config_file" default="$(find sam_stonefish_sim)/config/sam_kristineberg.yaml"/>
     <arg name="scenario_description" default="$(find smarc_stonefish_worlds)/data/scenarios/default.scn"/>
     <arg name="simulate_dr" default="true"/>
     <arg name="map_frame" value="map" if="$(arg simulate_dr)"/>
