@@ -2,8 +2,8 @@
 Changelog for package smarc_stonefish_worlds
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.7 (2022-03-30)
+------------------
 * Merge pull request `#24 <https://github.com/smarc-project/smarc_stonefish_sims/issues/24>`_ from luxiya01/kristineberg
   Kristineberg world
 * Add kristineberg world config

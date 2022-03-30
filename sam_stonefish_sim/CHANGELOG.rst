@@ -2,8 +2,8 @@
 Changelog for package sam_stonefish_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.7 (2022-03-30)
+------------------
 * Merge pull request `#24 <https://github.com/smarc-project/smarc_stonefish_sims/issues/24>`_ from luxiya01/kristineberg
   Kristineberg world
 * Merge pull request `#23 <https://github.com/smarc-project/smarc_stonefish_sims/issues/23>`_ from KKalem/noetic-devel

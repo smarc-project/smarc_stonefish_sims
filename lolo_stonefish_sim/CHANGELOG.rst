@@ -2,8 +2,8 @@
 Changelog for package lolo_stonefish_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.7 (2022-03-30)
+------------------
 * Merge pull request `#21 <https://github.com/smarc-project/smarc_stonefish_sims/issues/21>`_ from smarc-project/correct_thrusters
   Corrected error with RPMs not being set correctly
 * Corrected everything to be parameters in defs
