@@ -15,8 +15,6 @@ jobs:
       name: Test building a ROS debian release
       steps:
       - uses: actions/checkout@v2
-        with:
-          path: '.'
       - name: Run the release build
         uses: smarc-project/test-ros-release-action@v1.0.13
         with:
