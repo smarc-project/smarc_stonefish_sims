@@ -18,7 +18,7 @@ jobs:
         with:
           path: '.'
       - name: Run the release build
-        uses: smarc-project/test-ros-release-action@v1.0.10
+        uses: smarc-project/test-ros-release-action@v1.0.11
         with:
           ubuntu: ${{ matrix.ubuntu }}
           distro: ${{ matrix.distro }}
