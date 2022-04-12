@@ -16,7 +16,7 @@ jobs:
       steps:
       - uses: actions/checkout@v2
       - name: Run the release build
-        uses: smarc-project/test-ros-release-action@v1.0.14
+        uses: smarc-project/test-ros-release-action@v1.0.15
         with:
           ubuntu: ${{ matrix.ubuntu }}
           distro: ${{ matrix.distro }}
