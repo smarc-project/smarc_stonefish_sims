@@ -1,4 +1,6 @@
-on: [push]
+name: release-CI
+
+on: [push, pull_request]
 
 jobs:
   test-release-job:
@@ -7,16 +9,14 @@ jobs:
           include:
             - distro: melodic
               ubuntu: bionic
-              bloom: python-bloom
             - distro: noetic
               ubuntu: focal
-              bloom: python3-bloom
       runs-on: ubuntu-latest
       name: Test building a ROS debian release
       steps:
       - uses: actions/checkout@v2
       - name: Run the release build
-        uses: smarc-project/test-ros-release-action@v1.0.18
+        uses: smarc-project/test-ros-release-action@v2
         with:
           ubuntu: ${{ matrix.ubuntu }}
           distro: ${{ matrix.distro }}
