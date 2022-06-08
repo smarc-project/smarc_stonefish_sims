@@ -51,15 +51,15 @@ public:
         result_.reached_waypoint = false;
 
         Eigen::Vector3d goal_pos;
-        goal_pos[0] = goal->waypoint_pose.pose.position.x;
-        goal_pos[1] = goal->waypoint_pose.pose.position.y;
-        goal_pos[2] = goal->waypoint_pose.pose.position.z;
+        goal_pos[0] = goal->waypoint.pose.pose.position.x;
+        goal_pos[1] = goal->waypoint.pose.pose.position.y;
+        goal_pos[2] = goal->waypoint.pose.pose.position.z;
         double speed = 1.;
 
         smarc_msgs::ThrusterRPM rpm;
         std_msgs::Float64 goal_yaw;
         std_msgs::Float64 travel_depth;
-        travel_depth.data = goal->travel_depth;
+        travel_depth.data = goal->waypoint.travel_depth;
 
         ros::Rate rate(20.); // 20hz for thruster publish
         while (ros::ok()) {
@@ -79,7 +79,7 @@ public:
             pos[2] = transformStamped.transform.translation.z;
 
             double dist = (goal_pos - pos).head<2>().norm();
-            if (dist < goal->goal_tolerance) {
+            if (dist < goal->waypoint.goal_tolerance) {
                 success = true;
                 break;
             }
