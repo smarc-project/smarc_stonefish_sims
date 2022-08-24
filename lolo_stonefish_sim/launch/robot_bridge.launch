@@ -3,9 +3,7 @@
     <arg name="robot_name" default="lolo"/>
     <arg name="with_teleop" default="false"/>
     <arg name="xacro_file" default="$(find lolo_description)/urdf/lolo_auv.urdf.xacro"/>
-    <!--
     <arg name="simulate_dr" default="true"/>
-    -->
 
     <group ns="$(arg robot_name)">
 
@@ -22,7 +20,7 @@
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen"/>
 
         <!-- Teleop interface -->
-        <node name="teleop" type="lolo_teleop.py" pkg="lolo_stonefish_sim" output="screen" if="$(arg with_teleop)"/> 
+        <node name="teleop" type="lolo_teleop.py" pkg="lolo_stonefish_sim" output="screen" if="$(arg with_teleop)"/>
 
         <!-- VBS Setpoint controllers -->
         <include file="$(find sam_stonefish_sim)/launch/vbs_controller.launch">
@@ -48,7 +46,7 @@
             <arg name="vbs_name" value="vbs_back_port"/>
             <arg name="max_volume" value="0.00155"/>
         </include>
-    
+
         <!-- Bridge to SMARC msg interface -->
         <node name="msg_bridge" type="lolo_sim_msg_bridge" pkg="lolo_stonefish_sim" output="screen">
             <param name="robot_name" value="$(arg robot_name)"/>
@@ -64,10 +62,12 @@
             <param name="frame_id" value="$(arg robot_name)/base_link"/>
         </node>
 
-        <include file="$(find tf_lat_lon)/launch/tf_lat_lon.launch">
-            <arg name="frame" value="$(arg robot_name)/base_link"/>
-            <arg name="lat_lon_topic" value="dr/lat_lon"/>
-        </include>
+        <group ns="dr" if="$(arg simulate_dr)">
+            <include file="$(find tf_lat_lon)/launch/tf_lat_lon.launch">
+                <arg name="frame" value="$(arg robot_name)/base_link"/>
+                <arg name="lat_lon_topic" value="lat_lon"/>
+            </include>
+        </group>
 
     </group>
 
