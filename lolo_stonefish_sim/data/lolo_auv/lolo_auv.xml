@@ -121,138 +121,15 @@
         </visual>
     </actuator>
 
-    <actuator name="VBSFrontStbd" type="vbs">
-        <link name="Vehicle"/>
-        <origin rpy="0.0 1.5707 0.0" xyz="1.66 -0.35 0.0"/>
-        <volume initial="0.00002">
-            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/vbs_min.obj"/>
-            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/vbs_max.obj"/>
-        </volume>
-        <ros_publisher topic="/$(arg robot_name)/sim/vbs_front_stbd/volume"/>
-        <ros_subscriber topic="/$(arg robot_name)/sim/vbs_front_stbd/flow_rate"/>
-    </actuator>
-
-    <actuator name="VBSFrontPort" type="vbs">
-        <link name="Vehicle"/>
-        <origin rpy="0.0 1.5707 0.0" xyz="1.66 0.35 0.0"/>
-        <volume initial="0.00002">
-            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/vbs_min.obj"/>
-            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/vbs_max.obj"/>
-        </volume>
-        <ros_publisher topic="/$(arg robot_name)/sim/vbs_front_port/volume"/>
-        <ros_subscriber topic="/$(arg robot_name)/sim/vbs_front_port/flow_rate"/>
-    </actuator>
-
-    <actuator name="VBSBackStbd" type="vbs">
-        <link name="Vehicle"/>
-        <origin rpy="0.0 1.5707 0.0" xyz="0.66 -0.35 0.0"/>
-        <volume initial="0.00002">
-            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/vbs_min.obj"/>
-            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/vbs_max.obj"/>
-        </volume>
-        <ros_publisher topic="/$(arg robot_name)/sim/vbs_back_stbd/volume"/>
-        <ros_subscriber topic="/$(arg robot_name)/sim/vbs_back_stbd/flow_rate"/>
-    </actuator>
-
-    <actuator name="VBSBackPort" type="vbs">
-        <link name="Vehicle"/>
-        <origin rpy="0.0 1.5707 0.0" xyz="0.66 0.35 0.0"/>
-        <volume initial="0.00002">
-            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/vbs_min.obj"/>
-            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/vbs_max.obj"/>
-        </volume>
-        <ros_publisher topic="/$(arg robot_name)/sim/vbs_back_port/volume"/>
-        <ros_subscriber topic="/$(arg robot_name)/sim/vbs_back_port/flow_rate"/>
-    </actuator>
-
-    <!--
-    <link name="Elevator" type="model" physics="submerged" buoyant="false">
-        <physical>
-            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/back_fin.obj" scale="1.0"/>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
-        </physical>
-        <visual>
-            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/back_fin.obj" scale="1.0"/>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
-        </visual>
-        <material name="Neutral"/>
-        <look name="manipulator"/>
-    </link>
-
-    <link name="RudderPort" type="model" physics="submerged" buoyant="false">
-        <physical>
-            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/fin.obj" scale="1.0"/>
-            <origin rpy="1.5707 0.0 0.0" xyz="0.0 0.0 0.0"/>
-        </physical>
-        <visual>
-            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/fin.obj" scale="1.0"/>
-            <origin rpy="1.5707 0.0 0.0" xyz="0.0 0.0 0.0"/>
-        </visual>
-        <material name="Neutral"/>
-        <look name="manipulator"/>
-    </link>
-
-    <link name="RudderStbd" type="model" physics="submerged" buoyant="false">
-        <physical>
-            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/fin.obj" scale="1.0"/>
-            <origin rpy="1.5707 0.0 0.0" xyz="0.0 0.0 0.0"/>
-        </physical>
-        <visual>
-            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/fin.obj" scale="1.0"/>
-            <origin rpy="1.5707 0.0 0.0" xyz="0.0 0.0 0.0"/>
-        </visual>
-        <material name="Neutral"/>
-        <look name="manipulator"/>
-    </link>
-
-    <joint name="elevator_joint" type="revolute">
-        <parent name="Vehicle"/>
-        <child name="Elevator"/>
-        <origin rpy="0.0 0.0 0.0" xyz="-2.68 0.0 0.0"/>
-        <axis xyz="0.0 1.0 0.0"/>
-        <limits min="-0.12" max="0.12"/>
-    </joint>
-
-    <joint name="rudder_port_joint" type="revolute">
-        <parent name="Vehicle"/>
-        <child name="RudderPort"/>
-        <origin rpy="0.0 0.0 0.0" xyz="-2.4 0.275 0.0"/>
-        <axis xyz="0.0 0.0 1.0"/>
-        <limits min="-0.12" max="0.12"/>
-    </joint>
-
-    <joint name="rudder_stbd_joint" type="revolute">
-        <parent name="Vehicle"/>
-        <child name="RudderStbd"/>
-        <origin rpy="0.0 0.0 0.0" xyz="-2.4 -0.275 0.0"/>
-        <axis xyz="0.0 0.0 1.0"/>
-        <limits min="-0.12" max="0.12"/>
-    </joint>
-
-    <actuator name="Servo1" type="servo">
-        <joint name="rudder_port_joint"/>
-        <controller position_gain="1.0" velocity_gain="1.0" max_torque="1000.0"/>
-    </actuator>
-
-    <actuator name="Servo2" type="servo">
-        <joint name="rudder_stbd_joint"/>
-        <controller position_gain="1.0" velocity_gain="1.0" max_torque="1000.0"/>
-    </actuator>
-
-    <actuator name="ElevatorServo" type="servo">
-        <joint name="elevator_joint"/>
-        <controller position_gain="1.0" velocity_gain="1.0" max_torque="1000.0"/>
-    </actuator>
-    -->
 
 
     <!-- Sensors -->
-    <sensor name="base_link" type="odometry" rate="30.0">
-        <link name="Vehicle"/>
-        <noise position="0.001" velocity="0.0015" angle="0.0001745" angular_velocity="0.0001745"/>
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
-        <ros_publisher topic="/$(arg robot_name)/sim/odom"/>
-    </sensor>
+    <!--<sensor name="base_link" type="odometry" rate="30.0">-->
+        <!--<link name="Vehicle"/>-->
+        <!--<noise position="0.001" velocity="0.0015" angle="0.0001745" angular_velocity="0.0001745"/>-->
+        <!--<origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>-->
+        <!--<ros_publisher topic="/$(arg robot_name)/sim/odom"/>-->
+    <!--</sensor>-->
 
     <sensor name="imu_link_ned" type="imu" rate="200.0">
         <link name="Vehicle"/>
@@ -268,11 +145,11 @@
         <ros_publisher topic="/$(arg robot_name)/sim/pressure"/>
     </sensor>
 
-    <sensor name="gps_link" type="gps" rate="1.0">
+    <sensor name="gps_link" type="gps" rate="50.0">
         <link name="Vehicle"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.836 0.0 0.44"/>
         <noise ned_position="0.5"/>
-        <ros_publisher topic="/$(arg robot_name)/core/gps"/>
+		<ros_publisher topic="/$(arg robot_name)/sim/gps"/>
     </sensor>
 
     <sensor name="dvl_link" type="dvl" rate="5.0">
