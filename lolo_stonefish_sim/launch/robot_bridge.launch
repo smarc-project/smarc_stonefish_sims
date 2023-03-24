@@ -11,9 +11,11 @@
         <!-- Republish ground truth odometry msg from sim -->
 		<node name="odom_republish" type="relay" pkg="topic_tools" args="sim/odom dr/odom" output="screen"/> 
 
-		<!--Also repub sim gps and dvl-->
+		<!--Also repub sim gps and dvl and pressure-->
 		<node name="gps_republish" type="relay" pkg="topic_tools" args="sim/gps core/gps" output="screen"/> 
 		<node name="dvl_republish" type="relay" pkg="topic_tools" args="sim/dvl core/dvl" output="screen"/> 
+		<node name="pressure_republish" type="relay" pkg="topic_tools" args="sim/pressure core/pressure" output="screen"/> 
+
 
         <!-- Robot description -->
         <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg xacro_file)' debug:=true robot_namespace:=$(arg robot_name)"/>
@@ -23,6 +25,7 @@
 
 
 		<!-- Latlon to utm and vice-versa, used by a lot including INS faker -->
+		<!--Should also run on the real lolo-->
 		<group ns="dr">
 			<include file="$(find tf_lat_lon)/launch/tf_lat_lon.launch">
 				<arg name="frame" value="$(arg robot_name)/base_link"/>
@@ -34,10 +37,13 @@
 		<node name="sim_to_ins" type="sim_to_ins.py" pkg="lolo_stonefish_sim" output="screen"/>
 
 		<!-- takes either dr/odom or sim/odom and publishes dr/roll pitch yaw in world_ned frame-->
-		<!-- do we need this if are already taking gt/lolo/base_link and using its orientation for angles? -->
+		<!--Dont think we need this since who will publish dr/odom if the INS is supposed to be a blackbox-->
+		<!--that does all our DR?-->
 		<!--<node name="odom_to_angles" type="odom_to_angles.py" pkg="lolo_drivers" output="screen"/>-->
 
 		<!--Split apart the INS message into the standard stuff we like to have-->
+		<!--This is common to sim and real-->
+		<!--The real lolo should also have an ins to tf base_link publisher-->
 		<node name="ins_to_dr" type="ins_to_dr.py" pkg="lolo_drivers" output="screen"/>
 
 
