@@ -45,6 +45,8 @@
 		<!--This is common to sim and real-->
 		<!--The real lolo should also have an ins to tf base_link publisher-->
 		<node name="ins_to_dr" type="ins_to_dr.py" pkg="lolo_drivers" output="screen"/>
+		<!--Same thing with dvl, to fill in dr/altitude-->
+		<node name="dvl_to_altitude" type="dvl_to_altitude.py" pkg="lolo_drivers" output="screen"/>
 
 
 		

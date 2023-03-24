@@ -66,7 +66,7 @@
         <origin rpy="-1.5707 0.0 0.0" xyz="-0.72 0.0 0.0"/>
         <specs drag_coeff="2.0" lift_coeff="3.0" max_angle="0.6" inverted="false" area="0.12"/>
         <visual>
-            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/back_fin.obj" scale="1.0"/>
+            <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/elevator.obj" scale="1.0"/>
             <material name="Neutral"/>
             <look name="manipulator"/>
             <origin rpy="1.5707 0.0 0.0" xyz="0.0 0.0 0.0"/>
@@ -99,7 +99,8 @@
 
     <actuator name="ElevonPort" type="rudder">
         <link name="Vehicle"/>
-        <origin rpy="-1.5707 0.0 0.0" xyz="1.16 0.5 0.0"/>
+        <!--<origin rpy="-1.5707 0.0 0.0" xyz="1.16 0.5 0.0"/>-->
+        <origin rpy="-1.5707 0.0 0.0" xyz="-0.42 0.4 0.0"/>
         <specs drag_coeff="2.0" lift_coeff="3.0" max_angle="0.6" inverted="false" area="0.06"/>
         <visual>
             <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/fin.obj" scale="1.0"/>
@@ -111,7 +112,8 @@
 
     <actuator name="ElevonStbd" type="rudder">
         <link name="Vehicle"/>
-        <origin rpy="1.5707 0.0 0.0" xyz="1.16 -0.5 0.0"/>
+        <!--<origin rpy="1.5707 0.0 0.0" xyz="1.16 -0.5 0.0"/>-->
+        <origin rpy="1.5707 0.0 0.0" xyz="-0.42 -0.4 0.0"/>
         <specs drag_coeff="2.0" lift_coeff="3.0" max_angle="0.6" inverted="false" area="0.06"/>
         <visual>
             <mesh filename="$(find lolo_stonefish_sim)/data/lolo_auv/mesh/fin.obj" scale="1.0"/>
