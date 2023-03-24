@@ -23,7 +23,7 @@ private:
 
     // parameters
     std::string robot_name;
-    double vbs_vol_min, vbs_vol_max;
+    //double vbs_vol_min, vbs_vol_max;
     double max_rpm;
 
     // messages to publish
@@ -35,14 +35,14 @@ private:
 
     // sensor outputs from stonefish
     ros::Subscriber pressure_sub;
-    ros::Subscriber vbs_fb_sub[4];
+    //ros::Subscriber vbs_fb_sub[4];
     //ros::Subscriber joint_states_fb_sub;
     ros::Subscriber dvl_sub;
 
     // sensor outputs from bridge
     ros::Publisher pressure_pub;
     ros::Publisher battery_pub;
-    ros::Publisher vbs_fb_pub[4];
+    //ros::Publisher vbs_fb_pub[4];
     //ros::Publisher lcg_fb_pub;
     ros::Publisher thruster1_fb_pub;
     ros::Publisher thruster2_fb_pub;
@@ -51,13 +51,13 @@ private:
     // command inputs to stonefish
     ros::Publisher thruster_cmd_pub;
     ros::Publisher rudder_cmd_pub;
-    ros::Publisher vbs_cmd_pub[4];
+    //ros::Publisher vbs_cmd_pub[4];
     ros::Publisher joint_states_cmd_pub;
 
     // command inputs to bridge
     ros::Subscriber thruster1_cmd_sub;
     ros::Subscriber thruster2_cmd_sub;
-    ros::Subscriber vbs_cmd_sub[4];
+    //ros::Subscriber vbs_cmd_sub[4];
     //ros::Subscriber angles_cmd_sub;
     ros::Subscriber rudder_cmd_sub;
     ros::Subscriber elevator_cmd_sub;
@@ -71,24 +71,24 @@ private:
 
 public:
 
-    void dvl_callback(const cola2_msgs::DVL& msg)
-    {
-        smarc_msgs::DVL dvl;
-        dvl.header = msg.header;
-        dvl.velocity = msg.velocity;
-        dvl.velocity_covariance = msg.velocity_covariance;
-        dvl.altitude = msg.altitude;
-        for (const cola2_msgs::DVLBeam& beam : msg.beams) {
-            smarc_msgs::DVLBeam b;
-            b.range = beam.range;
-            b.range_covariance = beam.range_covariance;
-            b.velocity = beam.velocity;
-            b.velocity_covariance = beam.velocity_covariance;
-            b.pose = beam.pose;
-            dvl.beams.push_back(b);
-        }
-        dvl_pub.publish(dvl);
-    }
+    //void dvl_callback(const cola2_msgs::DVL& msg)
+    //{
+        //smarc_msgs::DVL dvl;
+        //dvl.header = msg.header;
+        //dvl.velocity = msg.velocity;
+        //dvl.velocity_covariance = msg.velocity_covariance;
+        //dvl.altitude = msg.altitude;
+        //for (const cola2_msgs::DVLBeam& beam : msg.beams) {
+            //smarc_msgs::DVLBeam b;
+            //b.range = beam.range;
+            //b.range_covariance = beam.range_covariance;
+            //b.velocity = beam.velocity;
+            //b.velocity_covariance = beam.velocity_covariance;
+            //b.pose = beam.pose;
+            //dvl.beams.push_back(b);
+        //}
+        //dvl_pub.publish(dvl);
+    //}
 
     void rudder_cmd_callback(const std_msgs::Float32::ConstPtr& msg, int rudder_ind)
     {
@@ -102,8 +102,16 @@ public:
         joint_states_cmd_pub.publish(rudder_angles);
         */
 
+		// port = 3 strb = 4 
+		// elevator = 0 
+		// rudders = 1
+
         last_rudder_msg.header.stamp = ros::Time::now();
         last_rudder_msg.setpoints[rudder_ind] = msg->data;
+		// so that port and strb move the same direction with the same message
+		if (rudder_ind == 4) {
+			last_rudder_msg.setpoints[rudder_ind] = -msg->data;
+		}
         if (rudder_ind == 1) {
             last_rudder_msg.setpoints[2] = msg->data;
         }
@@ -144,26 +152,26 @@ public:
     }
     */
 
-    void vbs_cmd_callback(const std_msgs::Float32::ConstPtr& msg, int vbs_ind)
-    {
-        std_msgs::Float64 cmd;
-        cmd.data = vbs_vol_min + 0.01*msg->data*(vbs_vol_max - vbs_vol_min);
-        vbs_cmd_pub[vbs_ind].publish(cmd);
-    }
+    //void vbs_cmd_callback(const std_msgs::Float32::ConstPtr& msg, int vbs_ind)
+    //{
+        //std_msgs::Float64 cmd;
+        //cmd.data = vbs_vol_min + 0.01*msg->data*(vbs_vol_max - vbs_vol_min);
+        //vbs_cmd_pub[vbs_ind].publish(cmd);
+    //}
 
-    void vbs_fb_callback(const std_msgs::Float64::ConstPtr& msg, int vbs_ind)
-    {
-        std_msgs::Float32 fb;
-        fb.data = 100.*(.5+msg->data);
-        vbs_fb_pub[vbs_ind].publish(fb);
-    }
+    //void vbs_fb_callback(const std_msgs::Float64::ConstPtr& msg, int vbs_ind)
+    //{
+        //std_msgs::Float32 fb;
+        //fb.data = 100.*(.5+msg->data);
+        //vbs_fb_pub[vbs_ind].publish(fb);
+    //}
 
-    void pressure_callback(const sensor_msgs::FluidPressure& msg)
-    {
-        sensor_msgs::FluidPressure new_msg = msg;
-        new_msg.fluid_pressure += 101325.;
-        pressure_pub.publish(new_msg);
-    }
+    //void pressure_callback(const sensor_msgs::FluidPressure& msg)
+    //{
+        //sensor_msgs::FluidPressure new_msg = msg;
+        //new_msg.fluid_pressure += 101325.;
+        //pressure_pub.publish(new_msg);
+    //}
 
     void thruster_cmd_callback(const smarc_msgs::ThrusterRPM::ConstPtr& msg, int thruster_ind)
     {
@@ -221,27 +229,27 @@ public:
     {
         ros::NodeHandle pn("~");
         pn.param<std::string>("robot_name", robot_name, "lolo");
-        pn.param<double>("vbs_vol_min", vbs_vol_min, -.5);
-        pn.param<double>("vbs_vol_max", vbs_vol_max, .5);
+        //pn.param<double>("vbs_vol_min", vbs_vol_min, -.5);
+        //pn.param<double>("vbs_vol_max", vbs_vol_max, .5);
         pn.param<double>("lolo_max_rpm", max_rpm, 2000.0);
 
         setup_messages();
 
         battery_pub = nh.advertise<sensor_msgs::BatteryState>("core/battery", 1000);
         pressure_pub = nh.advertise<sensor_msgs::FluidPressure>("core/pressure", 1000);
-        pressure_sub = nh.subscribe("sim/pressure", 1000, &LoloSimMsgBridge::pressure_callback, this);
+        //pressure_sub = nh.subscribe("sim/pressure", 1000, &LoloSimMsgBridge::pressure_callback, this);
 
-        dvl_pub = nh.advertise<smarc_msgs::DVL>("core/dvl", 1000);
-        dvl_sub = nh.subscribe("sim/dvl", 1000, &LoloSimMsgBridge::dvl_callback, this);
+        //dvl_pub = nh.advertise<smarc_msgs::DVL>("core/dvl", 1000);
+        //dvl_sub = nh.subscribe("sim/dvl", 1000, &LoloSimMsgBridge::dvl_callback, this);
 
-        std::vector<std::string> vbs_names = {"vbs_front_stbd", "vbs_front_port", "vbs_back_stbd", "vbs_back_port"};
-        for (int i = 0; i < vbs_names.size(); ++i) {
-            std::string name = vbs_names[i];
-            vbs_cmd_sub[i] = nh.subscribe<std_msgs::Float32>(std::string("core/") + name + "_cmd", 1000, boost::bind(&LoloSimMsgBridge::vbs_cmd_callback, this, _1, i));
-            vbs_fb_sub[i] = nh.subscribe<std_msgs::Float64>(std::string("sim/") + name + "/volume_centered", 1000, boost::bind(&LoloSimMsgBridge::vbs_fb_callback, this, _1, i));
-            vbs_fb_pub[i] =  nh.advertise<std_msgs::Float32>(std::string("core/") + name + "_fb", 1000);
-            vbs_cmd_pub[i] = nh.advertise<std_msgs::Float64>(std::string("sim/") + name + "/setpoint", 1000); 
-        }
+        //std::vector<std::string> vbs_names = {"vbs_front_stbd", "vbs_front_port", "vbs_back_stbd", "vbs_back_port"};
+        //for (int i = 0; i < vbs_names.size(); ++i) {
+            //std::string name = vbs_names[i];
+            //vbs_cmd_sub[i] = nh.subscribe<std_msgs::Float32>(std::string("core/") + name + "_cmd", 1000, boost::bind(&LoloSimMsgBridge::vbs_cmd_callback, this, _1, i));
+            //vbs_fb_sub[i] = nh.subscribe<std_msgs::Float64>(std::string("sim/") + name + "/volume_centered", 1000, boost::bind(&LoloSimMsgBridge::vbs_fb_callback, this, _1, i));
+            //vbs_fb_pub[i] =  nh.advertise<std_msgs::Float32>(std::string("core/") + name + "_fb", 1000);
+            //vbs_cmd_pub[i] = nh.advertise<std_msgs::Float64>(std::string("sim/") + name + "/setpoint", 1000); 
+        //}
 
         joint_states_cmd_pub = nh.advertise<sensor_msgs::JointState>("desired_joint_states", 1000);
         /*
@@ -274,7 +282,7 @@ public:
 
 int main(int argc, char** argv)
 {
-    ros::init(argc, argv, "sam_sim_msg_bridge");
+    ros::init(argc, argv, "lolo_control_inputs");
 
     ros::NodeHandle nh;
 

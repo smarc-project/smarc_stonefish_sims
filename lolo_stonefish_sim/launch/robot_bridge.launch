@@ -49,12 +49,10 @@
 		<node name="dvl_to_altitude" type="dvl_to_altitude.py" pkg="lolo_drivers" output="screen"/>
 
 
-		
-
-        <!-- Bridge to SMARC msg interface -->
-        <!--<node name="msg_bridge" type="lolo_sim_msg_bridge" pkg="lolo_stonefish_sim" output="screen">-->
-            <!--<param name="robot_name" value="$(arg robot_name)"/>-->
-        <!--</node>-->
+		<!-- thruster and fin topics to setpoints bridge -->
+		<node name="ctrl_inputs_to_setpoints" type="lolo_sim_msg_bridge" pkg="lolo_stonefish_sim" output="screen">
+			<param name="robot_name" value="$(arg robot_name)"/>
+		</node>
 
         <!-- Simple yaw controller for waypoint navigation -->
         <!--<node name="yaw_controller" type="sim_yaw_controller_node" pkg="lolo_stonefish_sim" output="screen">-->
