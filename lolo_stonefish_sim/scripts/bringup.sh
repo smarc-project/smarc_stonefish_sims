@@ -120,7 +120,7 @@ tmux select-window -t $SIM_SESSION:0
 tmux send-keys "roscore" C-m
 
 tmux select-window -t $SIM_SESSION:1
-tmux send-keys "mon launch smarc_stonefish_worlds stonefish.launch robot_config_file:=$ROBOT_CONFIG_FILE world_config_file:=$WORLD_CONFIG_FILE scenario_description:=$SCENARIO_DESC simulation_rate:=$SIMULATION_RATE graphics_quality:=$GFX_QUALITY --name=$(tmux display-message -p 'p#I_#W') --no-start" C-m
+tmux send-keys "mon launch smarc_stonefish_worlds stonefish.launch robot_config_file:=$ROBOT_CONFIG_FILE world_config_file:=$WORLD_CONFIG_FILE scenario_description:=$SCENARIO_DESC simulation_rate:=$SIMULATION_RATE graphics_quality:=$GFX_QUALITY --name=$(tmux display-message -p 'p#I_#W') " C-m
 
 
 # ADD ANY LAUNCHES THAT NEED TO BE LAUNCHED ONLY ONCE, EVEN WHEN THERE ARE 10 SAMS HERE
@@ -167,8 +167,8 @@ do
 		tmux send-keys C-m
 	fi
 
-	#tmux select-window -t $ROBOT_SESSION:3
-	#tmux send-keys "mon launch lolo_stonefish_sim robot_bridge.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
+	tmux select-window -t $ROBOT_SESSION:3
+	tmux send-keys "mon launch lolo_stonefish_sim robot_bridge.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W')" C-m
 
 	tmux select-window -t $ROBOT_SESSION:4
 	tmux send-keys "mon launch lolo_stonefish_sim mission.launch robot_name:=$ROBOT_NAME bridge_port:=$IMC_BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP imc_system_name:=$ROBOT_NAME imc_src:=$IMC_SRC max_depth:=$MAX_DEPTH min_altitude:=$MIN_ALTITUDE --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m

@@ -124,16 +124,16 @@
 
 
     <!-- Sensors -->
-    <!--<sensor name="base_link" type="odometry" rate="30.0">-->
-        <!--<link name="Vehicle"/>-->
-        <!--<noise position="0.001" velocity="0.0015" angle="0.0001745" angular_velocity="0.0001745"/>-->
-        <!--<origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>-->
-        <!--<ros_publisher topic="/$(arg robot_name)/sim/odom"/>-->
-    <!--</sensor>-->
+	<sensor name="base_link" type="odometry" rate="30.0">
+		<link name="Vehicle"/>
+		<noise position="0.001" velocity="0.0015" angle="0.0001745" angular_velocity="0.0001745"/>
+		<origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+		<ros_publisher topic="/$(arg robot_name)/sim/odom"/>
+	</sensor>
 
     <sensor name="imu_link_ned" type="imu" rate="200.0">
         <link name="Vehicle"/>
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        <origin rpy="0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         <noise angle="0.000001745" angular_velocity="0.00001745"/>
         <ros_publisher topic="/$(arg robot_name)/sim/imu_ned"/>
     </sensor>
@@ -172,7 +172,7 @@
     <world_transform rpy="3.1416 0.0 1.57" xyz="$(arg robot_pos)"/>
 
     <ros_publisher servos="/$(arg robot_name)/joint_states"/>
-    <ros_subscriber rudders="/$(arg robot_name)/sim/rudder_setpoints" thrusters="/$(arg robot_name)/sim/thruster_setpoints" servos="/$(arg robot_name)/desired_joint_states"/>
+    <ros_subscriber rudders="/$(arg robot_name)//rudder_setpoints" thrusters="/$(arg robot_name)/sim/thruster_setpoints" servos="/$(arg robot_name)/desired_joint_states"/>
     <ros_base_link_transforms publish="$(param simulate_dr)"/>
 
 </robot>

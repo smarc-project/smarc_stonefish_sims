@@ -10,7 +10,8 @@ project(lolo_stonefish_sim)
 find_package(catkin REQUIRED COMPONENTS roscpp tf2_ros tf2_geometry_msgs tf2_eigen
                                         std_msgs sensor_msgs cola2_msgs sam_msgs
                                         smarc_msgs geometry_msgs nav_msgs
-                                        geographic_msgs geodesy)
+                                        geographic_msgs geodesy ixblue_ins_msgs tf_lat_lon
+										lolo_drivers)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -168,6 +169,7 @@ install(PROGRAMS
   scripts/bringup.sh
   scripts/lolo_sam_bringup.sh
   scripts/lolo_teleop.py
+  scripts/sim_to_ins.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
