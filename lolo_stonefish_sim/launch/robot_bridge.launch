@@ -35,6 +35,8 @@
 
 		<!-- Fake INS for lolo2 -->
 		<node name="sim_to_ins" type="sim_to_ins.py" pkg="lolo_stonefish_sim" output="screen"/>
+		<!--Fake control surface feedbacks for lolo2-->
+		<node name="sim_to_control_surface_fb" type="sim_to_control_surface_fb.py" pkg="lolo_stonefish_sim" output="screen"/>
 
 		<!-- takes either dr/odom or sim/odom and publishes dr/roll pitch yaw in world_ned frame-->
 		<!--Dont think we need this since who will publish dr/odom if the INS is supposed to be a blackbox-->

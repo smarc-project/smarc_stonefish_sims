@@ -170,6 +170,7 @@ install(PROGRAMS
   scripts/lolo_sam_bringup.sh
   scripts/lolo_teleop.py
   scripts/sim_to_ins.py
+  scripts/sim_to_control_surface_fb.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
