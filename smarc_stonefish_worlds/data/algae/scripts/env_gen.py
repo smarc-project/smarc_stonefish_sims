@@ -66,12 +66,19 @@ def generate_look_tag(algae_texture_dir=None):
 
 def generate_static_obj_def(name,
                             look,
-                            mesh,
+                            physical,
+                            visual=None,
                             world_xyz=[0.0, 0.0, 0.0],
                             world_rpy=[0.0, 0.0, 0.0],
                             material='Neutral'):
     """Generate tag for a static object"""
     world_transform_fm = lambda x: ' '.join([f'{i:.2f}' for i in x])
+    visual_str = ''
+    if visual:
+        visual_str = (f'\t<visual>\n'
+                      f'\t\t<mesh filename="{visual}" scale="1.0"/>\n'
+                      f'\t\t<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>\n'
+                      f'\t</visual>\n')
     return (
         f'\n'
         f'<static name="{name}" type="model">\n'
@@ -79,9 +86,10 @@ def generate_static_obj_def(name,
         f'\t<material name="{material}"/>\n'
         f'\t<world_transform xyz="{world_transform_fm(world_xyz)}" rpy="{world_transform_fm(world_rpy)}"/>\n'
         f'\t<physical>\n'
-        f'\t\t<mesh filename="{mesh}" scale="1.0"/>\n'
+        f'\t\t<mesh filename="{physical}" scale="1.0"/>\n'
         f'\t\t<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>\n'
         f'\t</physical>\n'
+        f'{visual_str}'
         f'</static>\n')
 
 
@@ -89,13 +97,13 @@ def generate_a0_buoy_group(world_xyz, world_rpy):
     """Generate A0 buoy group with a buoy and a 2m rope"""
     a0_buoy = generate_static_obj_def(name="A0_Buoy",
                                       look="yellow",
-                                      mesh="$(param a0_buoy)",
+                                      physical="$(param a0_buoy)",
                                       material="Neutral",
                                       world_xyz=world_xyz,
                                       world_rpy=world_rpy)
     a0_buoy_rope = generate_static_obj_def(name="A0Buoy_Rope",
                                            look="black",
-                                           mesh="$(param a0_buoy_rope)",
+                                           physical="$(param a0_buoy_rope)",
                                            material="Neutral",
                                            world_xyz=world_xyz,
                                            world_rpy=world_rpy)
@@ -104,16 +112,17 @@ def generate_a0_buoy_group(world_xyz, world_rpy):
 
 def generate_anchoring_group(world_xyz, world_rpy):
     """Generate anchoring buoy and connected rope (used at the ending points of the ropes)"""
-    anchoring_buoy = generate_static_obj_def(name="Anchoring_Buoy",
-                                             look="orange",
-                                             mesh="$(param anchoring_buoy)",
-                                             material="Neutral",
-                                             world_xyz=world_xyz,
-                                             world_rpy=world_rpy)
+    anchoring_buoy = generate_static_obj_def(
+        name="Anchoring_Buoy",
+        look="orange",
+        physical="$(param anchoring_buoy)",
+        material="Neutral",
+        world_xyz=world_xyz,
+        world_rpy=world_rpy)
     anchoring_buoy_rope = generate_static_obj_def(
         name="Anchoring_Buoy_Rope",
         look="black",
-        mesh="$(param anchoring_buoy_rope)",
+        physical="$(param anchoring_buoy_rope)",
         material="Neutral",
         world_xyz=world_xyz,
         world_rpy=world_rpy)
@@ -142,11 +151,12 @@ def get_algae_obj_and_textures(algae_obj_dir, algae_texture_dir):
     }
 
 
-def generate_algae(look, mesh, world_xyz, world_rpy):
+def generate_algae(look, mesh_collision, mesh, world_xyz, world_rpy):
     """Generate one algae static object"""
     return generate_static_obj_def(name="Algae",
                                    look=look,
-                                   mesh=mesh,
+                                   physical=mesh_collision,
+                                   visual=mesh,
                                    world_xyz=world_xyz,
                                    world_rpy=world_rpy,
                                    material='Neutral')
@@ -168,13 +178,15 @@ def generate_algae_row(rope_world_xyz, rope_world_rpy, algae_data):
         sep = random.uniform(.05, .4)
         current_y += sep + mesh_dim['y']
         look = algae_data['algae_texture'][texture_idx]
-        algae = generate_algae(look=f'{look}',
-                               mesh=f'$(param algae_obj_dir)/{mesh_idx}.obj',
-                               world_xyz=[
-                                   rope_world_xyz[0], current_y,
-                                   rope_world_xyz[2] + mesh_dim['z'] / 2
-                               ],
-                               world_rpy=rope_world_rpy)
+        algae = generate_algae(
+            look=f'{look}',
+            mesh_collision='$(param algae_obj_dir)/collision.obj',
+            mesh=f'$(param algae_obj_dir)/{mesh_idx}.obj',
+            world_xyz=[
+                rope_world_xyz[0], current_y,
+                rope_world_xyz[2] + mesh_dim['z'] / 2
+            ],
+            world_rpy=rope_world_rpy)
         algae_row.append(algae)
     return ''.join(algae_row)
 
@@ -203,7 +215,7 @@ def generate_row(world_x,
     rope_world_xyz = [world_x, rope_y, rope_z]
     rope = generate_static_obj_def(name="Rope",
                                    look="black",
-                                   mesh="$(param rope)",
+                                   physical="$(param rope)",
                                    world_xyz=rope_world_xyz,
                                    world_rpy=world_rpy)
     components.append(rope)
