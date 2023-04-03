@@ -7,7 +7,9 @@ mesh: {
     a0_buoy: "$(find smarc_stonefish_worlds)/data/algae/components/a0_buoy.obj",
     rope: "$(find smarc_stonefish_worlds)/data/algae/components/a0_buoy_ropes_small_farm.obj",
     algae_row1: "$(find smarc_stonefish_worlds)/data/algae/components/algae_row1_small_farm.obj",
-    algae_row2: "$(find smarc_stonefish_worlds)/data/algae/components/algae_row2_small_farm.obj"
+    algae_row1_collision: "$(find smarc_stonefish_worlds)/data/algae/components/algae_row1_small_farm_collision.obj",
+    algae_row2: "$(find smarc_stonefish_worlds)/data/algae/components/algae_row2_small_farm.obj",
+    algae_row2_collision: "$(find smarc_stonefish_worlds)/data/algae/components/algae_row2_small_farm_collision.obj",
 }
 marked_positions: {
     buoy_corner1: {position: "4.00 -5.00 0.00", orientation: "0.00 0.00 0.00", color: "white", mesh: "a0_buoy"},
