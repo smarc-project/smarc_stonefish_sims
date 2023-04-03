@@ -43,18 +43,6 @@
     <world_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 15.0"/>
 </static>
 
-<!-- Begin: Farm skeleton ropes -->
-<static name="Farm_Skeleton" type="model">
-	<look name="yellow"/>
-	<material name="Neutral"/>
-    <world_transform xyz="$(param other_object_positions/farm_skeleton/position)" rpy="$(param other_object_positions/farm_skeleton/orientation)"/>
-	<physical>
-		<mesh filename="$(param mesh/rope)" scale="1.0"/>
-		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-	</physical>
-</static>
-<!-- End: Farm skeleton ropes -->
-
 <!-- Begin: A0 buoys at the four corners-->
 <static name="A0_Buoy" type="model">
     <look name="$(param marked_positions/buoy_corner1/color)"/>
@@ -167,9 +155,13 @@
 	<material name="Neutral"/>
     <world_transform xyz="$(param other_object_positions/algae_row1/position)" rpy="$(param other_object_positions/algae_row1/orientation)"/>
 	<physical>
-        <mesh filename="$(param mesh/algae_row1)" scale="1.0"/>
+        <mesh filename="$(param mesh/algae_row1_collision)" scale="1.0" convex="true"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
+	<visual>
+        <mesh filename="$(param mesh/algae_row1)" scale="1.0"/>
+		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+	</visual>
 </static>
 
 <static name="Algae" type="model">
@@ -177,9 +169,13 @@
 	<material name="Neutral"/>
     <world_transform xyz="$(param other_object_positions/algae_row2/position)" rpy="$(param other_object_positions/algae_row2/orientation)"/>
 	<physical>
-		<mesh filename="$(param mesh/algae_row2)" scale="1.0"/>
+		<mesh filename="$(param mesh/algae_row2_collision)" scale="1.0" convex="true"/>
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 	</physical>
+	<visual>
+        <mesh filename="$(param mesh/algae_row2)" scale="1.0"/>
+		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+	</visual>
 </static>
 <!-- End: Algaes -->
 
