@@ -158,7 +158,8 @@ do
 
 	tmux new-window -t $ROBOT_SESSION:2 -n 'gui'
 	tmux new-window -t $ROBOT_SESSION:3 -n 'robot_bridge'
-	tmux new-window -t $ROBOT_SESSION:4 -n 'mission'
+	tmux new-window -t $ROBOT_SESSION:4 -n 'action_servers'
+	tmux new-window -t $ROBOT_SESSION:5 -n 'mission'
 
 	tmux select-window -t $ROBOT_SESSION:2
     tmux send-keys "mon launch lolo_webgui_native native_webgui.launch namespace:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W')"
@@ -171,6 +172,9 @@ do
 	tmux send-keys "mon launch lolo_stonefish_sim robot_bridge.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W')" C-m
 
 	tmux select-window -t $ROBOT_SESSION:4
+	tmux send-keys "mon launch lolo_action_servers lolo_actions.launch robot_name:=$ROBOT_NAME --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W')" C-m
+
+	tmux select-window -t $ROBOT_SESSION:5
 	tmux send-keys "mon launch lolo_stonefish_sim mission.launch robot_name:=$ROBOT_NAME bridge_port:=$IMC_BRIDGE_PORT neptus_addr:=$NEPTUS_IP bridge_addr:=$SAM_IP imc_system_name:=$ROBOT_NAME imc_src:=$IMC_SRC max_depth:=$MAX_DEPTH min_altitude:=$MIN_ALTITUDE --name=${ROBOT_NAME}_$(tmux display-message -p 'p#I_#W') --no-start" C-m
 
 	# ADD NEW LAUNCHES THAT ARE SPECIFIC TO ONE SAM HERE
