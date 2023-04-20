@@ -32,9 +32,12 @@
             <dimensions xyz="1.7 0.8 0.3"/>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             <material name="Neutral"/>
-            <mass value="270.0"/>
+			<!--Bouyant=270-->
+			<mass value="273.0"/>
             <look name="manipulator"/>
-            <compound_transform rpy="0.0 0.0 0.0" xyz="1.26 0.0 0.17"/>
+			<!--x=1.26 is pitching up a bit when mass=273 -->
+			<!--x=1.245 is about level when mass=273 -->
+            <compound_transform rpy="0.0 0.0 0.0" xyz="1.245 0.0 0.17"/>
         </internal_part>
     </base_link>
 
