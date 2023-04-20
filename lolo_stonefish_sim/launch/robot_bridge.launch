@@ -6,7 +6,7 @@
     <group ns="$(arg robot_name)">
 
         <!-- Use the ground truth TF transform from sim -->
-		<node name="gt_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 gt/$(arg robot_name)/base_link $(arg robot_name)/base_link 100" />
+		<!--<node name="gt_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 gt/$(arg robot_name)/base_link $(arg robot_name)/base_link 100" />-->
 
         <!-- Republish ground truth odometry msg from sim -->
 		<node name="odom_republish" type="relay" pkg="topic_tools" args="sim/odom dr/odom" output="screen"/> 
