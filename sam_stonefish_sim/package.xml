@@ -70,7 +70,7 @@
   <exec_depend>topic_tools</exec_depend>
   <exec_depend>imu_transformer</exec_depend>
   <exec_depend>tf_lat_lon</exec_depend>
-  <exec_depend>bt_mission</exec_depend>
+  <exec_depend>smarc_bt</exec_depend>
   <exec_depend>pid</exec_depend>
   <exec_depend>sam_description</exec_depend>
   <exec_depend>imc_ros_bridge</exec_depend>
