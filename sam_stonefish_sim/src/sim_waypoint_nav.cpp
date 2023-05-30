@@ -3,7 +3,7 @@
 
 #include <std_msgs/Float64.h>
 #include <smarc_msgs/ThrusterRPM.h>
-#include <smarc_msgs/GotoWaypointAction.h>
+#include <smarc_bt/GotoWaypointAction.h>
 
 #include <eigen3/Eigen/Dense>
 
@@ -23,12 +23,12 @@ private:
     ros::Publisher rpm2_pub;
     ros::Publisher depth_pub;
     ros::Publisher yaw_pub;
-    actionlib::SimpleActionServer<smarc_msgs::GotoWaypointAction> as_; // NodeHandle instance must be created before this line. Otherwise strange error occurs.
+    actionlib::SimpleActionServer<smarc_bt::GotoWaypointAction> as_; // NodeHandle instance must be created before this line. Otherwise strange error occurs.
 
     std::string action_name_;
     // create messages that are used to published feedback/result
-    smarc_msgs::GotoWaypointFeedback feedback_;
-    smarc_msgs::GotoWaypointResult result_;
+    smarc_bt::GotoWaypointFeedback feedback_;
+    smarc_bt::GotoWaypointResult result_;
 
 public:
 
@@ -45,7 +45,7 @@ public:
         as_.start();
     }
 
-    void executeCB(const smarc_msgs::GotoWaypointGoalConstPtr& goal)
+    void executeCB(const smarc_bt::GotoWaypointGoalConstPtr& goal)
     {
         bool success = false;
         result_.reached_waypoint = false;
