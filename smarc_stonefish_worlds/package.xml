@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>smarc_stonefish_worlds</name>
-  <version>0.1.24</version>
+  <version>0.1.25</version>
   <description>The smarc_stonefish_worlds stonefish simulation package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
